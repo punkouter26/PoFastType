@@ -452,8 +452,9 @@ textarea.typing-input::-webkit-scrollbar-thumb:hover {
   font-family: 'Courier New', monospace !important;
   font-size: 1.1rem;
   line-height: 1.6;
-  color: var(--arcade-orange) !important;
+  color: var(--arcade-orange-bright) !important;
   box-shadow: inset 0 0 20px rgba(255, 140, 0, 0.2);
+  text-shadow: 0 0 5px rgba(255, 165, 0, 0.5);
 }
 
 .typing-input {
@@ -612,14 +613,15 @@ textarea.typing-input::-webkit-scrollbar-thumb:hover {
   .retro-card .card-body {
     padding: 10px !important;
   }
-  
-  /* Make text display more compact */
+    /* Make text display more compact */
   .text-display {
     padding: 10px !important;
     font-size: 0.9rem !important;
     line-height: 1.4 !important;
     max-height: 200px !important;
     overflow-y: auto !important;
+    color: var(--arcade-orange-bright) !important;
+    text-shadow: 0 0 5px rgba(255, 165, 0, 0.5) !important;
   }
   
   /* Compact typing input */
@@ -684,11 +686,12 @@ textarea.typing-input::-webkit-scrollbar-thumb:hover {
   .retro-card .card-body {
     padding: 8px !important;
   }
-  
-  .text-display {
+    .text-display {
     padding: 8px !important;
     font-size: 0.8rem !important;
     max-height: 150px !important;
+    color: var(--arcade-orange-bright) !important;
+    text-shadow: 0 0 5px rgba(255, 165, 0, 0.5) !important;
   }
   
   .typing-input {
@@ -743,6 +746,8 @@ textarea.typing-input::-webkit-scrollbar-thumb:hover {
   .text-display {
     max-height: 100px !important;
     font-size: 0.8rem !important;
+    color: var(--arcade-orange-bright) !important;
+    text-shadow: 0 0 5px rgba(255, 165, 0, 0.5) !important;
   }
   
   .typing-input {
