@@ -1,0 +1,40 @@
+sequenceDiagram
+    participant U as User
+    participant C as Client
+    participant A as API Server
+    participant AA as Azure AD
+    participant AT as Azure Table Storage
+    participant AI as Application Insights
+
+    U->>C: Open Application
+    C->>AA: Check Authentication
+    AA-->>C: Authentication Status
+    
+    alt User Not Authenticated
+        C->>AA: Redirect to Login
+        AA->>U: Login Form
+        U->>AA: Credentials
+        AA-->>C: JWT Token
+    end
+    
+    C->>A: Request Game Text
+    A->>AI: Log Request
+    A->>A: Generate Text
+    A-->>C: Return Text
+    
+    U->>C: Start Typing
+    C->>C: Track Keystrokes
+    C->>C: Calculate WPM and Accuracy
+    
+    U->>C: Complete Game
+    C->>A: Submit Results
+    A->>AT: Store Game Result
+    A->>AI: Log Game Completion
+    AT-->>A: Confirmation
+    A-->>C: Success Response
+    
+    C->>A: Request Leaderboard
+    A->>AT: Query Top Scores
+    AT-->>A: Return Scores
+    A-->>C: Leaderboard Data
+    C->>U: Display Results

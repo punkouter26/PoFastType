@@ -1,0 +1,21 @@
+graph TD
+    A[User Opens PoFastType] --> B[Home Page]
+    B --> C{User Authenticated?}
+    C -->|Yes| D[Dashboard]
+    C -->|No| E[Login Page]
+    E --> F[Azure AD Authentication]
+    F --> D
+    D --> G[Start Game]
+    G --> H[Text Generation]
+    H --> I[Typing Interface]
+    I --> J[Calculate WPM/Accuracy]
+    J --> K[Save Results to Azure Table Storage]
+    K --> L[Update Leaderboard]
+    L --> M[Show Results]
+    M --> N{Play Again?}
+    N -->|Yes| G
+    N -->|No| D
+    D --> O[View Statistics]
+    D --> P[View Leaderboard]
+    O --> Q[Chart.js Visualizations]
+    P --> R[Top Players Display]

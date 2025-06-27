@@ -1,0 +1,54 @@
+@using Microsoft.AspNetCore.Components.Web
+
+<div class="error-boundary">
+    @if (hasError)
+    {
+        <div class="alert alert-danger m-3" role="alert">
+            <h4 class="alert-heading">Something went wrong!</h4>
+            <p>An unexpected error occurred. Please try refreshing the page or contact support if the problem persists.</p>
+            <hr>
+            <p class="mb-0">
+                <button class="btn btn-outline-danger" @onclick="ResetError">Try Again</button>
+                <button class="btn btn-outline-secondary ms-2" @onclick="GoHome">Go Home</button>
+            </p>
+        </div>
+    }
+    else
+    {
+        @ChildContent
+    }
+</div>
+
+@code {
+    [Parameter] public RenderFragment ChildContent { get; set; } = default!;
+    [Inject] private NavigationManager Navigation { get; set; } = default!;
+    [Inject] private ILogger<ErrorBoundary> Logger { get; set; } = default!;
+
+    private bool hasError = false;
+    private Exception? lastException;
+
+    protected override void OnInitialized()
+    {
+        hasError = false;
+    }
+
+    public void ProcessError(Exception exception)
+    {
+        hasError = true;
+        lastException = exception;
+        Logger.LogError(exception, "Unhandled error in component");
+        StateHasChanged();
+    }
+
+    private void ResetError()
+    {
+        hasError = false;
+        lastException = null;
+        StateHasChanged();
+    }
+
+    private void GoHome()
+    {
+        Navigation.NavigateTo("/", forceLoad: true);
+    }
+} 

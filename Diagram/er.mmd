@@ -1,0 +1,54 @@
+erDiagram
+    USER_PROFILE {
+        string Id PK
+        string Username
+        string Email
+        datetime CreatedAt
+        datetime LastLoginAt
+        int TotalGamesPlayed
+        double AverageWPM
+        double BestWPM
+        double AverageAccuracy
+        double BestAccuracy
+        timespan TotalPlayTime
+    }
+
+    GAME_RESULT {
+        string Id PK
+        string UserId FK
+        string Username
+        datetime GameDate
+        int WordsPerMinute
+        double Accuracy
+        timespan GameDuration
+        int CharactersTyped
+        int ErrorCount
+        string TextUsed
+        string GameMode
+        double Score
+    }
+
+    LEADERBOARD_VIEW {
+        string UserId FK
+        string Username
+        double BestWPM
+        double BestAccuracy
+        int TotalGames
+        datetime LastPlayed
+        int Rank
+    }
+
+    GAME_SESSION {
+        string SessionId PK
+        string UserId FK
+        datetime StartTime
+        datetime EndTime
+        string Status
+        string TextContent
+        string Difficulty
+    }
+
+    USER_PROFILE ||--o{ GAME_RESULT : "plays"
+    USER_PROFILE ||--|| LEADERBOARD_VIEW : "appears in"
+    USER_PROFILE ||--o{ GAME_SESSION : "has"
+    GAME_SESSION ||--|| GAME_RESULT : "produces"

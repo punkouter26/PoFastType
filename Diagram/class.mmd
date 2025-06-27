@@ -1,0 +1,30 @@
+classDiagram
+    class UserProfile {
+        +string Id
+        +string Username
+        +string Email
+        +DateTime CreatedAt
+        +int TotalGamesPlayed
+        +double AverageWPM
+        +double BestWPM
+    }
+
+    class GameResult {
+        +string Id
+        +string UserId
+        +string Username
+        +DateTime GameDate
+        +int WordsPerMinute
+        +double Accuracy
+        +int CharactersTyped
+        +int ErrorCount
+    }
+
+    class GameController {
+        +GetText() ActionResult
+        +SubmitResult() ActionResult
+        +GetLeaderboard() ActionResult
+    }
+
+    UserProfile "1" --> "*" GameResult : "has"
+    GameController --> GameResult : "manages"

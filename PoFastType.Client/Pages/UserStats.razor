@@ -1,0 +1,235 @@
+@page "/stats"
+@inject HttpClient Http
+@inject ILogger<UserStats> Logger
+@inject IAccessTokenProvider TokenProvider
+
+<PageTitle>PoFastType - My Stats</PageTitle>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="mb-0">📊 My Typing Statistics</h3>
+                </div>
+                <div class="card-body">
+                    @if (!isAuthenticated)
+                    {
+                        <div class="text-center py-5">
+                            <h4 class="text-muted">Please sign in to view your statistics</h4>
+                            <p class="text-muted">Your typing progress and history will be displayed here.</p>
+                            <a href="/dashboard" class="btn btn-primary">Sign In</a>
+                        </div>
+                    }
+                    else if (isLoading)
+                    {
+                        <div class="text-center py-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-3">Loading your statistics...</p>
+                        </div>
+                    }
+                    else if (error != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            <h4 class="alert-heading">Error Loading Statistics</h4>
+                            <p>@error</p>
+                            <button class="btn btn-outline-danger" @onclick="LoadUserStats">Try Again</button>
+                        </div>
+                    }
+                    else if (!userStats.Any())
+                    {
+                        <div class="text-center py-5">
+                            <h4 class="text-muted">No typing tests completed yet!</h4>
+                            <p class="text-muted">Complete your first typing test to see your statistics here.</p>
+                            <a href="/game" class="btn btn-primary">Start Typing</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- Summary Statistics -->
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="card bg-primary text-white">
+                                    <div class="card-body text-center">
+                                        <h4 class="card-title">@userStats.Count</h4>
+                                        <p class="card-text">Tests Completed</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-success text-white">
+                                    <div class="card-body text-center">
+                                        <h4 class="card-title">@bestNetWPM.ToString("F1")</h4>
+                                        <p class="card-text">Best Net WPM</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-info text-white">
+                                    <div class="card-body text-center">
+                                        <h4 class="card-title">@averageAccuracy.ToString("F1")%</h4>
+                                        <p class="card-text">Average Accuracy</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-warning text-dark">
+                                    <div class="card-body text-center">
+                                        <h4 class="card-title">@averageNetWPM.ToString("F1")</h4>
+                                        <p class="card-text">Average Net WPM</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Tests Table -->
+                        <h5>Recent Tests</h5>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th scope="col">Date</th>
+                                        <th scope="col" class="text-center">Net WPM</th>
+                                        <th scope="col" class="text-center">Gross WPM</th>
+                                        <th scope="col" class="text-center">Accuracy</th>
+                                        <th scope="col" class="text-center">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var stat in userStats.Take(10))
+                                    {
+                                        <tr>
+                                            <td>
+                                                <small>@stat.Timestamp.ToString("MMM dd, yyyy HH:mm")</small>
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="fw-bold @(stat.NetWPM >= 40 ? "text-success" : stat.NetWPM >= 30 ? "text-warning" : "text-danger")">
+                                                    @stat.NetWPM.ToString("F1")
+                                                </span>
+                                            </td>
+                                            <td class="text-center">
+                                                <small class="text-muted">@stat.GrossWPM.ToString("F1")</small>
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="@(stat.Accuracy >= 95 ? "text-success" : stat.Accuracy >= 90 ? "text-warning" : "text-danger")">
+                                                    @stat.Accuracy.ToString("F1")%
+                                                </span>
+                                            </td>
+                                            <td class="text-center">
+                                                @if (stat.NetWPM >= 40 && stat.Accuracy >= 95)
+                                                {
+                                                    <span class="badge bg-success">Excellent</span>
+                                                }
+                                                else if (stat.NetWPM >= 30 && stat.Accuracy >= 90)
+                                                {
+                                                    <span class="badge bg-warning text-dark">Good</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary">Practice</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        @if (userStats.Count > 10)
+                        {
+                            <div class="text-center mt-3">
+                                <small class="text-muted">Showing your 10 most recent tests. You have completed @userStats.Count total tests.</small>
+                            </div>
+                        }
+
+                        <div class="text-center mt-4">
+                            <button class="btn btn-outline-primary" @onclick="LoadUserStats">
+                                <i class="bi bi-arrow-clockwise"></i> Refresh
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<UserGameResult> userStats = new();
+    private bool isLoading = true;
+    private bool isAuthenticated = false;
+    private string? error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CheckAuthentication();
+        if (isAuthenticated)
+        {
+            await LoadUserStats();
+        }
+        else
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task CheckAuthentication()
+    {
+        try
+        {
+            var tokenResult = await TokenProvider.RequestAccessToken();
+            isAuthenticated = tokenResult.TryGetToken(out _);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error checking authentication");
+            isAuthenticated = false;
+        }
+    }
+
+    private async Task LoadUserStats()
+    {
+        try
+        {
+            isLoading = true;
+            error = null;
+            
+            var response = await Http.GetAsync("api/scores/me/stats");
+            
+            if (response.IsSuccessStatusCode)
+            {
+                userStats = await response.Content.ReadFromJsonAsync<List<UserGameResult>>() ?? new();
+                Logger.LogInformation("Loaded {Count} user stats", userStats.Count);
+            }
+            else
+            {
+                error = $"Failed to load statistics: {response.StatusCode}";
+                Logger.LogWarning("Failed to load user stats: {StatusCode}", response.StatusCode);
+            }
+        }
+        catch (Exception ex)
+        {
+            error = "An error occurred while loading your statistics.";
+            Logger.LogError(ex, "Error loading user stats");
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private double bestNetWPM => userStats.Any() ? userStats.Max(s => s.NetWPM) : 0;
+    private double averageNetWPM => userStats.Any() ? userStats.Average(s => s.NetWPM) : 0;
+    private double averageAccuracy => userStats.Any() ? userStats.Average(s => s.Accuracy) : 0;
+
+    public class UserGameResult
+    {
+        public double NetWPM { get; set; }
+        public double Accuracy { get; set; }
+        public double GrossWPM { get; set; }
+        public string ProblemKeysJson { get; set; } = string.Empty;
+        public DateTime Timestamp { get; set; }
+    }
+} 

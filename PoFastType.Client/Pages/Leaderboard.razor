@@ -1,0 +1,145 @@
+@page "/leaderboard"
+@inject HttpClient Http
+@inject ILogger<Leaderboard> Logger
+@using PoFastType.Shared.Models
+
+<PageTitle>PoFastType - Leaderboard</PageTitle>
+
+<div class="game-container page-content">
+    <div class="row">
+        <div class="col-12">
+            <div class="card retro-card">
+                <div class="card-header retro-card-header">
+                    <h3 class="mb-0">🏆 Global Leaderboard</h3>
+                </div>
+                <div class="card-body">
+                    @if (isLoading)
+                    {
+                        <div class="text-center py-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-3">Loading leaderboard...</p>
+                        </div>
+                    }
+                    else if (error != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            <h4 class="alert-heading">Error Loading Leaderboard</h4>
+                            <p>@error</p>
+                            <button class="btn btn-outline-danger glow-hover" @onclick="LoadLeaderboard">Try Again</button>
+                        </div>
+                    }
+                    else if (!leaderboardEntries.Any())
+                    {
+                        <div class="text-center py-5">
+                            <h4 class="text-muted">No scores yet!</h4>
+                            <p class="text-muted">Be the first to complete a typing test and appear on the leaderboard.</p>
+                            <a href="/game" class="btn btn-primary glow-hover">Start Typing</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover table-dark">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th scope="col" style="width: 80px;">Rank</th>
+                                        <th scope="col">Player</th>
+                                        <th scope="col" class="text-center">Score</th>
+                                        <th scope="col" class="text-center">Net WPM</th>
+                                        <th scope="col" class="text-end">Date</th>
+                                    </tr>
+                                </thead>                                <tbody>
+                                    @foreach (var entry in leaderboardEntries)
+                                    {
+                                        <tr class="@(entry.Rank <= 3 ? "table-warning" : "")">
+                                            <td>
+                                                @if (entry.Rank == 1)
+                                                {
+                                                    <span class="leaderboard-rank rank-1 fs-6">🥇 @entry.Rank</span>
+                                                }
+                                                else if (entry.Rank == 2)
+                                                {
+                                                    <span class="leaderboard-rank rank-2 fs-6">🥈 @entry.Rank</span>
+                                                }
+                                                else if (entry.Rank == 3)
+                                                {
+                                                    <span class="leaderboard-rank rank-3 fs-6">🥉 @entry.Rank</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="leaderboard-rank">@entry.Rank</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <strong>@entry.Username</strong>
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="fs-5 fw-bold text-warning">@entry.CompositeScore.ToString("F0")</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="fs-6">@entry.NetWPM.ToString("F1")</span>
+                                            </td>
+                                            <td class="text-end">
+                                                <small class="text-muted">@entry.Timestamp.ToString("MMM dd, yyyy")</small>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <button class="btn btn-outline-primary glow-hover" @onclick="LoadLeaderboard">
+                                <i class="bi bi-arrow-clockwise"></i> Refresh
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<LeaderboardEntry> leaderboardEntries = new();
+    private bool isLoading = true;
+    private string? error;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadLeaderboard();
+    }
+
+    private async Task LoadLeaderboard()
+    {
+        try
+        {
+            isLoading = true;
+            error = null;
+            
+            var response = await Http.GetAsync("api/scores/leaderboard?top=10");
+            
+            if (response.IsSuccessStatusCode)
+            {
+                leaderboardEntries = await response.Content.ReadFromJsonAsync<List<LeaderboardEntry>>() ?? new();
+                Logger.LogInformation("Loaded leaderboard with {Count} entries", leaderboardEntries.Count);
+            }
+            else
+            {
+                error = $"Failed to load leaderboard: {response.StatusCode}";
+                Logger.LogWarning("Failed to load leaderboard: {StatusCode}", response.StatusCode);
+            }
+        }
+        catch (Exception ex)
+        {
+            error = "An error occurred while loading the leaderboard.";
+            Logger.LogError(ex, "Error loading leaderboard");
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+} 

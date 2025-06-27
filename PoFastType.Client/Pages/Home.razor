@@ -1,0 +1,644 @@
+﻿@page "/"
+@using PoFastType.Shared.Models
+@inject HttpClient Http
+@inject ILogger<Home> Logger
+@inject IJSRuntime JSRuntime
+@inject IAccessTokenProvider TokenProvider
+
+<PageTitle>PoFastType - Home</PageTitle>
+
+<div class="game-container page-content">
+    <div class="row g-2">
+        <!-- Left Pane: Text Display -->
+        <div class="col-lg-6 col-12">
+            <div class="card retro-card h-100">
+                <div class="card-header retro-card-header">
+                    <h5 class="mb-0">Text to Type</h5>
+                </div>
+                <div class="card-body">
+                    @if (string.IsNullOrEmpty(sourceText))
+                    {
+                        <p class="text-muted">Click "Start New Game" to begin your typing test.</p>
+                    }
+                    else
+                    {
+                        <div class="text-display">
+                            @sourceText
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Pane: Input Area -->
+        <div class="col-lg-6 col-12">
+            <div class="card retro-card h-100">
+                <div class="card-header retro-card-header d-flex justify-content-between align-items-center flex-wrap">
+                    <h5 class="mb-0">Your Input</h5>
+                    @if (gameState == GameState.InProgress)
+                    {
+                        <div class="timer">
+                            @remainingSeconds
+                        </div>
+                    }
+                </div>
+                <div class="card-body">
+                    @if (gameState == GameState.PreGame)
+                    {
+                        <div class="text-center py-5">
+                            <button class="btn btn-primary btn-lg glow-hover" @onclick="StartNewGame">
+                                Start New Game
+                            </button>
+                        </div>                    }
+                    else if (gameState == GameState.Loading)
+                    {
+                        <div class="text-center py-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-3">Generating your unique text with AI...</p>
+                        </div>
+                    }
+                    else if (gameState == GameState.Countdown)
+                    {
+                        <div class="text-center py-5">
+                            <div class="countdown">
+                                @countdownNumber
+                            </div>
+                        </div>
+                    }
+                    else if (gameState == GameState.InProgress)
+                    {
+                        <textarea 
+                            @ref="inputTextArea"
+                            class="typing-input form-control" 
+                            style="resize: none;"
+                            @bind="userInput"
+                            @bind:event="oninput"
+                            @onkeydown="OnKeyDown"
+                            @onkeyup="OnKeyUp"
+                            disabled="@(gameState != GameState.InProgress)"
+                            placeholder="Start typing here when the countdown finishes...">
+                        </textarea>
+                    }
+                    else if (gameState == GameState.PostGame)
+                    {
+                        <div class="results-container">
+                            <div class="typing-input" style="overflow-y: auto; white-space: pre-wrap;">
+                                @RenderHighlightedText()
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>    <!-- Results Card (shown after game) -->
+    @if (gameState == GameState.PostGame)
+    {
+        <div class="row g-2 mt-2">
+            <div class="col-12">
+                <div class="card retro-card results-section">
+                    <div class="card-header retro-card-header">
+                        <h6 class="mb-0">Results</h6>
+                    </div>
+                    <div class="card-body results-stats">
+                        <!-- Main stats in 6 columns for better space usage -->
+                        <div class="row g-1">
+                            <div class="col-4 col-sm-2">
+                                <div class="stat-card">
+                                    <div class="stat-label">Score</div>
+                                    <div class="stat-value">@compositeScore.ToString("F0")</div>
+                                </div>
+                            </div>
+                            <div class="col-4 col-sm-2">
+                                <div class="stat-card">
+                                    <div class="stat-label">Net WPM</div>
+                                    <div class="stat-value">@netWPM.ToString("F1")</div>
+                                </div>
+                            </div>
+                            <div class="col-4 col-sm-2">
+                                <div class="stat-card">
+                                    <div class="stat-label">Accuracy</div>
+                                    <div class="stat-value">@accuracy.ToString("F1")%</div>
+                                </div>
+                            </div>
+                            <div class="col-4 col-sm-2">
+                                <div class="stat-card">
+                                    <div class="stat-label">Gross WPM</div>
+                                    <div class="stat-value">@grossWPM.ToString("F1")</div>
+                                </div>
+                            </div>
+                            <div class="col-4 col-sm-2">
+                                <div class="stat-card">
+                                    <div class="stat-label">Characters</div>
+                                    <div class="stat-value">@correctCharacters/@totalCharacters</div>
+                                </div>
+                            </div>
+                            <div class="col-4 col-sm-2">
+                                <div class="stat-card">
+                                    <div class="stat-label">Burst Speed</div>
+                                    <div class="stat-value">@burstSpeed.ToString("F1")</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-1 mt-1">
+                            <div class="col-6 col-sm-6">
+                                <div class="stat-card">
+                                    <div class="stat-label">Longest Streak</div>
+                                    <div class="stat-value">@longestStreak</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-2">
+                            <button class="btn btn-primary btn-sm glow-hover" @onclick="ResetGame">Try Again</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {    private string sourceText = string.Empty;
+    private string userInput = string.Empty;
+    private GameState gameState = GameState.PreGame;
+    private int remainingSeconds = 5;
+    private int countdownNumber = 3;
+    private ElementReference inputTextArea;
+    
+    // Game tracking
+    private DateTime gameStartTime;
+    private List<DateTime> keystrokeTimes = new();
+    private List<bool> keystrokeAccuracy = new();
+    private List<KeystrokeError> keystrokeErrors = new();
+    private int currentStreak = 0;
+    private int longestStreak = 0;
+    private Dictionary<string, Dictionary<string, int>> problemKeys = new();
+    
+    // Results
+    private double netWPM = 0;
+    private double accuracy = 0;
+    private double grossWPM = 0;
+    private double burstSpeed = 0;
+    private double compositeScore = 0; // New composite scoring system
+    private int correctCharacters = 0;
+    private int totalCharacters = 0;
+    private List<ProblemKey> topProblemKeys = new();
+
+    private async Task StartNewGame()
+    {
+        gameState = GameState.Loading;
+        StateHasChanged(); // Force UI update to show loading state
+        userInput = string.Empty;
+        ResetGameTracking();
+        
+        try
+        {
+            // Call the API to get new text
+            var response = await Http.GetFromJsonAsync<TextResponse>("api/game/text");
+            if (response?.text != null)
+            {
+                sourceText = response.text;
+                await StartCountdown();
+            }
+            else
+            {
+                Logger.LogError("Failed to get text from API");
+                gameState = GameState.PreGame;
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error getting text from API");
+            gameState = GameState.PreGame;
+        }
+    }
+
+    private async Task StartCountdown()
+    {
+        gameState = GameState.Countdown;
+        
+        for (int i = 3; i > 0; i--)
+        {
+            countdownNumber = i;
+            StateHasChanged();
+            await Task.Delay(1000);
+        }
+        
+        await StartGame();
+    }    private async Task StartGame()
+    {
+        gameState = GameState.InProgress;
+        remainingSeconds = 5; // 5-second typing test
+        gameStartTime = DateTime.UtcNow;
+        
+        StateHasChanged(); // Force re-render to ensure textarea is in DOM
+        await Task.Delay(50); // Small delay to allow DOM update
+        
+        // Focus the text area
+        if (inputTextArea.Context is not null) // Check if ElementReference is valid
+        {
+            await JSRuntime.InvokeVoidAsync("focusElement", inputTextArea);
+        }
+        else
+        {
+            Logger.LogWarning("inputTextArea is not valid, cannot focus.");
+        }
+        
+        // Start the timer
+        _ = TimerTask();
+    }
+
+    private async Task TimerTask()
+    {
+        while (remainingSeconds > 0 && gameState == GameState.InProgress)
+        {
+            await Task.Delay(1000);
+            remainingSeconds--;
+            StateHasChanged();
+        }
+        
+        if (gameState == GameState.InProgress)
+        {
+            await EndGame();
+            StateHasChanged(); // Ensure UI updates immediately when game ends
+        }
+    }
+
+    private async Task EndGame()
+    {
+        gameState = GameState.PostGame;
+        CalculateResults();
+        
+        // Submit results to API if user is authenticated
+        await SubmitResults();
+    }
+
+    private async Task SubmitResults()
+    {
+        try
+        {
+            // Check if user is authenticated
+            var tokenResult = await TokenProvider.RequestAccessToken();
+            if (tokenResult.TryGetToken(out var token))
+            {
+                // Create the game result object
+                var gameResult = new GameResult
+                {
+                    NetWPM = netWPM,
+                    Accuracy = accuracy,
+                    GrossWPM = grossWPM,
+                    CompositeScore = compositeScore, // Add composite score for leaderboard
+                    ProblemKeysJson = System.Text.Json.JsonSerializer.Serialize(problemKeys),
+                    Timestamp = DateTime.UtcNow
+                };
+
+                // Submit the score
+                var response = await Http.PostAsJsonAsync("api/scores", gameResult);
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    Logger.LogInformation("Score submitted successfully");
+                }
+                else
+                {
+                    Logger.LogWarning("Failed to submit score: {StatusCode}", response.StatusCode);
+                }
+            }
+            else
+            {
+                Logger.LogInformation("User not authenticated, skipping score submission");
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error submitting score");
+        }
+    }
+
+    private void OnKeyDown(KeyboardEventArgs e)
+    {
+        if (gameState != GameState.InProgress) return;
+        
+        keystrokeTimes.Add(DateTime.UtcNow);
+        
+        // Track problem keys
+        var key = e.Key.ToLower();
+        if (!problemKeys.ContainsKey(key))
+        {
+            problemKeys[key] = new Dictionary<string, int>();
+        }
+    }
+
+    private void OnKeyUp(KeyboardEventArgs e)
+    {
+        if (gameState != GameState.InProgress) return;
+        
+        // Check accuracy for this keystroke
+        var currentIndex = userInput.Length - 1;
+        if (currentIndex >= 0 && currentIndex < sourceText.Length)
+        {
+            var expectedChar = sourceText[currentIndex];
+            var actualChar = userInput[currentIndex];
+            var isCorrect = expectedChar == actualChar;
+            
+            keystrokeAccuracy.Add(isCorrect);
+            
+            if (isCorrect)
+            {
+                currentStreak++;
+                longestStreak = Math.Max(longestStreak, currentStreak);
+            }
+            else
+            {
+                // Track the error
+                var error = new KeystrokeError
+                {
+                    IntendedKey = expectedChar.ToString(),
+                    ActualKey = actualChar.ToString(),
+                    Position = currentIndex
+                };
+                keystrokeErrors.Add(error);
+                
+                // Update problem keys
+                var intendedKey = expectedChar.ToString().ToLower();
+                var actualKey = actualChar.ToString().ToLower();
+                
+                if (!problemKeys.ContainsKey(intendedKey))
+                {
+                    problemKeys[intendedKey] = new Dictionary<string, int>();
+                }
+                
+                if (!problemKeys[intendedKey].ContainsKey(actualKey))
+                {
+                    problemKeys[intendedKey][actualKey] = 0;
+                }
+                
+                problemKeys[intendedKey][actualKey]++;
+                
+                currentStreak = 0;
+            }
+        }
+    }
+
+    private void CalculateResults()
+    {
+        var gameEndTime = DateTime.UtcNow;
+        var gameDuration = gameEndTime - gameStartTime;
+        var timeInMinutes = gameDuration.TotalMinutes;
+        
+        totalCharacters = sourceText.Length;
+        correctCharacters = CalculateCorrectCharacters(sourceText, userInput);
+        
+        // Calculate WPM (words are typically 5 characters)
+        var wordsTyped = userInput.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length;
+        grossWPM = wordsTyped / timeInMinutes;
+        
+        // Calculate accuracy
+        accuracy = totalCharacters > 0 ? (double)correctCharacters / totalCharacters * 100 : 0;
+        netWPM = grossWPM * (accuracy / 100);
+        
+        // Calculate burst speed (peak WPM in any 10-second window)
+        burstSpeed = CalculateBurstSpeed();
+        
+        // Calculate longest streak
+        longestStreak = CalculateLongestStreak();
+        
+        // Calculate composite score
+        compositeScore = CalculateCompositeScore();
+        
+        // Calculate top problem keys
+        topProblemKeys = CalculateTopProblemKeys();
+    }
+
+    private int CalculateCorrectCharacters(string source, string input)
+    {
+        int correct = 0;
+        int minLength = Math.Min(source.Length, input.Length);
+        
+        for (int i = 0; i < minLength; i++)
+        {
+            if (source[i] == input[i])
+            {
+                correct++;
+            }
+        }
+        
+        return correct;
+    }
+
+    private double CalculateCompositeScore()
+    {
+        // Log values for debugging
+        Logger.LogInformation("Calculating composite score: accuracy={Accuracy}, netWPM={NetWPM}, totalCharacters={TotalCharacters}, longestStreak={LongestStreak}", 
+            accuracy, netWPM, totalCharacters, longestStreak);
+        
+        // Composite scoring formula that balances multiple factors:
+        // 
+        // Base Score Components:
+        // 1. Speed Component (40%): Net WPM * 10 (primary speed measure)
+        // 2. Accuracy Bonus (25%): Accuracy^1.5 (exponential reward for high accuracy)
+        // 3. Consistency Bonus (20%): (Longest Streak / Total Characters) * 100 * 5
+        // 4. Peak Performance (10%): (Burst Speed / 10) (rewards peak performance)
+        // 5. Completion Bonus (5%): (Characters Typed / Total Characters) * 50
+        //
+        // Formula Design:
+        // - Rewards both speed and accuracy
+        // - Heavily penalizes low accuracy to prevent "speed only" strategies
+        // - Rewards consistency (long streaks of correct typing)
+        // - Provides bonus for peak performance bursts
+        // - Gives small bonus for completion percentage
+        
+        if (accuracy <= 0 || netWPM <= 0) 
+        {
+            Logger.LogWarning("Composite score returning 0 due to accuracy={Accuracy} or netWPM={NetWPM}", accuracy, netWPM);
+            return 0;
+        }
+        
+        // 1. Speed Component (40% weight) - Base score from Net WPM
+        double speedComponent = netWPM * 10;
+        
+        // 2. Accuracy Bonus (25% weight) - Exponential accuracy reward
+        double accuracyBonus = Math.Pow(accuracy, 1.5);
+        
+        // 3. Consistency Bonus (20% weight) - Reward for long streaks
+        double consistencyRatio = totalCharacters > 0 ? (double)longestStreak / totalCharacters : 0;
+        double consistencyBonus = consistencyRatio * 100 * 5;
+        
+        // 4. Peak Performance Bonus (10% weight) - Burst speed component
+        double peakBonus = burstSpeed / 10;
+        
+        // 5. Completion Bonus (5% weight) - Typing completion percentage
+        double completionRatio = totalCharacters > 0 ? (double)userInput.Length / totalCharacters : 0;
+        double completionBonus = Math.Min(completionRatio, 1.0) * 50; // Cap at 100% completion
+        
+        // Calculate weighted composite score
+        double compositeScore = (speedComponent * 0.4) + 
+                               (accuracyBonus * 0.25) + 
+                               (consistencyBonus * 0.2) + 
+                               (peakBonus * 0.1) + 
+                               (completionBonus * 0.05);
+        
+        // Apply accuracy multiplier to prevent low-accuracy speed gaming
+        double accuracyMultiplier = Math.Max(0.1, accuracy / 100); // Minimum 10% score retention
+        
+        var finalScore = Math.Max(0, compositeScore * accuracyMultiplier);
+        Logger.LogInformation("Final composite score: {FinalScore} (before multiplier: {CompositeScore}, multiplier: {AccuracyMultiplier})", 
+            finalScore, compositeScore, accuracyMultiplier);
+        
+        return finalScore;
+    }
+
+    private double CalculateBurstSpeed()
+    {
+        if (keystrokeTimes.Count < 2) return 0;
+        
+        var maxWPM = 0.0;
+        var windowSize = TimeSpan.FromSeconds(10);
+        
+        for (int i = 0; i < keystrokeTimes.Count; i++)
+        {
+            var windowStart = keystrokeTimes[i];
+            var windowEnd = windowStart + windowSize;
+            
+            var keystrokesInWindow = keystrokeTimes.Count(t => t >= windowStart && t <= windowEnd);
+            var wordsInWindow = keystrokesInWindow / 5.0; // Approximate words per keystroke
+            var wpmInWindow = wordsInWindow / (windowSize.TotalMinutes);
+            
+            maxWPM = Math.Max(maxWPM, wpmInWindow);
+        }
+        
+        return maxWPM;
+    }
+
+    private int CalculateLongestStreak()
+    {
+        var maxStreak = 0;
+        var currentStreak = 0;
+        
+        foreach (var isCorrect in keystrokeAccuracy)
+        {
+            if (isCorrect)
+            {
+                currentStreak++;
+                maxStreak = Math.Max(maxStreak, currentStreak);
+            }
+            else
+            {
+                currentStreak = 0;
+            }
+        }
+        
+        return maxStreak;
+    }
+
+    private List<ProblemKey> CalculateTopProblemKeys()
+    {
+        var problemKeyList = new List<ProblemKey>();
+        
+        foreach (var intendedKey in problemKeys)
+        {
+            foreach (var actualKey in intendedKey.Value)
+            {
+                problemKeyList.Add(new ProblemKey
+                {
+                    IntendedKey = intendedKey.Key,
+                    ActualKey = actualKey.Key,
+                    Frequency = actualKey.Value
+                });
+            }
+        }
+        
+        return problemKeyList
+            .OrderByDescending(pk => pk.Frequency)
+            .Take(5)
+            .ToList();
+    }
+
+    private RenderFragment RenderHighlightedText()
+    {
+        return builder =>
+        {
+            var minLength = Math.Min(sourceText.Length, userInput.Length);
+            
+            for (int i = 0; i < minLength; i++)
+            {
+                if (sourceText[i] == userInput[i])
+                {
+                    builder.AddContent(i, userInput[i]);
+                }
+                else
+                {
+                    builder.OpenElement(i, "span");
+                    builder.AddAttribute(i, "style", "background-color: #ffebee; color: #c62828; text-decoration: underline;");
+                    builder.AddContent(i, userInput[i]);
+                    builder.CloseElement();
+                }
+            }
+            
+            // Add any extra characters typed
+            for (int i = minLength; i < userInput.Length; i++)
+            {
+                builder.OpenElement(i, "span");
+                builder.AddAttribute(i, "style", "background-color: #ffebee; color: #c62828; text-decoration: underline;");
+                builder.AddContent(i, userInput[i]);
+                builder.CloseElement();
+            }
+        };
+    }    private void ResetGame()
+    {
+        gameState = GameState.PreGame;
+        sourceText = string.Empty;
+        userInput = string.Empty;
+        remainingSeconds = 5; // Reset to 5 seconds for next game
+        countdownNumber = 3;
+        ResetGameTracking();
+    }
+
+    private void ResetGameTracking()
+    {
+        keystrokeTimes.Clear();
+        keystrokeAccuracy.Clear();
+        keystrokeErrors.Clear();
+        currentStreak = 0;
+        longestStreak = 0;
+        problemKeys.Clear();
+        topProblemKeys.Clear();
+        netWPM = 0;
+        accuracy = 0;
+        grossWPM = 0;
+        burstSpeed = 0;
+        compositeScore = 0;
+        correctCharacters = 0;
+        totalCharacters = 0;
+    }
+
+    public enum GameState
+    {
+        PreGame,
+        Loading,
+        Countdown,
+        InProgress,
+        PostGame
+    }
+
+    public class TextResponse
+    {
+        public string text { get; set; } = string.Empty;
+    }
+
+    public class KeystrokeError
+    {
+        public string IntendedKey { get; set; } = string.Empty;
+        public string ActualKey { get; set; } = string.Empty;
+        public int Position { get; set; }
+    }
+
+    public class ProblemKey
+    {
+        public string IntendedKey { get; set; } = string.Empty;
+        public string ActualKey { get; set; } = string.Empty;
+        public int Frequency { get; set; }
+    }
+}

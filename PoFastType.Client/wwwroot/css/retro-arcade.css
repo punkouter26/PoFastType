@@ -1,0 +1,824 @@
+/* PoFastType - Retro 80s Arcade Theme */
+
+/* Import retro fonts */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Electrolize:wght@400&display=swap');
+
+/* CSS Custom Properties for theme colors */
+:root {
+  /* Main theme colors */
+  --arcade-orange: #ff8c00;
+  --arcade-orange-bright: #ffa500;
+  --arcade-orange-dark: #e67c00;
+  --arcade-orange-glow: rgba(255, 140, 0, 0.8);
+  
+  --arcade-black: #000000;
+  --arcade-dark-gray: #1a1a1a;
+  --arcade-medium-gray: #333333;
+  --arcade-light-gray: #666666;
+  
+  /* Accent colors */
+  --arcade-cyan: #00ffff;
+  --arcade-cyan-glow: rgba(0, 255, 255, 0.6);
+  --arcade-purple: #ff00ff;
+  --arcade-green: #00ff00;
+  --arcade-red: #ff0000;
+  
+  /* Gradients */
+  --arcade-gradient-main: linear-gradient(135deg, var(--arcade-orange) 0%, var(--arcade-orange-dark) 100%);
+  --arcade-gradient-bg: linear-gradient(180deg, var(--arcade-black) 0%, var(--arcade-dark-gray) 100%);
+  
+  /* Typography */
+  --arcade-font-primary: 'Orbitron', monospace;
+  --arcade-font-secondary: 'Electrolize', sans-serif;
+  
+  /* Spacing and effects */
+  --arcade-border-radius: 8px;
+  --arcade-glow-shadow: 0 0 20px var(--arcade-orange-glow);
+  --arcade-text-glow: 0 0 10px var(--arcade-orange-glow);
+}
+
+/* Global base styles */
+html, body {
+  background: var(--arcade-black) !important;
+  color: var(--arcade-orange) !important;
+  font-family: var(--arcade-font-secondary) !important;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* Add subtle grid pattern background */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(255, 140, 0, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 140, 0, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+  z-index: -1;
+  opacity: 0.3;
+}
+
+/* Typography overrides */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--arcade-font-primary) !important;
+  color: var(--arcade-orange-bright) !important;
+  text-shadow: var(--arcade-text-glow);
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 900;
+}
+
+/* Main layout adjustments */
+.page {
+  background: transparent !important;
+  min-height: 100vh;
+}
+
+main {
+  background: transparent !important;
+}
+
+/* Navbar styling */
+.navbar {
+  background: linear-gradient(90deg, var(--arcade-black) 0%, var(--arcade-dark-gray) 50%, var(--arcade-black) 100%) !important;
+  border-bottom: 2px solid var(--arcade-orange) !important;
+  box-shadow: 0 2px 10px var(--arcade-orange-glow);
+  backdrop-filter: blur(10px);
+}
+
+.navbar-brand {
+  font-family: var(--arcade-font-primary) !important;
+  font-weight: 900 !important;
+  font-size: 1.8rem !important;
+  color: var(--arcade-orange-bright) !important;
+  text-shadow: var(--arcade-text-glow);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.navbar-brand:hover {
+  color: var(--arcade-cyan) !important;
+  text-shadow: 0 0 15px var(--arcade-cyan-glow);
+  transition: all 0.3s ease;
+}
+
+.nav-link {
+  color: var(--arcade-orange) !important;
+  font-family: var(--arcade-font-secondary) !important;
+  font-weight: 400 !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover, .nav-link:focus {
+  color: var(--arcade-orange-bright) !important;
+  text-shadow: var(--arcade-text-glow);
+  transform: translateY(-2px);
+}
+
+.navbar-text {
+  color: var(--arcade-orange) !important;
+}
+
+/* Button styling */
+.btn {
+  font-family: var(--arcade-font-secondary) !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: var(--arcade-border-radius);
+  border: 2px solid;
+  padding: 8px 20px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn:hover::before {
+  left: 100%;
+}
+
+.btn-primary {
+  background: var(--arcade-gradient-main) !important;
+  border-color: var(--arcade-orange-bright) !important;
+  color: var(--arcade-black) !important;
+  font-weight: 700;
+  box-shadow: var(--arcade-glow-shadow);
+}
+
+.btn-primary:hover {
+  background: var(--arcade-orange-bright) !important;
+  border-color: var(--arcade-cyan) !important;
+  color: var(--arcade-black) !important;
+  box-shadow: 0 0 25px var(--arcade-cyan-glow);
+  transform: translateY(-2px);
+}
+
+.btn-outline-light {
+  background: transparent !important;
+  border-color: var(--arcade-orange) !important;
+  color: var(--arcade-orange) !important;
+}
+
+.btn-outline-light:hover {
+  background: var(--arcade-orange) !important;
+  border-color: var(--arcade-orange-bright) !important;
+  color: var(--arcade-black) !important;
+  box-shadow: var(--arcade-glow-shadow);
+}
+
+.btn-sm {
+  padding: 6px 16px;
+  font-size: 0.9rem;
+}
+
+/* Card styling */
+.card {
+  background: var(--arcade-dark-gray) !important;
+  border: 2px solid var(--arcade-orange) !important;
+  border-radius: var(--arcade-border-radius);
+  box-shadow: var(--arcade-glow-shadow);
+  color: var(--arcade-orange) !important;
+}
+
+.card-header {
+  background: var(--arcade-gradient-main) !important;
+  border-bottom: 2px solid var(--arcade-orange-bright) !important;
+  color: var(--arcade-black) !important;
+  font-family: var(--arcade-font-primary) !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.card-body {
+  background: var(--arcade-dark-gray) !important;
+}
+
+/* Component-specific styling */
+
+/* Retro navbar specific styles */
+.retro-navbar {
+  background: linear-gradient(90deg, var(--arcade-black) 0%, var(--arcade-dark-gray) 50%, var(--arcade-black) 100%) !important;
+  border-bottom: 2px solid var(--arcade-orange) !important;
+  box-shadow: 0 2px 10px var(--arcade-orange-glow);
+  backdrop-filter: blur(10px);
+}
+
+.retro-brand {
+  font-family: var(--arcade-font-primary) !important;
+  font-weight: 900 !important;
+  font-size: 1.8rem !important;
+  color: var(--arcade-orange-bright) !important;
+  text-shadow: var(--arcade-text-glow);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.retro-brand:hover {
+  color: var(--arcade-cyan) !important;
+  text-shadow: 0 0 15px var(--arcade-cyan-glow);
+  transition: all 0.3s ease;
+}
+
+.retro-nav-link {
+  color: var(--arcade-orange) !important;
+  font-family: var(--arcade-font-secondary) !important;
+  font-weight: 400 !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+
+.retro-nav-link:hover, .retro-nav-link:focus {
+  color: var(--arcade-orange-bright) !important;
+  text-shadow: var(--arcade-text-glow);
+  transform: translateY(-2px);
+}
+
+/* Retro card styles */
+.retro-card {
+  background: var(--arcade-dark-gray) !important;
+  border: 2px solid var(--arcade-orange) !important;
+  border-radius: var(--arcade-border-radius);
+  box-shadow: var(--arcade-glow-shadow);
+  color: var(--arcade-orange) !important;
+}
+
+.retro-card-header {
+  background: var(--arcade-gradient-main) !important;
+  border-bottom: 2px solid var(--arcade-orange-bright) !important;
+  color: var(--arcade-black) !important;
+  font-family: var(--arcade-font-primary) !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Override Bootstrap's default styles more specifically */
+.retro-card .card-body {
+  background: var(--arcade-dark-gray) !important;
+  color: var(--arcade-orange) !important;
+}
+
+/* Text highlighting for errors */
+.error-highlight {
+  background-color: var(--arcade-red) !important;
+  color: var(--arcade-black) !important;
+  padding: 1px 2px;
+  border-radius: 2px;
+}
+
+.correct-highlight {
+  background-color: transparent;
+  color: var(--arcade-orange-bright);
+}
+
+/* Enhanced scrollbar for text areas */
+textarea.typing-input::-webkit-scrollbar {
+  width: 8px;
+}
+
+textarea.typing-input::-webkit-scrollbar-track {
+  background: var(--arcade-black);
+}
+
+textarea.typing-input::-webkit-scrollbar-thumb {
+  background: var(--arcade-orange);
+  border-radius: 4px;
+}
+
+textarea.typing-input::-webkit-scrollbar-thumb:hover {
+  background: var(--arcade-orange-bright);
+}
+
+/* Form controls */
+.form-control {
+  background: var(--arcade-black) !important;
+  border: 2px solid var(--arcade-orange) !important;
+  color: var(--arcade-orange) !important;
+  border-radius: var(--arcade-border-radius);
+  font-family: var(--arcade-font-secondary) !important;
+}
+
+.form-control:focus {
+  background: var(--arcade-dark-gray) !important;
+  border-color: var(--arcade-orange-bright) !important;
+  color: var(--arcade-orange-bright) !important;
+  box-shadow: var(--arcade-glow-shadow) !important;
+}
+
+.form-control::placeholder {
+  color: var(--arcade-light-gray) !important;
+}
+
+/* Table styling */
+.table {
+  color: var(--arcade-orange) !important;
+  font-family: var(--arcade-font-secondary) !important;
+}
+
+.table-dark {
+  background: var(--arcade-dark-gray) !important;
+  border-color: var(--arcade-orange) !important;
+}
+
+.table-dark th {
+  background: var(--arcade-gradient-main) !important;
+  color: var(--arcade-black) !important;
+  font-family: var(--arcade-font-primary) !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-color: var(--arcade-orange-bright) !important;
+}
+
+.table-dark td {
+  border-color: var(--arcade-medium-gray) !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background: rgba(255, 140, 0, 0.1) !important;
+}
+
+/* Alert styling */
+.alert {
+  border-radius: var(--arcade-border-radius);
+  border-width: 2px;
+  font-family: var(--arcade-font-secondary) !important;
+}
+
+.alert-success {
+  background: rgba(0, 255, 0, 0.2) !important;
+  border-color: var(--arcade-green) !important;
+  color: var(--arcade-green) !important;
+}
+
+.alert-warning {
+  background: rgba(255, 140, 0, 0.2) !important;
+  border-color: var(--arcade-orange) !important;
+  color: var(--arcade-orange-bright) !important;
+}
+
+.alert-danger {
+  background: rgba(255, 0, 0, 0.2) !important;
+  border-color: var(--arcade-red) !important;
+  color: var(--arcade-red) !important;
+}
+
+.alert-info {
+  background: rgba(0, 255, 255, 0.2) !important;
+  border-color: var(--arcade-cyan) !important;
+  color: var(--arcade-cyan) !important;
+}
+
+/* Game-specific styling */
+.game-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  height: calc(100vh - 120px); /* Reserve space for navbar and minimal margins */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main game area takes up 80% when results are shown */
+.game-container .row:first-child {
+  flex: 1;
+  min-height: 0; /* Allow shrinking */
+}
+
+/* Results section constrained to bottom 20% */
+.results-section {
+  max-height: 20vh;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+/* Ensure cards fill available height properly */
+.retro-card.h-100 {
+  height: 100% !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.retro-card.h-100 .card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* Allow shrinking */
+}
+
+.retro-card.h-100 .text-display,
+.retro-card.h-100 .typing-input {
+  flex: 1;
+  min-height: 0; /* Allow shrinking */
+}
+
+/* Better spacing for mobile */
+.row.g-2 {
+  margin-bottom: 0.5rem;
+}
+
+/* Ensure proper row spacing */
+.row + .row {
+  margin-top: 0.5rem;
+}
+
+.text-display {
+  background: var(--arcade-black) !important;
+  border: 2px solid var(--arcade-orange) !important;
+  border-radius: var(--arcade-border-radius);
+  padding: 20px;
+  font-family: 'Courier New', monospace !important;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--arcade-orange) !important;
+  box-shadow: inset 0 0 20px rgba(255, 140, 0, 0.2);
+}
+
+.typing-input {
+  background: var(--arcade-dark-gray) !important;
+  border: 2px solid var(--arcade-orange) !important;
+  border-radius: var(--arcade-border-radius);
+  padding: 20px;
+  font-family: 'Courier New', monospace !important;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--arcade-orange-bright) !important;
+  box-shadow: var(--arcade-glow-shadow);
+  height: 250px; /* Default height for desktop */
+  min-height: 120px; /* Minimum height */
+}
+
+.typing-input:focus {
+  border-color: var(--arcade-cyan) !important;
+  box-shadow: 0 0 25px var(--arcade-cyan-glow) !important;
+  outline: none !important;
+}
+
+/* Timer display */
+.timer {
+  font-family: var(--arcade-font-primary) !important;
+  font-size: 3rem !important;
+  font-weight: 900 !important;
+  color: var(--arcade-cyan) !important;
+  text-shadow: 0 0 20px var(--arcade-cyan-glow);
+  text-align: center;
+  margin: 20px 0;
+}
+
+.countdown {
+  font-family: var(--arcade-font-primary) !important;
+  font-size: 5rem !important;
+  font-weight: 900 !important;
+  color: var(--arcade-orange-bright) !important;
+  text-shadow: 0 0 30px var(--arcade-orange-glow);
+  text-align: center;
+  animation: countdown-pulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes countdown-pulse {
+  from {
+    transform: scale(1);
+    text-shadow: 0 0 30px var(--arcade-orange-glow);
+  }
+  to {
+    transform: scale(1.1);
+    text-shadow: 0 0 40px var(--arcade-orange-glow);
+  }
+}
+
+/* Statistics display */
+.stat-card {
+  background: var(--arcade-dark-gray) !important;
+  border: 2px solid var(--arcade-orange) !important;
+  border-radius: var(--arcade-border-radius);
+  padding: 8px;
+  margin: 3px 0;
+  text-align: center;
+  box-shadow: var(--arcade-glow-shadow);
+}
+
+
+.stat-label {
+  font-family: var(--arcade-font-secondary) !important;
+  font-size: 0.7rem;
+  color: var(--arcade-light-gray) !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+
+.stat-value {
+  font-family: var(--arcade-font-primary) !important;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--arcade-orange-bright) !important;
+  text-shadow: var(--arcade-text-glow);
+}
+
+/* Results section optimization - use bottom 20% of screen */
+.results-section {
+  max-height: 20vh;
+  overflow-y: auto;
+}
+
+.results-stats {
+  padding: 8px !important;
+}
+
+.results-stats .row {
+  margin: 0 !important;
+}
+
+/* Leaderboard styling */
+.leaderboard-rank {
+  font-family: var(--arcade-font-primary) !important;
+  font-weight: 700;
+  color: var(--arcade-cyan) !important;
+}
+
+.leaderboard-rank.rank-1 {
+  color: var(--arcade-orange-bright) !important;
+  text-shadow: var(--arcade-text-glow);
+}
+
+.leaderboard-rank.rank-2 {
+  color: #c0c0c0 !important;
+}
+
+.leaderboard-rank.rank-3 {
+  color: #cd7f32 !important;
+}
+
+/* Loading spinner */
+.loading-progress circle:last-child {
+  stroke: var(--arcade-orange) !important;
+}
+
+/* Error boundaries */
+.blazor-error-boundary {
+  background: var(--arcade-red) !important;
+  color: var(--arcade-black) !important;
+  border: 2px solid var(--arcade-orange) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .navbar-brand {
+    font-size: 1.4rem !important;
+  }
+  
+  .timer {
+    font-size: 2rem !important;
+  }
+  
+  .countdown {
+    font-size: 3rem !important;
+  }
+  
+  .stat-value {
+    font-size: 1.5rem !important;
+  }
+  
+  /* Mobile portrait optimization */
+  .game-container {
+    padding: 10px !important;
+    max-width: 100% !important;
+    height: calc(100vh - 80px) !important; /* Adjust for smaller navbar */
+  }
+  
+  /* Reduce card padding on mobile */
+  .retro-card .card-body {
+    padding: 10px !important;
+  }
+  
+  /* Make text display more compact */
+  .text-display {
+    padding: 10px !important;
+    font-size: 0.9rem !important;
+    line-height: 1.4 !important;
+    max-height: 200px !important;
+    overflow-y: auto !important;
+  }
+  
+  /* Compact typing input */
+  .typing-input {
+    padding: 10px !important;
+    font-size: 0.9rem !important;
+    line-height: 1.4 !important;
+    height: 150px !important;
+  }
+  
+  /* Reduce spacing between rows */
+  .row {
+    margin-bottom: 10px !important;
+  }
+  
+  .row.mt-4 {
+    margin-top: 10px !important;
+  }
+  
+  /* Compact stats cards */
+  .stat-card {
+    padding: 6px !important;
+    margin: 2px 0 !important;
+  }
+  
+  .stat-value {
+    font-size: 1rem !important;
+  }
+  
+  .stat-label {
+    font-size: 0.6rem !important;
+    margin-bottom: 1px !important;
+  }
+  
+  /* Optimize results section for mobile */
+  .results-section {
+    max-height: 25vh !important;
+  }
+  
+  .results-stats {
+    padding: 5px !important;
+  }
+  
+  /* Reduce vertical spacing in main layout */
+  main {
+    padding: 10px !important;
+  }
+  
+  /* Compact navbar */
+  .navbar {
+    padding: 0.25rem 1rem !important;
+  }
+}
+
+/* Extra small screens (phones in portrait) */
+@media (max-width: 576px) {
+  .game-container {
+    padding: 5px !important;
+    height: calc(100vh - 70px) !important;
+  }
+  
+  .retro-card .card-body {
+    padding: 8px !important;
+  }
+  
+  .text-display {
+    padding: 8px !important;
+    font-size: 0.8rem !important;
+    max-height: 150px !important;
+  }
+  
+  .typing-input {
+    padding: 8px !important;
+    font-size: 0.8rem !important;
+    height: 120px !important;
+  }
+  
+  .timer {
+    font-size: 1.5rem !important;
+  }
+  
+  .countdown {
+    font-size: 2.5rem !important;
+  }
+  
+  .stat-card {
+    padding: 4px !important;
+  }
+  
+  .stat-value {
+    font-size: 0.9rem !important;
+  }
+  
+  .stat-label {
+    font-size: 0.55rem !important;
+  }
+  
+  /* Stack statistics in 2 columns instead of 4 */
+  .stat-card {
+    margin: 1px 0 !important;
+  }
+  
+  /* Compact table for problem keys */
+  .table-responsive {
+    font-size: 0.7rem !important;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.2rem !important;
+  }
+  
+  /* Ultra compact results for small screens */
+  .results-section {
+    max-height: 30vh !important;
+  }
+}
+
+/* Landscape orientation adjustments for mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  .text-display {
+    max-height: 100px !important;
+    font-size: 0.8rem !important;
+  }
+  
+  .typing-input {
+    height: 80px !important;
+    font-size: 0.8rem !important;
+  }
+  
+  .timer {
+    font-size: 1.2rem !important;
+    margin: 10px 0 !important;
+  }
+  
+  .countdown {
+    font-size: 2rem !important;
+  }
+  
+  .retro-card .card-body {
+    padding: 5px !important;
+  }
+  
+  .game-container {
+    padding: 5px !important;
+  }
+  
+  main {
+    padding: 5px !important;
+  }
+}
+
+/* Animation for page transitions */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-content {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Glow effects for interactive elements */
+.glow-hover:hover {
+  box-shadow: 0 0 30px var(--arcade-orange-glow) !important;
+  transition: box-shadow 0.3s ease;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--arcade-black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--arcade-orange);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--arcade-orange-bright);
+}
+
+/* Text selection */
+::selection {
+  background: var(--arcade-orange);
+  color: var(--arcade-black);
+}
+
+::-moz-selection {
+  background: var(--arcade-orange);
+  color: var(--arcade-black);
+}

@@ -1,0 +1,102 @@
+graph TD
+    %% Solution Projects
+    Api["PoFastType.Api<br/>.NET 9.0 Web API"]
+    Client["PoFastType.Client<br/>.NET 9.0 Blazor WASM"]
+    Shared["PoFastType.Shared<br/>.NET 9.0 Class Library"]
+    Tests["PoFastType.Tests<br/>.NET 9.0 Test Project"]
+    
+    %% Project References
+    Api -->|references| Client
+    Api -->|references| Shared
+    Client -->|references| Shared
+    Tests -->|references| Api
+    Tests -->|references| Shared
+    
+    %% Key Azure Dependencies
+    AzureTables["Azure.Data.Tables<br/>v12.9.1"]
+    Api --> AzureTables
+    Shared --> AzureTables
+    Tests --> AzureTables
+    
+    %% Authentication & Identity
+    JwtBearer["Microsoft.AspNetCore.Authentication.JwtBearer<br/>v9.0.6"]
+    IdentityWeb["Microsoft.Identity.Web<br/>v3.4.0"]
+    MSALAuth["Microsoft.Authentication.WebAssembly.Msal<br/>v9.0.0"]
+    BlazorAuth["Microsoft.AspNetCore.Components.WebAssembly.Authentication<br/>v9.0.0"]
+    
+    Api --> JwtBearer
+    Api --> IdentityWeb
+    Client --> MSALAuth
+    Client --> BlazorAuth
+    
+    %% Blazor & WebAssembly
+    BlazorWASM["Microsoft.AspNetCore.Components.WebAssembly<br/>v9.0.0"]
+    BlazorServer["Microsoft.AspNetCore.Components.WebAssembly.Server<br/>v9.0.0"]
+    BlazorDevServer["Microsoft.AspNetCore.Components.WebAssembly.DevServer<br/>v9.0.0"]
+    
+    Client --> BlazorWASM
+    Client --> BlazorDevServer
+    Api --> BlazorServer
+    
+    %% UI & Charts
+    ChartJS["ChartJs.Blazor<br/>v1.1.0"]
+    Radzen["Radzen.Blazor<br/>v5.6.6"]
+    
+    Client --> ChartJS
+    Client --> Radzen
+    
+    %% API Documentation
+    Swagger["Swashbuckle.AspNetCore<br/>v7.2.0"]
+    Api --> Swagger
+    
+    %% Monitoring & Logging
+    AppInsights["Microsoft.ApplicationInsights.AspNetCore<br/>v2.22.0"]
+    Serilog["Serilog.Extensions.Logging.File<br/>v3.0.0"]
+    
+    Api --> AppInsights
+    Api --> Serilog
+    
+    %% Testing Framework
+    XUnit["xunit<br/>v2.9.2"]
+    XUnitRunner["xunit.runner.visualstudio<br/>v2.8.2"]
+    TestSDK["Microsoft.NET.Test.Sdk<br/>v17.12.0"]
+    Moq["Moq<br/>v4.20.72"]
+    FluentAssertions["FluentAssertions<br/>v7.0.0"]
+    AspNetCoreTesting["Microsoft.AspNetCore.Mvc.Testing<br/>v9.0.0"]
+    Coverlet["coverlet.collector<br/>v6.0.2"]
+    
+    Tests --> XUnit
+    Tests --> XUnitRunner
+    Tests --> TestSDK
+    Tests --> Moq
+    Tests --> FluentAssertions
+    Tests --> AspNetCoreTesting
+    Tests --> Coverlet
+    Api --> AspNetCoreTesting
+    Api --> Moq
+    Api --> FluentAssertions
+    
+    %% HTTP Client
+    HttpExtensions["Microsoft.Extensions.Http<br/>v9.0.0"]
+    Client --> HttpExtensions
+    
+    %% Framework References
+    AspNetCore["Microsoft.AspNetCore.App<br/>Framework Reference"]
+    Api --> AspNetCore
+    
+    %% Styling
+    classDef projectBox fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#000
+    classDef azureBox fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#000
+    classDef authBox fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#000
+    classDef blazorBox fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px,color:#000
+    classDef uiBox fill:#fff8e1,stroke:#f57f17,stroke-width:2px,color:#000
+    classDef testBox fill:#fce4ec,stroke:#c2185b,stroke-width:2px,color:#000
+    classDef frameworkBox fill:#f1f8e9,stroke:#558b2f,stroke-width:2px,color:#000
+    
+    class Api,Client,Shared,Tests projectBox
+    class AzureTables azureBox
+    class JwtBearer,IdentityWeb,MSALAuth,BlazorAuth authBox
+    class BlazorWASM,BlazorServer,BlazorDevServer blazorBox
+    class ChartJS,Radzen,Swagger uiBox
+    class XUnit,XUnitRunner,TestSDK,Moq,FluentAssertions,AspNetCoreTesting,Coverlet testBox
+    class AspNetCore,HttpExtensions,AppInsights,Serilog frameworkBox
