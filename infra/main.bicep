@@ -31,7 +31,6 @@ var commonTags = {
   Application: 'PoFastType'
   Environment: environment
   ManagedBy: 'Bicep'
-  CreatedDate: utcNow('yyyy-MM-dd')
 }
 
 // App Service Plan - Following Azure best practices for scalability
@@ -208,9 +207,6 @@ output webAppUrl string = 'https://${appService.properties.defaultHostName}'
 
 @description('The name of the storage account')
 output storageAccountName string = storageAccount.name
-
-@description('The connection string for Table Storage')
-output tableStorageConnectionString string = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
 
 @description('The resource group name')
 output resourceGroupName string = resourceGroup().name

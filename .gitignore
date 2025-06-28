@@ -146,7 +146,6 @@ temp/
 *.suo
 *.ntvs*
 *.njsproj
-*.sln
 *.sw?
 
 # Local configuration files
@@ -158,3 +157,11 @@ auth-config.json
 
 # Test data files (may contain sensitive data)
 test_score*.json
+
+# Published output directory
+publish/
+
+# Bicep compiled outputs
+infra/*.json
+!infra/main.parameters.json
+!infra/main.staging.parameters.json
