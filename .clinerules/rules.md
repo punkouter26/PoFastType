@@ -92,23 +92,6 @@ This view must perform and display the real-time status of critical dependencies
 All diagnostic check results must be written to the server-side log targets.
 
 
-9.0 Authentication Strategy
-9.1 Conditional Implementation: This entire section applies only if the prd.md explicitly requires user login functionality for features like saving personal data or scores. If not required, all access will use the default 'Anon' identity.
-9.2 Azure Authentication:
-Technology: When deployed to Azure, user authentication will be managed by Azure App Service Authentication (formerly Easy Auth).
-Providers: It should be configured to support Microsoft personal accounts and Google accounts.
-Implementation: The application must consume the user identity claims provided by Easy Auth headers.
-
-
-9.3 Local Development Authentication:
-When authentication is required, the application must simulate an authenticated user when running in the Development environment.
-Implementation: Use .NET middleware in Program.cs that is conditionally enabled for development. This middleware will create a mock ClaimsPrincipal with the username Anon to allow for testing of protected features.
-
-
-9.4 Anonymous Access:
-If a user opts not to sign in (in an app with authentication) or for any app that does not require login, they will use the shared, universal identity: Anon.
-
-
 
 
 

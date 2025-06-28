@@ -20,7 +20,7 @@ builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStat
 builder.Services.AddScoped<IAccessTokenProvider, DevelopmentAccessTokenProvider>();
 builder.Services.AddScoped<BaseAddressAuthorizationMessageHandler>();
 
-builder.Services.AddHttpClient("PoFastType.Api", client => client.BaseAddress = new Uri("https://localhost:5001/"))
+builder.Services.AddHttpClient("PoFastType.Api", client => client.BaseAddress = new Uri(builder.Configuration["ApiBaseAddress"] ?? builder.HostEnvironment.BaseAddress))
     .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("PoFastType.Api"));

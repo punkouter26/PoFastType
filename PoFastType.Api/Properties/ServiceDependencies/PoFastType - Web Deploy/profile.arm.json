@@ -21,7 +21,7 @@
     },
     "resourceName": {
       "type": "string",
-      "defaultValue": "PoFastTyper",
+      "defaultValue": "PoFastType",
       "metadata": {
         "description": "Name of the main resource to be created by this template."
       }
