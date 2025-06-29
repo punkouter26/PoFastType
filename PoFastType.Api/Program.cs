@@ -42,11 +42,10 @@ builder.Services.AddCors(options =>
                       .AllowAnyHeader()
                       .AllowAnyMethod()
                       .AllowCredentials();
-            }
-            else
+            }            else
             {
                 // In production, be more restrictive
-                policy.WithOrigins("https://yourdomain.com")
+                policy.WithOrigins("https://pofasttype.azurewebsites.net")
                       .AllowAnyHeader()
                       .AllowAnyMethod()
                       .AllowCredentials();
@@ -99,6 +98,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Static files must come early in the pipeline
+app.UseStaticFiles();
+app.UseBlazorFrameworkFiles();
+
 // Use CORS policy - must be early in the pipeline
 app.UseCors(MyAllowSpecificOrigins);
 
@@ -109,9 +112,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.UseStaticFiles();
-app.UseBlazorFrameworkFiles();
 app.MapFallbackToFile("index.html");
 
 app.Run();
