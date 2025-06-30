@@ -467,7 +467,7 @@ textarea.typing-input::-webkit-scrollbar-thumb:hover {
   line-height: 1.6;
   color: var(--arcade-orange-bright) !important;
   box-shadow: var(--arcade-glow-shadow);
-  height: 250px; /* Default height for desktop */
+  /* Removed fixed height to allow flex to control vertical space */
   min-height: 120px; /* Minimum height */
 }
 
