@@ -27,6 +27,10 @@ msbuild.log
 msbuild.err
 msbuild.wrn
 
+# Publish output
+publish/
+testpublish/
+
 # Visual Studio
 .vs/
 *.ncrunch*

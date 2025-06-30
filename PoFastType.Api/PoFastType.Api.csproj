@@ -6,10 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>6226cd99-6765-4cd7-8191-b8247a1390fc</UserSecretsId>
   </PropertyGroup>
-
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>  <ItemGroup>
     <PackageReference Include="Azure.Data.Tables" Version="12.11.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.6" />
     <PackageReference Include="Microsoft.Identity.Web" Version="3.9.4" />

@@ -137,10 +137,12 @@
             
             // Log for debugging
             Console.WriteLine($"Error in CheckAuthentication: {ex.Message}");
-        }    }    private async Task SignIn()
+        }    }    private void SignIn()
     {
         Navigation.NavigateToLogin("authentication/login");
-    }    private async Task SignOut()
+    }
+
+    private void SignOut()
     {
         Navigation.NavigateToLogout("authentication/logout");
     }

@@ -21,19 +21,50 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 'v9.0'
+          dotnet-version: '9.0.x'
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore dependencies with retry
+        run: |
+          $retryCount = 0
+          $maxRetries = 3
+          do {
+            $retryCount++
+            Write-Host "Restore attempt $retryCount of $maxRetries"
+            dotnet restore --verbosity normal --source https://api.nuget.org/v3/index.json
+            if ($LASTEXITCODE -eq 0) {
+              Write-Host "Restore successful"
+              break
+            }
+            if ($retryCount -lt $maxRetries) {
+              Write-Host "Restore failed, waiting 30 seconds before retry..."
+              Start-Sleep -Seconds 30
+            }
+          } while ($retryCount -lt $maxRetries)
+          
+          if ($LASTEXITCODE -ne 0) {
+            Write-Host "All restore attempts failed"
+            exit 1
+          }
 
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        run: dotnet build --configuration Release --no-restore
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
+        run: dotnet publish -c Release -o "./publish" --no-build
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          path: ./publish
 
   deploy:
     runs-on: windows-latest
