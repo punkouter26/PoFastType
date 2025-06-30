@@ -2,6 +2,9 @@
 
 window.focusElement = function (element) {
     if (element) {
-        element.focus();
+        // Add a small delay to ensure the element is ready
+        setTimeout(function() {
+            element.focus();
+        }, 10); // 10ms delay
     }
-}; 
+};
