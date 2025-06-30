@@ -18,29 +18,12 @@ public class UserIdentityService : IUserIdentityService
     {
         try
         {
-            // In development environment, check if we have a development user from the auth handler
-            if (_environment.IsDevelopment())
+            // Check if we have an authenticated user from JWT (MSAL) or Easy Auth
+            var authenticatedUser = GetAuthenticatedUser(httpContext);
+            if (authenticatedUser != null)
             {
-                var developmentUser = GetDevelopmentUser(httpContext);
-                if (developmentUser != null)
-                {
-                    _logger.LogDebug("Development environment: returning development user - {UserId}", developmentUser.UserId);
-                    return developmentUser;
-                }
-                
-                _logger.LogDebug("Development environment: returning anonymous user");
-                return CreateAnonymousIdentity();
-            }
-
-            // In Azure, check if user is authenticated via Easy Auth
-            if (IsAzureEnvironment())
-            {
-                var authenticatedUser = GetEasyAuthUser(httpContext);
-                if (authenticatedUser != null)
-                {
-                    _logger.LogDebug("Azure environment: authenticated user found - {UserId}", authenticatedUser.UserId);
-                    return authenticatedUser;
-                }
+                _logger.LogDebug("Authenticated user found - {UserId}", authenticatedUser.UserId);
+                return authenticatedUser;
             }
 
             // Fallback to anonymous user
@@ -84,97 +67,38 @@ public class UserIdentityService : IUserIdentityService
         // Check for Azure-specific environment variables
         return !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("WEBSITE_SITE_NAME")) ||
                !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("AZURE_CLIENT_ID"));
-    }
+    }    private UserIdentity? GetAuthenticatedUser(HttpContext httpContext)
+    {
+        // Only check for JWT authentication (B2C tokens)
+        var jwtUser = GetB2CUser(httpContext);
+        if (jwtUser != null)
+        {
+            return jwtUser;
+        }
 
-    private UserIdentity? GetEasyAuthUser(HttpContext httpContext)
+        return null;
+    }    private UserIdentity? GetB2CUser(HttpContext httpContext)
     {
         try
         {
-            // Check for Easy Auth headers
-            var userIdHeader = httpContext.Request.Headers["X-MS-CLIENT-PRINCIPAL-ID"].FirstOrDefault();
-            var userNameHeader = httpContext.Request.Headers["X-MS-CLIENT-PRINCIPAL-NAME"].FirstOrDefault();
-            var userPrincipalHeader = httpContext.Request.Headers["X-MS-CLIENT-PRINCIPAL"].FirstOrDefault();
-
-            if (string.IsNullOrEmpty(userIdHeader))
-            {
-                return null;
-            }
-
-            var username = userNameHeader ?? "User";
-            var email = "";
-
-            // Try to extract email from the principal if available
-            if (!string.IsNullOrEmpty(userPrincipalHeader))
-            {
-                try
-                {
-                    var principalBytes = Convert.FromBase64String(userPrincipalHeader);
-                    var principalJson = System.Text.Encoding.UTF8.GetString(principalBytes);
-                    var principal = System.Text.Json.JsonSerializer.Deserialize<System.Text.Json.JsonElement>(principalJson);
-                    
-                    if (principal.TryGetProperty("claims", out var claimsElement))
-                    {
-                        foreach (var claim in claimsElement.EnumerateArray())
-                        {
-                            if (claim.TryGetProperty("typ", out var typElement) && 
-                                claim.TryGetProperty("val", out var valElement))
-                            {
-                                var claimType = typElement.GetString();
-                                var claimValue = valElement.GetString();
-                                
-                                if (claimType == "email" || claimType == "preferred_username")
-                                {
-                                    email = claimValue ?? "";
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogWarning(ex, "Failed to parse user principal header");
-                }
-            }
-
-            return new UserIdentity
-            {
-                UserId = userIdHeader,
-                Username = username,
-                Email = email,
-                IdentityType = UserIdentityType.Authenticated,
-                IsAuthenticated = true,
-                CreatedAt = DateTime.UtcNow
-            };
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error extracting Easy Auth user");
-            return null;
-        }
-    }
-
-    private UserIdentity? GetDevelopmentUser(HttpContext httpContext)
-    {
-        try
-        {
-            // Check if the request has authentication claims from the development auth handler
             var user = httpContext.User;
             if (user?.Identity?.IsAuthenticated == true)
             {
-                var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                var username = user.FindFirst(ClaimTypes.Name)?.Value;
-                var email = user.FindFirst(ClaimTypes.Email)?.Value;
-                var identityType = user.FindFirst("identity_type")?.Value;
+                // B2C specific claims
+                var userId = user.FindFirst("oid") ?? user.FindFirst("sub") ?? user.FindFirst(ClaimTypes.NameIdentifier);
+                var name = user.FindFirst("name") ?? user.FindFirst("given_name") ?? user.FindFirst(ClaimTypes.Name);
+                var email = user.FindFirst("emails") ?? user.FindFirst("email") ?? user.FindFirst("preferred_username");
 
-                // If this is a development user (not anonymous), return it
-                if (!string.IsNullOrEmpty(userId) && identityType == "development")
+                if (userId?.Value != null)
                 {
+                    _logger.LogDebug("B2C User authenticated: {UserId}, {Name}, {Email}", 
+                        userId.Value, name?.Value, email?.Value);
+
                     return new UserIdentity
                     {
-                        UserId = userId,
-                        Username = username ?? "Development User",
-                        Email = email ?? "dev@pofasttype.com",
+                        UserId = userId.Value,
+                        Username = name?.Value ?? "B2C User",
+                        Email = email?.Value ?? "",
                         IdentityType = UserIdentityType.Authenticated,
                         IsAuthenticated = true,
                         CreatedAt = DateTime.UtcNow
@@ -186,7 +110,7 @@ public class UserIdentityService : IUserIdentityService
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Failed to get development user");
+            _logger.LogWarning(ex, "Failed to get B2C user from JWT token");
             return null;
         }
     }

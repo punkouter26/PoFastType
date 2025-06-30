@@ -1,3 +1,6 @@
+- the client is hosted in the api project so only launch the api project
+- when running app locally all api calls should be local using localhost
+- all unauthenticated users to use the app / user a generic user model to represent them
 
 1.0 General Principles & Governance
 1.1 Source of Truth: The prd.md file is the definitive source for all product requirements. It must never be modified by the AI. If any rule in this protocol conflicts with a requirement in prd.md, the prd.md takes precedence.

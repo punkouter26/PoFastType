@@ -1,8 +1,10 @@
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Microsoft.AspNetCore.Components.Authorization
 @using PoFastType.Client.Services
 @using PoFastType.Shared.Models
 @inject IUserService UserService
 @inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthenticationStateProvider
 @implements IDisposable
 
 <nav class="navbar navbar-expand-lg navbar-dark retro-navbar">
@@ -135,18 +137,11 @@
             
             // Log for debugging
             Console.WriteLine($"Error in CheckAuthentication: {ex.Message}");
-        }
-    }private void SignIn()
+        }    }    private async Task SignIn()
     {
-        // Redirect to Azure Easy Auth login endpoint
-        Navigation.NavigateTo("/.auth/login/aad", forceLoad: true);
-    }    private void SignOut()
+        Navigation.NavigateToLogin("authentication/login");
+    }    private async Task SignOut()
     {
-        // Clear the user cache before logout
-        UserService.ClearCache();
-        
-        // Redirect to Azure Easy Auth logout endpoint with return URL
-        var returnUrl = Navigation.BaseUri;
-        Navigation.NavigateTo($"/.auth/logout?post_logout_redirect_uri={Uri.EscapeDataString(returnUrl)}", forceLoad: true);
+        Navigation.NavigateToLogout("authentication/logout");
     }
 }

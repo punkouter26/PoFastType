@@ -1,6 +1,7 @@
 ﻿@page "/"
 @using PoFastType.Shared.Models
 @inject HttpClient Http
+@inject IHttpClientFactory HttpClientFactory
 @inject ILogger<Home> Logger
 @inject IJSRuntime JSRuntime
 @inject IAccessTokenProvider TokenProvider
@@ -100,51 +101,48 @@
                 <div class="card retro-card results-section">
                     <div class="card-header retro-card-header">
                         <h6 class="mb-0">Results</h6>
-                    </div>
-                    <div class="card-body results-stats">
-                        <!-- Main stats in 6 columns for better space usage -->
+                    </div>                    <div class="card-body results-stats">
+                        <!-- Main stats in 7 columns - adjusted for mobile and desktop -->
                         <div class="row g-1">
-                            <div class="col-4 col-sm-2">
+                            <div class="col-6 col-md-2">
                                 <div class="stat-card">
                                     <div class="stat-label">Score</div>
                                     <div class="stat-value">@compositeScore.ToString("F0")</div>
                                 </div>
                             </div>
-                            <div class="col-4 col-sm-2">
+                            <div class="col-6 col-md-2">
                                 <div class="stat-card">
                                     <div class="stat-label">Net WPM</div>
                                     <div class="stat-value">@netWPM.ToString("F1")</div>
                                 </div>
                             </div>
-                            <div class="col-4 col-sm-2">
+                            <div class="col-4 col-md-2">
                                 <div class="stat-card">
                                     <div class="stat-label">Accuracy</div>
                                     <div class="stat-value">@accuracy.ToString("F1")%</div>
                                 </div>
                             </div>
-                            <div class="col-4 col-sm-2">
+                            <div class="col-4 col-md-2">
                                 <div class="stat-card">
                                     <div class="stat-label">Gross WPM</div>
                                     <div class="stat-value">@grossWPM.ToString("F1")</div>
                                 </div>
                             </div>
-                            <div class="col-4 col-sm-2">
+                            <div class="col-4 col-md-2">
                                 <div class="stat-card">
                                     <div class="stat-label">Characters</div>
                                     <div class="stat-value">@correctCharacters/@totalCharacters</div>
                                 </div>
                             </div>
-                            <div class="col-4 col-sm-2">
+                            <div class="col-6 col-md-1">
                                 <div class="stat-card">
                                     <div class="stat-label">Burst Speed</div>
                                     <div class="stat-value">@burstSpeed.ToString("F1")</div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row g-1 mt-1">
-                            <div class="col-6 col-sm-6">
+                            <div class="col-6 col-md-1">
                                 <div class="stat-card">
-                                    <div class="stat-label">Longest Streak</div>
+                                    <div class="stat-label">Streak</div>
                                     <div class="stat-value">@longestStreak</div>
                                 </div>
                             </div>
@@ -273,9 +271,7 @@
         
         // Submit results to API if user is authenticated
         await SubmitResults();
-    }
-
-    private async Task SubmitResults()
+    }    private async Task SubmitResults()
     {
         try
         {
@@ -283,6 +279,9 @@
             var tokenResult = await TokenProvider.RequestAccessToken();
             if (tokenResult.TryGetToken(out var token))
             {
+                // Use authenticated HttpClient for score submission
+                var authenticatedHttpClient = HttpClientFactory.CreateClient("PoFastType.Api.Authenticated");
+                
                 // Create the game result object
                 var gameResult = new GameResult
                 {
@@ -294,8 +293,8 @@
                     Timestamp = DateTime.UtcNow
                 };
 
-                // Submit the score
-                var response = await Http.PostAsJsonAsync("api/scores", gameResult);
+                // Submit the score using authenticated client
+                var response = await authenticatedHttpClient.PostAsJsonAsync("api/scores", gameResult);
                 
                 if (response.IsSuccessStatusCode)
                 {
