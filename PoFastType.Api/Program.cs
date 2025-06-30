@@ -108,9 +108,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// Static files must come early in the pipeline
-app.UseStaticFiles();
+// Static files must come early in the pipeline - configure for Blazor WebAssembly
 app.UseBlazorFrameworkFiles();
+app.UseStaticFiles();
 
 // Use CORS policy - must be early in the pipeline
 app.UseCors(MyAllowSpecificOrigins);
@@ -125,9 +125,6 @@ app.MapControllers();
 app.MapFallbackToFile("index.html");
 
 app.Run();
-
-// Make Program class accessible for testing
-public partial class Program { }
 
 // Make Program class accessible for testing
 public partial class Program { }
