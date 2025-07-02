@@ -33,21 +33,10 @@
                         @if (healthResponse != null)
                         {
                             <div class="row mb-4">
-                                <div class="col-12">
-                                    <div class="alert @GetOverallStatusClass(healthResponse.OverallStatus)" role="alert">
+                                <div class="col-12">                                    <div class="alert @GetOverallStatusClass(healthResponse.Status)" role="alert">
                                         <h5 class="alert-heading">
-                                            <i class="bi @GetOverallStatusIcon(healthResponse.OverallStatus)"></i>
-                                            Overall System Status: @healthResponse.OverallStatus
-                                        </h5>
-                                        @if (healthResponse.Summary != null)
-                                        {
-                                            <p class="mb-0">
-                                                <strong>@healthResponse.Summary.SuccessfulChecks</strong> successful, 
-                                                <strong>@healthResponse.Summary.WarningChecks</strong> warnings, 
-                                                <strong>@healthResponse.Summary.ErrorChecks</strong> errors 
-                                                out of <strong>@healthResponse.Summary.TotalChecks</strong> total checks
-                                            </p>
-                                        }
+                                            <i class="bi @GetOverallStatusIcon(healthResponse.Status)"></i>
+                                            Overall System Status: @healthResponse.Status                                        </h5>
                                         <small class="text-muted">Last checked: @healthResponse.Timestamp.ToString("yyyy-MM-dd HH:mm:ss") UTC</small>
                                     </div>
                                 </div>
@@ -129,25 +118,37 @@
         error = null;
         diagChecks.Clear();
         healthResponse = null;
-        StateHasChanged();
-
-        try
+        StateHasChanged();        try
         {
             // Check backend health
             var response = await Http.GetAsync("api/diag/health");
             if (response.IsSuccessStatusCode)
             {
-                var result = await response.Content.ReadFromJsonAsync<DiagHealthResponse>();
+                // Check if the response is actually JSON
+                var contentType = response.Content.Headers.ContentType?.MediaType;
+                if (contentType != "application/json")
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    error = $"API returned unexpected content type: {contentType}. Content: {content.Substring(0, Math.Min(200, content.Length))}...";
+                    Logger.LogWarning("Diagnostics API returned unexpected content type: {ContentType}", contentType);
+                    return;
+                }                var result = await response.Content.ReadFromJsonAsync<DiagHealthResponse>();
                 if (result != null)
                 {
                     healthResponse = result;
                     diagChecks = result.Checks;
                 }
+                else
+                {
+                    error = "API returned null response";
+                    Logger.LogWarning("Diagnostics API returned null response");
+                }
             }
             else
             {
-                error = $"Failed to contact backend: {response.StatusCode}";
-                Logger.LogWarning("Diagnostics API error: {StatusCode}", response.StatusCode);
+                var content = await response.Content.ReadAsStringAsync();
+                error = $"Failed to contact backend: {response.StatusCode}. Response: {content.Substring(0, Math.Min(200, content.Length))}...";
+                Logger.LogWarning("Diagnostics API error: {StatusCode}, Content: {Content}", response.StatusCode, content);
             }
         }
         catch (Exception ex)
@@ -187,21 +188,10 @@
         public string Name { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
         public string Message { get; set; } = string.Empty;
-    }
-
-    public class DiagHealthResponse
+    }    public class DiagHealthResponse
     {
-        public string OverallStatus { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
         public List<DiagCheckResult> Checks { get; set; } = new();
         public DateTime Timestamp { get; set; }
-        public DiagSummary? Summary { get; set; }
-    }
-
-    public class DiagSummary
-    {
-        public int TotalChecks { get; set; }
-        public int SuccessfulChecks { get; set; }
-        public int WarningChecks { get; set; }
-        public int ErrorChecks { get; set; }
     }
 }

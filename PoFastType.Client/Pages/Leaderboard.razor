@@ -1,7 +1,9 @@
 @page "/leaderboard"
 @inject HttpClient Http
 @inject ILogger<Leaderboard> Logger
+@inject GameStateService GameState
 @using PoFastType.Shared.Models
+@implements IDisposable
 
 <PageTitle>PoFastType - Leaderboard</PageTitle>
 
@@ -110,6 +112,21 @@
     protected override async Task OnInitializedAsync()
     {
         await LoadLeaderboard();
+        
+        // Subscribe to game state updates
+        GameState.LeaderboardRefreshRequested += OnLeaderboardRefreshRequested;
+    }
+
+    public void Dispose()
+    {
+        // Unsubscribe from game state updates
+        GameState.LeaderboardRefreshRequested -= OnLeaderboardRefreshRequested;
+    }
+
+    private async void OnLeaderboardRefreshRequested()
+    {
+        await LoadLeaderboard();
+        StateHasChanged();
     }
 
     private async Task LoadLeaderboard()

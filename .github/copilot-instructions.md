@@ -60,7 +60,7 @@ For calls to external services, implement the Circuit Breaker pattern using a li
 
 
 5.0 Azure Integration
-5.1 Resource Groups & Keys: Shared resources reside in the PoShared resource group. The AI will use the Azure CLI to retrieve connection strings and will assume the user has an authenticated session.
+
 5.2 Table Storage:
 Local: Use the Azurite emulator.
 Azure: Use the PoSharedTableStorage resource.

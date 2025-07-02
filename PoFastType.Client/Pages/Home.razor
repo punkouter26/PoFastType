@@ -1,10 +1,11 @@
 ﻿@page "/"
 @using PoFastType.Shared.Models
+@using PoFastType.Client.Services
 @inject HttpClient Http
 @inject IHttpClientFactory HttpClientFactory
 @inject ILogger<Home> Logger
 @inject IJSRuntime JSRuntime
-@inject IAccessTokenProvider TokenProvider
+@inject GameStateService GameStateService
 
 <PageTitle>PoFastType - Home</PageTitle>
 
@@ -306,39 +307,34 @@
     {
         try
         {
-            // Check if user is authenticated
-            var tokenResult = await TokenProvider.RequestAccessToken();
-            if (tokenResult.TryGetToken(out var token))
-            {
-                // Use authenticated HttpClient for score submission
-                var authenticatedHttpClient = HttpClientFactory.CreateClient("PoFastType.Api.Authenticated");
-                
-                // Create the game result object
-                var gameResult = new GameResult
-                {
-                    NetWPM = netWPM,
-                    Accuracy = accuracy,
-                    GrossWPM = grossWPM,
-                    CompositeScore = compositeScore, // Add composite score for leaderboard
-                    ProblemKeysJson = System.Text.Json.JsonSerializer.Serialize(problemKeys),
-                    Timestamp = DateTime.UtcNow
-                };
+            Logger.LogInformation("Submitting score as ANON");
 
-                // Submit the score using authenticated client
-                var response = await authenticatedHttpClient.PostAsJsonAsync("api/scores", gameResult);
-                
-                if (response.IsSuccessStatusCode)
-                {
-                    Logger.LogInformation("Score submitted successfully");
-                }
-                else
-                {
-                    Logger.LogWarning("Failed to submit score: {StatusCode}", response.StatusCode);
-                }
+            // Use anonymous HttpClient
+            var anonymousHttpClient = HttpClientFactory.CreateClient("PoFastType.Api.Anonymous");
+            // Create the game result object with ANON user
+            var gameResult = new GameResult
+            {
+                NetWPM = netWPM,
+                Accuracy = accuracy,
+                GrossWPM = grossWPM,
+                CompositeScore = compositeScore,
+                ProblemKeysJson = System.Text.Json.JsonSerializer.Serialize(problemKeys),
+                Timestamp = DateTime.UtcNow,
+                Username = "ANON" // Explicitly set anonymous user name
+            };
+
+            // Submit the score using anonymous client
+            var response = await anonymousHttpClient.PostAsJsonAsync("api/scores", gameResult);
+
+            if (response.IsSuccessStatusCode)
+            {
+                Logger.LogInformation("Score submitted successfully (anonymous user)");
+                // Notify other components that a new score was submitted
+                GameStateService.NotifyScoreSubmitted();
             }
             else
             {
-                Logger.LogInformation("User not authenticated, skipping score submission");
+                Logger.LogWarning("Failed to submit score (anonymous): {StatusCode}", response.StatusCode);
             }
         }
         catch (Exception ex)

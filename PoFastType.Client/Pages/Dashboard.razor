@@ -2,27 +2,14 @@
 @using PoFastType.Shared.Models
 @inject HttpClient Http
 @inject ILogger<Dashboard> Logger
-@inject IAccessTokenProvider TokenProvider
 @inject NavigationManager NavigationManager
+@inject GameStateService GameState
+@implements IDisposable
 
 <PageTitle>PoFastType - Dashboard</PageTitle>
 
 <div class="container mt-4">
-    @if (!isAuthenticated)
-    {
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <h3>Welcome to PoFastType!</h3>
-                        <p class="lead">Please sign in to access your personalized dashboard and track your typing progress.</p>
-                        <button class="btn btn-primary btn-lg" @onclick="SignIn">Sign In</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-    else if (isLoading)
+    @if (isLoading)
     {
         <div class="text-center py-5">
             <div class="spinner-border text-primary" role="status">
@@ -189,38 +176,28 @@
     }
 </div>
 
-@code {
-    private UserProfile? userProfile;
+@code {    private UserProfile? userProfile;
     private List<UserGameResult> recentScores = new();
     private bool isLoading = true;
-    private bool isAuthenticated = false;
     private string? error;
 
     protected override async Task OnInitializedAsync()
     {
-        await CheckAuthentication();
-        if (isAuthenticated)
-        {
-            await LoadDashboard();
-        }
-        else
-        {
-            isLoading = false;
-        }
+        await LoadDashboard();
+        
+        // Subscribe to game state updates
+        GameState.UserStatsRefreshRequested += OnUserStatsRefreshRequested;
     }
 
-    private async Task CheckAuthentication()
+    public void Dispose()
     {
-        try
-        {
-            var tokenResult = await TokenProvider.RequestAccessToken();
-            isAuthenticated = tokenResult.TryGetToken(out _);
-        }
-        catch (Exception ex)
-        {
-            Logger.LogError(ex, "Error checking authentication");
-            isAuthenticated = false;
-        }
+        // Unsubscribe from game state updates
+        GameState.UserStatsRefreshRequested -= OnUserStatsRefreshRequested;    }
+
+    private async void OnUserStatsRefreshRequested()
+    {
+        await LoadDashboard();
+        StateHasChanged();
     }
 
     private async Task LoadDashboard()
@@ -255,16 +232,7 @@
         {
             isLoading = false;
         }
-    }
-
-    private void SignIn()
-    {
-        // This would typically redirect to the authentication flow
-        // For now, we'll just reload the page
-        NavigationManager.NavigateTo("/", forceLoad: true);
-    }
-
-    public class UserGameResult
+    }    public class UserGameResult
     {
         public double NetWPM { get; set; }
         public double Accuracy { get; set; }

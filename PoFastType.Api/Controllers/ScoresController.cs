@@ -33,16 +33,16 @@ public class ScoresController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> SubmitScore([FromBody] GameResult gameResult)
-    {
-        try
+    {        try
         {
-            // Get user identity (works for both authenticated and anonymous users)
+            // Always use ANON user for high scores
             var userIdentity = _identityService.GetCurrentUserIdentity(HttpContext);
 
-            _logger.LogInformation("Submitting score for user: {UserId} ({IdentityType})", 
-                userIdentity.UserId, userIdentity.IdentityType);            var result = await _gameService.SubmitGameResultAsync(gameResult, userIdentity.UserId, userIdentity.Username);
+            _logger.LogInformation("Submitting score for ANON user");
 
-            _logger.LogInformation("Score submitted successfully for user {UserId}", userIdentity.UserId);
+            var result = await _gameService.SubmitGameResultAsync(gameResult, userIdentity.UserId, "ANON");
+
+            _logger.LogInformation("Score submitted successfully for ANON user");
             return Ok(new { 
                 message = "Score submitted successfully", 
                 gameId = result.RowKey,
@@ -93,10 +93,8 @@ public class ScoresController : ControllerBase
             return StatusCode(StatusCodes.Status500InternalServerError, 
                 new { error = "Failed to retrieve leaderboard" });
         }
-    }
-
-    /// <summary>
-    /// Retrieves user statistics for the authenticated user
+    }    /// <summary>
+    /// Retrieves user statistics - since all users are ANON, returns shared stats
     /// </summary>
     [HttpGet("me/stats")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -108,13 +106,13 @@ public class ScoresController : ControllerBase
         {
             var userIdentity = _identityService.GetCurrentUserIdentity(HttpContext);
 
-            _logger.LogInformation("Getting stats for user: {UserId} ({IdentityType})", 
-                userIdentity.UserId, userIdentity.IdentityType);
+            _logger.LogInformation("Getting shared stats for ANON user");
 
+            // Since all users are ANON, all stats are shared
             var userStats = await _gameService.GetUserStatsAsync(userIdentity.UserId);
 
-            _logger.LogInformation("Retrieved {Count} game results for user {UserId}", 
-                userStats.Count(), userIdentity.UserId);
+            _logger.LogInformation("Retrieved {Count} game results for ANON user", 
+                userStats.Count());
 
             return Ok(userStats);
         }

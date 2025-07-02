@@ -32,16 +32,14 @@ public class UserController : ControllerBase
         _identityService = identityService;
     }    [HttpGet("profile")]
     public async Task<IActionResult> GetUserProfile()
-    {
-        try
+    {        try
         {
-            // Use identity service to get current user
+            // Always use ANON user
             var userIdentity = _identityService.GetCurrentUserIdentity(HttpContext);
             
-            _logger.LogInformation("Getting profile for user: {UserId} ({IdentityType})", 
-                userIdentity.UserId, userIdentity.IdentityType);
+            _logger.LogInformation("Getting profile for ANON user");
 
-            // Query all scores for this user to calculate statistics
+            // Query all scores for ANON user to calculate statistics
             await _tableClient.CreateIfNotExistsAsync();
             var query = _tableClient.QueryAsync<TableEntity>(filter: $"PartitionKey eq '{userIdentity.UserId}'");
             var userScores = new List<UserGameResult>();
@@ -88,18 +86,15 @@ public class UserController : ControllerBase
             _logger.LogError(ex, "Error retrieving user profile");
             return StatusCode(500, new { error = "Failed to retrieve user profile" });
         }
-    }
-
-    [HttpGet("identity")]
+    }    [HttpGet("identity")]
     public IActionResult GetUserIdentity()
     {
         try
         {
-            // Use identity service to get current user identity
+            // Always return ANON user identity
             var userIdentity = _identityService.GetCurrentUserIdentity(HttpContext);
             
-            _logger.LogInformation("Getting identity for user: {UserId} ({IdentityType})", 
-                userIdentity.UserId, userIdentity.IdentityType);
+            _logger.LogInformation("Getting identity for ANON user");
 
             return Ok(userIdentity);
         }
