@@ -2628,3 +2628,747 @@ System.IO.IOException: Failed to bind to address http://127.0.0.1:5000: address 
 2025-07-02 13:46:25.541 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/favicon.png - null null
 2025-07-02 13:46:25.542 -04:00 [INF] Sending file. Request path: '/favicon.png'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\wwwroot\favicon.png'
 2025-07-02 13:46:25.542 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/favicon.png - 200 1148 image/png 1.0786ms
+2025-07-02 13:59:36.937 -04:00 [INF] Now listening on: http://localhost:5000
+2025-07-02 13:59:36.945 -04:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-07-02 13:59:36.945 -04:00 [INF] Hosting environment: Development
+2025-07-02 13:59:36.945 -04:00 [INF] Content root path: C:\Users\punko\Downloads\PoFastType\PoFastType.Api
+2025-07-02 13:59:37.101 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/aspnetcore-browser-refresh.js - null null
+2025-07-02 13:59:37.108 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js - null null
+2025-07-02 13:59:37.113 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/blazor.webassembly.js - null null
+2025-07-02 13:59:37.110 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/aspnetcore-browser-refresh.js - 200 16481 application/javascript; charset=utf-8 11.0912ms
+2025-07-02 13:59:37.127 -04:00 [WRN] Failed to determine the https port for redirect.
+2025-07-02 13:59:37.132 -04:00 [INF] The file /_framework/blazor.webassembly.js.gz was not modified
+2025-07-02 13:59:37.134 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/blazor.webassembly.js.gz - 304 null text/javascript 19.9182ms
+2025-07-02 13:59:37.150 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js - 404 0 null 53.2623ms
+2025-07-02 13:59:37.150 -04:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js, Response status code: 404
+2025-07-02 13:59:37.188 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/dotnet.js - null null
+2025-07-02 13:59:37.190 -04:00 [INF] The file /_framework/dotnet.js.gz was not modified
+2025-07-02 13:59:37.190 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/dotnet.js.gz - 304 null text/javascript 2.8143ms
+2025-07-02 13:59:37.229 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/blazor.boot.json - null null
+2025-07-02 13:59:37.245 -04:00 [INF] Sending file. Request path: '/_framework/blazor.boot.json.gz'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\obj\Debug\net9.0\compressed\i1169h36t7-4kh93by34x.gz'
+2025-07-02 13:59:37.247 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/blazor.boot.json.gz - 200 13188 application/json 17.9361ms
+2025-07-02 13:59:37.249 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/dotnet.runtime.d1pzlaz2ez.js - null null
+2025-07-02 13:59:37.249 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/dotnet.native.rtblh4npr3.js - null null
+2025-07-02 13:59:37.249 -04:00 [INF] The file /_framework/dotnet.native.rtblh4npr3.js.gz was not modified
+2025-07-02 13:59:37.249 -04:00 [INF] The file /_framework/dotnet.runtime.d1pzlaz2ez.js.gz was not modified
+2025-07-02 13:59:37.249 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/dotnet.native.rtblh4npr3.js.gz - 304 null text/javascript 0.7002ms
+2025-07-02 13:59:37.249 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/dotnet.runtime.d1pzlaz2ez.js.gz - 304 null text/javascript 0.7664ms
+2025-07-02 13:59:37.261 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/appsettings.json - null null
+2025-07-02 13:59:37.262 -04:00 [INF] The file /appsettings.json was not modified
+2025-07-02 13:59:37.265 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/appsettings.json - 304 null application/json 3.3628ms
+2025-07-02 13:59:37.266 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Shared.78vj7yfvct.pdb - null null
+2025-07-02 13:59:37.266 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Client.nnlsp0pbo6.pdb - null null
+2025-07-02 13:59:37.281 -04:00 [INF] Sending file. Request path: '/_framework/PoFastType.Client.nnlsp0pbo6.pdb.gz'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\obj\Debug\net9.0\compressed\9c821l085x-nnlsp0pbo6.gz'
+2025-07-02 13:59:37.281 -04:00 [INF] Sending file. Request path: '/_framework/PoFastType.Shared.78vj7yfvct.pdb.gz'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\obj\Debug\net9.0\compressed\k33zvn1tgb-78vj7yfvct.gz'
+2025-07-02 13:59:37.281 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Client.nnlsp0pbo6.pdb.gz - 200 46239 application/octet-stream 14.9429ms
+2025-07-02 13:59:37.281 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Shared.78vj7yfvct.pdb.gz - 200 8080 application/octet-stream 15.5636ms
+2025-07-02 13:59:37.300 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Shared.pymuv4vggf.wasm - null null
+2025-07-02 13:59:37.303 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Client.li5omvzgyx.wasm - null null
+2025-07-02 13:59:37.315 -04:00 [INF] Sending file. Request path: '/_framework/PoFastType.Shared.pymuv4vggf.wasm.gz'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\obj\Debug\net9.0\compressed\mnn3172hth-pymuv4vggf.gz'
+2025-07-02 13:59:37.315 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Shared.pymuv4vggf.wasm.gz - 200 3842 application/wasm 15.0904ms
+2025-07-02 13:59:37.320 -04:00 [INF] Sending file. Request path: '/_framework/PoFastType.Client.li5omvzgyx.wasm.gz'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\obj\Debug\net9.0\compressed\tk1d0cgifh-li5omvzgyx.gz'
+2025-07-02 13:59:37.320 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Client.li5omvzgyx.wasm.gz - 200 31392 application/wasm 17.4457ms
+2025-07-02 13:59:37.658 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/blazor-hotreload - null null
+2025-07-02 13:59:37.659 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/blazor-hotreload - 204 null null 0.8171ms
+2025-07-02 13:59:39.323 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/service-worker.js - null null
+2025-07-02 13:59:39.325 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/service-worker.js - 404 0 null 2.4914ms
+2025-07-02 13:59:39.325 -04:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/service-worker.js, Response status code: 404
+2025-07-02 14:00:08.133 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/service-worker.js - null null
+2025-07-02 14:00:08.134 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/service-worker.js - 404 0 null 1.5128ms
+2025-07-02 14:00:08.134 -04:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/service-worker.js, Response status code: 404
+2025-07-02 14:01:21.391 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/.well-known/appspecific/com.chrome.devtools.json - null null
+2025-07-02 14:01:21.392 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 0.5014ms
+2025-07-02 14:01:21.392 -04:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2025-07-02 15:14:09.788 -04:00 [INF] Now listening on: http://localhost:5000
+2025-07-02 15:14:09.797 -04:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-07-02 15:14:09.797 -04:00 [INF] Hosting environment: Development
+2025-07-02 15:14:09.797 -04:00 [INF] Content root path: C:\Users\punko\Downloads\PoFastType\PoFastType.Api
+2025-07-02 15:14:09.929 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/aspnetcore-browser-refresh.js - null null
+2025-07-02 15:14:09.929 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/blazor.webassembly.js - null null
+2025-07-02 15:14:09.929 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js - null null
+2025-07-02 15:14:09.935 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/aspnetcore-browser-refresh.js - 200 16481 application/javascript; charset=utf-8 6.7336ms
+2025-07-02 15:14:09.943 -04:00 [WRN] Failed to determine the https port for redirect.
+2025-07-02 15:14:09.948 -04:00 [INF] The file /_framework/blazor.webassembly.js.gz was not modified
+2025-07-02 15:14:09.950 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/blazor.webassembly.js.gz - 304 null text/javascript 22.2172ms
+2025-07-02 15:14:09.953 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js - 404 0 null 25.6867ms
+2025-07-02 15:14:09.954 -04:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js, Response status code: 404
+2025-07-02 15:14:09.964 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/dotnet.js - null null
+2025-07-02 15:14:09.966 -04:00 [INF] The file /_framework/dotnet.js.gz was not modified
+2025-07-02 15:14:09.966 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/dotnet.js.gz - 304 null text/javascript 1.6835ms
+2025-07-02 15:14:10.020 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/blazor.boot.json - null null
+2025-07-02 15:14:10.036 -04:00 [INF] Sending file. Request path: '/_framework/blazor.boot.json.gz'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\obj\Debug\net9.0\compressed\i1169h36t7-domx43qe64.gz'
+2025-07-02 15:14:10.036 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/blazor.boot.json.gz - 200 13189 application/json 16.6186ms
+2025-07-02 15:14:10.055 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/dotnet.runtime.d1pzlaz2ez.js - null null
+2025-07-02 15:14:10.055 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/dotnet.native.rtblh4npr3.js - null null
+2025-07-02 15:14:10.055 -04:00 [INF] The file /_framework/dotnet.runtime.d1pzlaz2ez.js.gz was not modified
+2025-07-02 15:14:10.055 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/dotnet.runtime.d1pzlaz2ez.js.gz - 304 null text/javascript 0.521ms
+2025-07-02 15:14:10.056 -04:00 [INF] The file /_framework/dotnet.native.rtblh4npr3.js.gz was not modified
+2025-07-02 15:14:10.056 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/dotnet.native.rtblh4npr3.js.gz - 304 null text/javascript 0.71ms
+2025-07-02 15:14:10.068 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/appsettings.json - null null
+2025-07-02 15:14:10.069 -04:00 [INF] The file /appsettings.json was not modified
+2025-07-02 15:14:10.069 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/appsettings.json - 304 null application/json 0.9851ms
+2025-07-02 15:14:10.072 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Client.s5imkgf9ks.pdb - null null
+2025-07-02 15:14:10.093 -04:00 [INF] Sending file. Request path: '/_framework/PoFastType.Client.s5imkgf9ks.pdb.gz'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\obj\Debug\net9.0\compressed\9c821l085x-s5imkgf9ks.gz'
+2025-07-02 15:14:10.093 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Client.s5imkgf9ks.pdb.gz - 200 46373 application/octet-stream 20.6941ms
+2025-07-02 15:14:10.136 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Client.yyo8wj2i6e.wasm - null null
+2025-07-02 15:14:10.147 -04:00 [INF] Sending file. Request path: '/_framework/PoFastType.Client.yyo8wj2i6e.wasm.gz'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\obj\Debug\net9.0\compressed\tk1d0cgifh-yyo8wj2i6e.gz'
+2025-07-02 15:14:10.147 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Client.yyo8wj2i6e.wasm.gz - 200 31138 application/wasm 11.4026ms
+2025-07-02 15:14:10.472 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/blazor-hotreload - null null
+2025-07-02 15:14:10.472 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/blazor-hotreload - 204 null null 0.9309ms
+2025-07-02 15:14:12.157 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/service-worker.js - null null
+2025-07-02 15:14:12.158 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/service-worker.js - 404 0 null 1.2994ms
+2025-07-02 15:14:12.159 -04:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/service-worker.js, Response status code: 404
+2025-07-02 15:15:46.674 -04:00 [INF] Now listening on: http://localhost:5000
+2025-07-02 15:15:46.683 -04:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-07-02 15:15:46.683 -04:00 [INF] Hosting environment: Development
+2025-07-02 15:15:46.683 -04:00 [INF] Content root path: C:\Users\punko\Downloads\PoFastType\PoFastType.Api
+2025-07-02 15:15:46.826 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/blazor.webassembly.js - null null
+2025-07-02 15:15:46.826 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js - null null
+2025-07-02 15:15:46.826 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/aspnetcore-browser-refresh.js - null null
+2025-07-02 15:15:46.831 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/aspnetcore-browser-refresh.js - 200 16481 application/javascript; charset=utf-8 6.6642ms
+2025-07-02 15:15:46.839 -04:00 [WRN] Failed to determine the https port for redirect.
+2025-07-02 15:15:46.845 -04:00 [INF] The file /_framework/blazor.webassembly.js.gz was not modified
+2025-07-02 15:15:46.847 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/blazor.webassembly.js.gz - 304 null text/javascript 23.0019ms
+2025-07-02 15:15:46.851 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js - 404 0 null 27.7577ms
+2025-07-02 15:15:46.852 -04:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js, Response status code: 404
+2025-07-02 15:15:46.906 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/dotnet.js - null null
+2025-07-02 15:15:46.907 -04:00 [INF] The file /_framework/dotnet.js.gz was not modified
+2025-07-02 15:15:46.907 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/dotnet.js.gz - 304 null text/javascript 1.6505ms
+2025-07-02 15:15:46.930 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/blazor.boot.json - null null
+2025-07-02 15:15:46.943 -04:00 [INF] Sending file. Request path: '/_framework/blazor.boot.json.gz'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\obj\Debug\net9.0\compressed\i1169h36t7-domx43qe64.gz'
+2025-07-02 15:15:46.944 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/blazor.boot.json.gz - 200 13189 application/json 14.1536ms
+2025-07-02 15:15:46.946 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/dotnet.runtime.d1pzlaz2ez.js - null null
+2025-07-02 15:15:46.946 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/dotnet.native.rtblh4npr3.js - null null
+2025-07-02 15:15:46.946 -04:00 [INF] The file /_framework/dotnet.runtime.d1pzlaz2ez.js.gz was not modified
+2025-07-02 15:15:46.947 -04:00 [INF] The file /_framework/dotnet.native.rtblh4npr3.js.gz was not modified
+2025-07-02 15:15:46.947 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/dotnet.runtime.d1pzlaz2ez.js.gz - 304 null text/javascript 0.4858ms
+2025-07-02 15:15:46.947 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/dotnet.native.rtblh4npr3.js.gz - 304 null text/javascript 0.6324ms
+2025-07-02 15:15:46.959 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/appsettings.json - null null
+2025-07-02 15:15:46.959 -04:00 [INF] The file /appsettings.json was not modified
+2025-07-02 15:15:46.959 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/appsettings.json - 304 null application/json 0.6286ms
+2025-07-02 15:15:47.314 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/blazor-hotreload - null null
+2025-07-02 15:15:47.315 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/blazor-hotreload - 204 null null 0.8652ms
+2025-07-02 15:15:48.996 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/service-worker.js - null null
+2025-07-02 15:15:48.997 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/service-worker.js - 404 0 null 1.6364ms
+2025-07-02 15:15:48.997 -04:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/service-worker.js, Response status code: 404
+2025-07-02 15:15:58.584 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/?id=66ef27e4-821b-46db-8d15-45cc07e313a2&vscodeBrowserReqId=1751483758577 - null null
+2025-07-02 15:15:58.585 -04:00 [INF] Executing endpoint 'Fallback {*path:nonfile}'
+2025-07-02 15:15:58.587 -04:00 [INF] Sending file. Request path: '/index.html'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\wwwroot\index.html'
+2025-07-02 15:15:58.587 -04:00 [INF] Executed endpoint 'Fallback {*path:nonfile}'
+2025-07-02 15:15:58.587 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/index.html?id=66ef27e4-821b-46db-8d15-45cc07e313a2&vscodeBrowserReqId=1751483758577 - 200 1593 text/html 2.5361ms
+2025-07-02 15:15:58.699 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/PoFastType.Client.styles.css - null null
+2025-07-02 15:15:58.701 -04:00 [INF] The file /PoFastType.Client.styles.css was not modified
+2025-07-02 15:15:58.701 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/PoFastType.Client.styles.css - 304 null text/css 2.261ms
+2025-07-02 15:15:58.703 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/app.js - null null
+2025-07-02 15:15:58.703 -04:00 [INF] The file /app.js was not modified
+2025-07-02 15:15:58.704 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/app.js - 304 null text/javascript 0.3601ms
+2025-07-02 15:15:58.725 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/css/retro-arcade.css - null null
+2025-07-02 15:15:58.726 -04:00 [INF] The file /css/retro-arcade.css was not modified
+2025-07-02 15:15:58.726 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/css/retro-arcade.css - 304 null text/css 0.6441ms
+2025-07-02 15:15:58.781 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/dotnet.js - null null
+2025-07-02 15:15:58.783 -04:00 [INF] The file /_framework/dotnet.js.gz was not modified
+2025-07-02 15:15:58.783 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/dotnet.js.gz - 304 null text/javascript 2.039ms
+2025-07-02 15:15:58.810 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/blazor.boot.json - null null
+2025-07-02 15:15:58.813 -04:00 [INF] Sending file. Request path: '/_framework/blazor.boot.json.gz'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\obj\Debug\net9.0\compressed\i1169h36t7-domx43qe64.gz'
+2025-07-02 15:15:58.813 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/blazor.boot.json.gz - 200 13189 application/json 2.3157ms
+2025-07-02 15:15:58.826 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/dotnet.runtime.d1pzlaz2ez.js - null null
+2025-07-02 15:15:58.826 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/dotnet.native.rtblh4npr3.js - null null
+2025-07-02 15:15:58.827 -04:00 [INF] The file /_framework/dotnet.native.rtblh4npr3.js.gz was not modified
+2025-07-02 15:15:58.828 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/dotnet.native.rtblh4npr3.js.gz - 304 null text/javascript 1.453ms
+2025-07-02 15:15:58.830 -04:00 [INF] The file /_framework/dotnet.runtime.d1pzlaz2ez.js.gz was not modified
+2025-07-02 15:15:58.830 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/dotnet.runtime.d1pzlaz2ez.js.gz - 304 null text/javascript 4.0435ms
+2025-07-02 15:15:58.861 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/appsettings.json - null null
+2025-07-02 15:15:58.863 -04:00 [INF] The file /appsettings.json was not modified
+2025-07-02 15:15:58.863 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/appsettings.json - 304 null application/json 2.1538ms
+2025-07-02 15:15:58.869 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Shared.78vj7yfvct.pdb - null null
+2025-07-02 15:15:58.870 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Client.s5imkgf9ks.pdb - null null
+2025-07-02 15:15:58.870 -04:00 [INF] Sending file. Request path: '/_framework/PoFastType.Client.s5imkgf9ks.pdb.gz'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\obj\Debug\net9.0\compressed\9c821l085x-s5imkgf9ks.gz'
+2025-07-02 15:15:58.870 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Client.s5imkgf9ks.pdb.gz - 200 46373 application/octet-stream 0.9216ms
+2025-07-02 15:15:58.872 -04:00 [INF] Sending file. Request path: '/_framework/PoFastType.Shared.78vj7yfvct.pdb.gz'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\obj\Debug\net9.0\compressed\k33zvn1tgb-78vj7yfvct.gz'
+2025-07-02 15:15:58.872 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Shared.78vj7yfvct.pdb.gz - 200 8080 application/octet-stream 3.34ms
+2025-07-02 15:15:58.996 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Shared.pymuv4vggf.wasm - null null
+2025-07-02 15:15:59.000 -04:00 [INF] Sending file. Request path: '/_framework/PoFastType.Shared.pymuv4vggf.wasm.gz'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\obj\Debug\net9.0\compressed\mnn3172hth-pymuv4vggf.gz'
+2025-07-02 15:15:59.000 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Shared.pymuv4vggf.wasm.gz - 200 3842 application/wasm 4.5369ms
+2025-07-02 15:15:59.000 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Client.yyo8wj2i6e.wasm - null null
+2025-07-02 15:15:59.002 -04:00 [INF] Sending file. Request path: '/_framework/PoFastType.Client.yyo8wj2i6e.wasm.gz'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\obj\Debug\net9.0\compressed\tk1d0cgifh-yyo8wj2i6e.gz'
+2025-07-02 15:15:59.002 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Client.yyo8wj2i6e.wasm.gz - 200 31138 application/wasm 1.6029ms
+2025-07-02 15:16:00.261 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/blazor-hotreload - null null
+2025-07-02 15:16:00.261 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/blazor-hotreload - 204 null null 0.2485ms
+2025-07-02 15:16:02.402 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/service-worker.js - null null
+2025-07-02 15:16:02.403 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/service-worker.js - 404 0 null 0.7805ms
+2025-07-02 15:16:02.403 -04:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/service-worker.js, Response status code: 404
+2025-07-02 15:16:29.779 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/service-worker.js - null null
+2025-07-02 15:16:29.780 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/service-worker.js - 404 0 null 0.7166ms
+2025-07-02 15:16:29.780 -04:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/service-worker.js, Response status code: 404
+2025-07-02 15:17:36.162 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/service-worker.js - null null
+2025-07-02 15:17:36.163 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/service-worker.js - 404 0 null 0.8536ms
+2025-07-02 15:17:36.163 -04:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/service-worker.js, Response status code: 404
+2025-07-02 15:22:50.768 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/.well-known/appspecific/com.chrome.devtools.json - null null
+2025-07-02 15:22:50.772 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 3.8807ms
+2025-07-02 15:22:50.772 -04:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2025-07-02 15:23:06.267 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/service-worker.js - null null
+2025-07-02 15:23:06.269 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/service-worker.js - 404 0 null 1.6126ms
+2025-07-02 15:23:06.269 -04:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/service-worker.js, Response status code: 404
+2025-07-02 15:23:08.186 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/ - null null
+2025-07-02 15:23:08.187 -04:00 [INF] Executing endpoint 'Fallback {*path:nonfile}'
+2025-07-02 15:23:08.233 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/.well-known/appspecific/com.chrome.devtools.json - null null
+2025-07-02 15:23:08.237 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 3.808ms
+2025-07-02 15:23:08.237 -04:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2025-07-02 15:23:08.241 -04:00 [INF] Sending file. Request path: '/index.html'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\wwwroot\index.html'
+2025-07-02 15:23:08.241 -04:00 [INF] Executed endpoint 'Fallback {*path:nonfile}'
+2025-07-02 15:23:08.241 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/index.html - 200 null text/html 55.3302ms
+2025-07-02 15:23:08.243 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/css/app.css - null null
+2025-07-02 15:23:08.245 -04:00 [INF] Sending file. Request path: '/css/app.css'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\wwwroot\css\app.css'
+2025-07-02 15:23:08.245 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/css/app.css - 200 3535 text/css 1.5913ms
+2025-07-02 15:23:08.245 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_content/Radzen.Blazor/css/default-base.css - null null
+2025-07-02 15:23:08.246 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_content/Radzen.Blazor/css/default.css - null null
+2025-07-02 15:23:08.247 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/PoFastType.Client.styles.css - null null
+2025-07-02 15:23:08.247 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_content/Radzen.Blazor/Radzen.Blazor.js - null null
+2025-07-02 15:23:08.247 -04:00 [INF] Sending file. Request path: '/PoFastType.Client.styles.css'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\obj\Debug\net9.0\scopedcss\bundle\PoFastType.Client.styles.css'
+2025-07-02 15:23:08.247 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/PoFastType.Client.styles.css - 200 2305 text/css 0.393ms
+2025-07-02 15:23:08.248 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/app.js - null null
+2025-07-02 15:23:08.248 -04:00 [INF] Sending file. Request path: '/app.js'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\wwwroot\app.js'
+2025-07-02 15:23:08.248 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/app.js - 200 272 text/javascript 0.8299ms
+2025-07-02 15:23:08.250 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/blazor.webassembly.js - null null
+2025-07-02 15:23:08.253 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/css/retro-arcade.css - null null
+2025-07-02 15:23:08.253 -04:00 [INF] Sending file. Request path: '/_framework/blazor.webassembly.js.gz'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\obj\Debug\net9.0\compressed\dpktxobuyf-md9yvkcqlf.gz'
+2025-07-02 15:23:08.254 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/blazor.webassembly.js.gz - 200 18128 text/javascript 3.796ms
+2025-07-02 15:23:08.254 -04:00 [INF] Sending file. Request path: '/css/retro-arcade.css'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\wwwroot\css\retro-arcade.css'
+2025-07-02 15:23:08.254 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/css/retro-arcade.css - 200 20258 text/css 1.3204ms
+2025-07-02 15:23:08.258 -04:00 [INF] Sending file. Request path: '/_content/Radzen.Blazor/Radzen.Blazor.js'. Physical path: 'C:\Users\punko\.nuget\packages\radzen.blazor\7.1.2\staticwebassets\Radzen.Blazor.js'
+2025-07-02 15:23:08.258 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/aspnetcore-browser-refresh.js - null null
+2025-07-02 15:23:08.258 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_content/Radzen.Blazor/Radzen.Blazor.js - 200 94241 text/javascript 10.7273ms
+2025-07-02 15:23:08.258 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/aspnetcore-browser-refresh.js - 200 16481 application/javascript; charset=utf-8 0.1602ms
+2025-07-02 15:23:08.259 -04:00 [INF] Sending file. Request path: '/_content/Radzen.Blazor/css/default-base.css'. Physical path: 'C:\Users\punko\.nuget\packages\radzen.blazor\7.1.2\staticwebassets\css\default-base.css'
+2025-07-02 15:23:08.259 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_content/Radzen.Blazor/css/default-base.css - 200 657155 text/css 13.8674ms
+2025-07-02 15:23:08.261 -04:00 [INF] Sending file. Request path: '/_content/Radzen.Blazor/css/default.css'. Physical path: 'C:\Users\punko\.nuget\packages\radzen.blazor\7.1.2\staticwebassets\css\default.css'
+2025-07-02 15:23:08.262 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_content/Radzen.Blazor/css/default.css - 200 659996 text/css 15.3895ms
+2025-07-02 15:23:08.406 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_content/Radzen.Blazor/fonts/MaterialSymbolsOutlined.woff2 - null null
+2025-07-02 15:23:08.409 -04:00 [INF] Sending file. Request path: '/_content/Radzen.Blazor/fonts/MaterialSymbolsOutlined.woff2'. Physical path: 'C:\Users\punko\.nuget\packages\radzen.blazor\7.1.2\staticwebassets\fonts\MaterialSymbolsOutlined.woff2'
+2025-07-02 15:23:08.409 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_content/Radzen.Blazor/fonts/MaterialSymbolsOutlined.woff2 - 200 973704 font/woff2 3.2045ms
+2025-07-02 15:23:08.479 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/dotnet.js - null null
+2025-07-02 15:23:08.480 -04:00 [INF] Sending file. Request path: '/_framework/dotnet.js.gz'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\obj\Debug\net9.0\compressed\vx0d54qzvj-vr46os3pyt.gz'
+2025-07-02 15:23:08.480 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/dotnet.js.gz - 200 12785 text/javascript 0.9522ms
+2025-07-02 15:23:08.492 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/blazor.boot.json - null null
+2025-07-02 15:23:08.493 -04:00 [INF] The file /_framework/blazor.boot.json.gz was not modified
+2025-07-02 15:23:08.493 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/blazor.boot.json.gz - 304 null application/json 0.6482ms
+2025-07-02 15:23:08.525 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/appsettings.json - null null
+2025-07-02 15:23:08.525 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/dotnet.runtime.d1pzlaz2ez.js - null null
+2025-07-02 15:23:08.526 -04:00 [INF] The file /appsettings.json was not modified
+2025-07-02 15:23:08.526 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/dotnet.native.rtblh4npr3.js - null null
+2025-07-02 15:23:08.526 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/appsettings.json - 304 null application/json 0.4082ms
+2025-07-02 15:23:08.526 -04:00 [INF] Sending file. Request path: '/_framework/dotnet.runtime.d1pzlaz2ez.js.gz'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\obj\Debug\net9.0\compressed\doc0yz0v6z-d1pzlaz2ez.gz'
+2025-07-02 15:23:08.526 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/dotnet.runtime.d1pzlaz2ez.js.gz - 200 56236 text/javascript 0.9962ms
+2025-07-02 15:23:08.528 -04:00 [INF] Sending file. Request path: '/_framework/dotnet.native.rtblh4npr3.js.gz'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\obj\Debug\net9.0\compressed\n7g1hcwcr4-rtblh4npr3.gz'
+2025-07-02 15:23:08.528 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/dotnet.native.rtblh4npr3.js.gz - 200 35025 text/javascript 2.2298ms
+2025-07-02 15:23:08.641 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/favicon.png - null null
+2025-07-02 15:23:08.642 -04:00 [INF] Sending file. Request path: '/favicon.png'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\wwwroot\favicon.png'
+2025-07-02 15:23:08.642 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/favicon.png - 200 1148 image/png 0.6772ms
+2025-07-02 15:23:08.924 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/blazor-hotreload - null null
+2025-07-02 15:23:08.924 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/blazor-hotreload - 204 null null 0.1374ms
+2025-07-02 15:23:13.995 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/game/text - null null
+2025-07-02 15:23:13.997 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.GameController.GetText (PoFastType.Api)'
+2025-07-02 15:23:14.014 -04:00 [INF] Route matched with {action = "GetText", controller = "Game"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetText() on controller PoFastType.Api.Controllers.GameController (PoFastType.Api).
+2025-07-02 15:23:14.019 -04:00 [INF] Executing action method PoFastType.Api.Controllers.GameController.GetText (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:23:14.020 -04:00 [INF] Generating new text for typing test
+2025-07-02 15:23:14.022 -04:00 [INF] Generating text using Hardcoded strategy
+2025-07-02 15:23:14.023 -04:00 [INF] Generating hardcoded text for typing practice
+2025-07-02 15:23:14.035 -04:00 [INF] Successfully generated hardcoded text with 609 characters
+2025-07-02 15:23:14.038 -04:00 [INF] Executed action method PoFastType.Api.Controllers.GameController.GetText (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 16.562ms.
+2025-07-02 15:23:14.040 -04:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`2[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.DateTime, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-02 15:23:14.067 -04:00 [INF] Executed action PoFastType.Api.Controllers.GameController.GetText (PoFastType.Api) in 49.5736ms
+2025-07-02 15:23:14.067 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.GameController.GetText (PoFastType.Api)'
+2025-07-02 15:23:14.067 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/game/text - 200 null application/json; charset=utf-8 72.6894ms
+2025-07-02 15:23:22.394 -04:00 [INF] Request starting HTTP/1.1 POST http://localhost:5000/api/scores - application/json; charset=utf-8 458
+2025-07-02 15:23:22.395 -04:00 [INF] CORS policy execution successful.
+2025-07-02 15:23:22.397 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.ScoresController.SubmitScore (PoFastType.Api)'
+2025-07-02 15:23:22.401 -04:00 [INF] Route matched with {action = "SubmitScore", controller = "Scores"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] SubmitScore(PoFastType.Shared.Models.GameResult) on controller PoFastType.Api.Controllers.ScoresController (PoFastType.Api).
+2025-07-02 15:23:22.482 -04:00 [INF] Executing action method PoFastType.Api.Controllers.ScoresController.SubmitScore (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:23:22.483 -04:00 [INF] Submitting score for ANON user
+2025-07-02 15:23:27.994 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - null null
+2025-07-02 15:23:27.994 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:23:28.029 -04:00 [INF] Route matched with {action = "GetUserStats", controller = "Scores"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserStats() on controller PoFastType.Api.Controllers.ScoresController (PoFastType.Api).
+2025-07-02 15:23:28.030 -04:00 [INF] Executing action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:23:28.031 -04:00 [INF] Getting shared stats for ANON user
+2025-07-02 15:23:34.337 -04:00 [INF] Game result added for user ANON: NetWPM=0.6848422532451536, Accuracy=1.9704433497536946%
+2025-07-02 15:23:34.338 -04:00 [INF] Game result submitted successfully for user ANON
+2025-07-02 15:23:34.338 -04:00 [INF] Score submitted successfully for ANON user
+2025-07-02 15:23:34.338 -04:00 [INF] Executed action method PoFastType.Api.Controllers.ScoresController.SubmitScore (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 11855.7881ms.
+2025-07-02 15:23:34.338 -04:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType2`3[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Nullable`1[[System.DateTimeOffset, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-02 15:23:34.344 -04:00 [INF] Executed action PoFastType.Api.Controllers.ScoresController.SubmitScore (PoFastType.Api) in 11942.411ms
+2025-07-02 15:23:34.344 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.ScoresController.SubmitScore (PoFastType.Api)'
+2025-07-02 15:23:34.344 -04:00 [INF] Request finished HTTP/1.1 POST http://localhost:5000/api/scores - 200 null application/json; charset=utf-8 11950.0327ms
+2025-07-02 15:23:34.752 -04:00 [INF] Retrieved 2 game results for user ANON
+2025-07-02 15:23:34.753 -04:00 [INF] Retrieved 2 game results for ANON user
+2025-07-02 15:23:34.753 -04:00 [INF] Executed action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 6723.1114ms.
+2025-07-02 15:23:34.753 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+OrderedIterator`2[[PoFastType.Shared.Models.GameResult, PoFastType.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.DateTime, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-02 15:23:34.760 -04:00 [INF] Executed action PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) in 6730.4145ms
+2025-07-02 15:23:34.760 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:23:34.760 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - 200 null application/json; charset=utf-8 6765.7589ms
+2025-07-02 15:23:39.207 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/user/profile - null null
+2025-07-02 15:23:39.208 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api)'
+2025-07-02 15:23:39.213 -04:00 [INF] Route matched with {action = "GetUserProfile", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserProfile() on controller PoFastType.Api.Controllers.UserController (PoFastType.Api).
+2025-07-02 15:23:39.214 -04:00 [INF] Executing action method PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:23:39.218 -04:00 [INF] Getting profile for ANON user
+2025-07-02 15:23:39.246 -04:00 [INF] Retrieved user profile for ANON: 2 tests completed
+2025-07-02 15:23:39.246 -04:00 [INF] Executed action method PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 32.1124ms.
+2025-07-02 15:23:39.246 -04:00 [INF] Executing OkObjectResult, writing value of type 'PoFastType.Shared.Models.UserProfile'.
+2025-07-02 15:23:39.251 -04:00 [INF] Executed action PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api) in 38.7227ms
+2025-07-02 15:23:39.251 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api)'
+2025-07-02 15:23:39.251 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/user/profile - 200 null application/json; charset=utf-8 44.0825ms
+2025-07-02 15:23:39.283 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - null null
+2025-07-02 15:23:39.286 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:23:39.286 -04:00 [INF] Route matched with {action = "GetUserStats", controller = "Scores"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserStats() on controller PoFastType.Api.Controllers.ScoresController (PoFastType.Api).
+2025-07-02 15:23:39.287 -04:00 [INF] Executing action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:23:39.287 -04:00 [INF] Getting shared stats for ANON user
+2025-07-02 15:23:39.303 -04:00 [INF] Retrieved 2 game results for user ANON
+2025-07-02 15:23:39.303 -04:00 [INF] Retrieved 2 game results for ANON user
+2025-07-02 15:23:39.303 -04:00 [INF] Executed action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 16.5849ms.
+2025-07-02 15:23:39.303 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+OrderedIterator`2[[PoFastType.Shared.Models.GameResult, PoFastType.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.DateTime, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-02 15:23:39.304 -04:00 [INF] Executed action PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) in 17.9487ms
+2025-07-02 15:23:39.304 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:23:39.304 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - 200 null application/json; charset=utf-8 20.3172ms
+2025-07-02 15:23:43.580 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - null null
+2025-07-02 15:23:43.580 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:23:43.581 -04:00 [INF] Route matched with {action = "GetUserStats", controller = "Scores"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserStats() on controller PoFastType.Api.Controllers.ScoresController (PoFastType.Api).
+2025-07-02 15:23:43.581 -04:00 [INF] Executing action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:23:43.581 -04:00 [INF] Getting shared stats for ANON user
+2025-07-02 15:23:43.619 -04:00 [INF] Retrieved 2 game results for user ANON
+2025-07-02 15:23:43.619 -04:00 [INF] Retrieved 2 game results for ANON user
+2025-07-02 15:23:43.619 -04:00 [INF] Executed action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 37.8796ms.
+2025-07-02 15:23:43.619 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+OrderedIterator`2[[PoFastType.Shared.Models.GameResult, PoFastType.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.DateTime, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-02 15:23:43.619 -04:00 [INF] Executed action PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) in 38.6948ms
+2025-07-02 15:23:43.619 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:23:43.619 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - 200 null application/json; charset=utf-8 39.4263ms
+2025-07-02 15:23:45.450 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/user/profile - null null
+2025-07-02 15:23:45.452 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api)'
+2025-07-02 15:23:45.452 -04:00 [INF] Route matched with {action = "GetUserProfile", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserProfile() on controller PoFastType.Api.Controllers.UserController (PoFastType.Api).
+2025-07-02 15:23:45.452 -04:00 [INF] Executing action method PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:23:45.452 -04:00 [INF] Getting profile for ANON user
+2025-07-02 15:23:45.474 -04:00 [INF] Retrieved user profile for ANON: 2 tests completed
+2025-07-02 15:23:45.475 -04:00 [INF] Executed action method PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 22.4286ms.
+2025-07-02 15:23:45.475 -04:00 [INF] Executing OkObjectResult, writing value of type 'PoFastType.Shared.Models.UserProfile'.
+2025-07-02 15:23:45.475 -04:00 [INF] Executed action PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api) in 23.1527ms
+2025-07-02 15:23:45.475 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api)'
+2025-07-02 15:23:45.475 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/user/profile - 200 null application/json; charset=utf-8 24.71ms
+2025-07-02 15:23:45.482 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - null null
+2025-07-02 15:23:45.483 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:23:45.483 -04:00 [INF] Route matched with {action = "GetUserStats", controller = "Scores"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserStats() on controller PoFastType.Api.Controllers.ScoresController (PoFastType.Api).
+2025-07-02 15:23:45.483 -04:00 [INF] Executing action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:23:45.483 -04:00 [INF] Getting shared stats for ANON user
+2025-07-02 15:23:45.494 -04:00 [INF] Retrieved 2 game results for user ANON
+2025-07-02 15:23:45.494 -04:00 [INF] Retrieved 2 game results for ANON user
+2025-07-02 15:23:45.494 -04:00 [INF] Executed action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 11.0494ms.
+2025-07-02 15:23:45.495 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+OrderedIterator`2[[PoFastType.Shared.Models.GameResult, PoFastType.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.DateTime, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-02 15:23:45.495 -04:00 [INF] Executed action PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) in 12.0627ms
+2025-07-02 15:23:45.495 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:23:45.495 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - 200 null application/json; charset=utf-8 12.4368ms
+2025-07-02 15:23:49.094 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/scores/leaderboard?top=10 - null null
+2025-07-02 15:23:49.094 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.ScoresController.GetLeaderboard (PoFastType.Api)'
+2025-07-02 15:23:49.098 -04:00 [INF] Route matched with {action = "GetLeaderboard", controller = "Scores"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetLeaderboard(Int32) on controller PoFastType.Api.Controllers.ScoresController (PoFastType.Api).
+2025-07-02 15:23:49.102 -04:00 [INF] Executing action method PoFastType.Api.Controllers.ScoresController.GetLeaderboard (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:23:49.120 -04:00 [INF] Retrieved top 3 game results
+2025-07-02 15:23:49.121 -04:00 [INF] Retrieved leaderboard with 3 entries
+2025-07-02 15:23:49.121 -04:00 [INF] Executed action method PoFastType.Api.Controllers.ScoresController.GetLeaderboard (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 18.9553ms.
+2025-07-02 15:23:49.121 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+<SelectIterator>d__256`2[[PoFastType.Shared.Models.GameResult, PoFastType.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[PoFastType.Shared.Models.LeaderboardEntry, PoFastType.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-07-02 15:23:49.123 -04:00 [INF] Executed action PoFastType.Api.Controllers.ScoresController.GetLeaderboard (PoFastType.Api) in 24.4536ms
+2025-07-02 15:23:49.123 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.ScoresController.GetLeaderboard (PoFastType.Api)'
+2025-07-02 15:23:49.123 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/scores/leaderboard?top=10 - 200 null application/json; charset=utf-8 28.6096ms
+2025-07-02 15:23:51.917 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/user/profile - null null
+2025-07-02 15:23:51.917 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api)'
+2025-07-02 15:23:51.917 -04:00 [INF] Route matched with {action = "GetUserProfile", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserProfile() on controller PoFastType.Api.Controllers.UserController (PoFastType.Api).
+2025-07-02 15:23:51.918 -04:00 [INF] Executing action method PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:23:51.918 -04:00 [INF] Getting profile for ANON user
+2025-07-02 15:23:51.949 -04:00 [INF] Retrieved user profile for ANON: 2 tests completed
+2025-07-02 15:23:51.949 -04:00 [INF] Executed action method PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 31.7508ms.
+2025-07-02 15:23:51.950 -04:00 [INF] Executing OkObjectResult, writing value of type 'PoFastType.Shared.Models.UserProfile'.
+2025-07-02 15:23:51.950 -04:00 [INF] Executed action PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api) in 32.476ms
+2025-07-02 15:23:51.950 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api)'
+2025-07-02 15:23:51.950 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/user/profile - 200 null application/json; charset=utf-8 33.2022ms
+2025-07-02 15:23:51.956 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - null null
+2025-07-02 15:23:51.956 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:23:51.956 -04:00 [INF] Route matched with {action = "GetUserStats", controller = "Scores"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserStats() on controller PoFastType.Api.Controllers.ScoresController (PoFastType.Api).
+2025-07-02 15:23:51.957 -04:00 [INF] Executing action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:23:51.957 -04:00 [INF] Getting shared stats for ANON user
+2025-07-02 15:23:51.973 -04:00 [INF] Retrieved 2 game results for user ANON
+2025-07-02 15:23:51.973 -04:00 [INF] Retrieved 2 game results for ANON user
+2025-07-02 15:23:51.973 -04:00 [INF] Executed action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 16.3192ms.
+2025-07-02 15:23:51.973 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+OrderedIterator`2[[PoFastType.Shared.Models.GameResult, PoFastType.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.DateTime, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-02 15:23:51.973 -04:00 [INF] Executed action PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) in 16.8077ms
+2025-07-02 15:23:51.973 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:23:51.973 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - 200 null application/json; charset=utf-8 17.2026ms
+2025-07-02 15:23:54.693 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - null null
+2025-07-02 15:23:54.693 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:23:54.694 -04:00 [INF] Route matched with {action = "GetUserStats", controller = "Scores"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserStats() on controller PoFastType.Api.Controllers.ScoresController (PoFastType.Api).
+2025-07-02 15:23:54.717 -04:00 [INF] Executing action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:23:54.717 -04:00 [INF] Getting shared stats for ANON user
+2025-07-02 15:23:54.738 -04:00 [INF] Retrieved 2 game results for user ANON
+2025-07-02 15:23:54.738 -04:00 [INF] Retrieved 2 game results for ANON user
+2025-07-02 15:23:54.738 -04:00 [INF] Executed action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 21.1913ms.
+2025-07-02 15:23:54.738 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+OrderedIterator`2[[PoFastType.Shared.Models.GameResult, PoFastType.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.DateTime, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-02 15:23:54.738 -04:00 [INF] Executed action PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) in 44.1626ms
+2025-07-02 15:23:54.738 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:23:54.738 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - 200 null application/json; charset=utf-8 45.8882ms
+2025-07-02 15:23:59.382 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/user/profile - null null
+2025-07-02 15:23:59.383 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api)'
+2025-07-02 15:23:59.383 -04:00 [INF] Route matched with {action = "GetUserProfile", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserProfile() on controller PoFastType.Api.Controllers.UserController (PoFastType.Api).
+2025-07-02 15:23:59.385 -04:00 [INF] Executing action method PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:23:59.385 -04:00 [INF] Getting profile for ANON user
+2025-07-02 15:23:59.411 -04:00 [INF] Retrieved user profile for ANON: 2 tests completed
+2025-07-02 15:23:59.411 -04:00 [INF] Executed action method PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 26.4567ms.
+2025-07-02 15:23:59.411 -04:00 [INF] Executing OkObjectResult, writing value of type 'PoFastType.Shared.Models.UserProfile'.
+2025-07-02 15:23:59.411 -04:00 [INF] Executed action PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api) in 28.6236ms
+2025-07-02 15:23:59.411 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api)'
+2025-07-02 15:23:59.411 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/user/profile - 200 null application/json; charset=utf-8 29.5908ms
+2025-07-02 15:23:59.419 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - null null
+2025-07-02 15:23:59.419 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:23:59.419 -04:00 [INF] Route matched with {action = "GetUserStats", controller = "Scores"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserStats() on controller PoFastType.Api.Controllers.ScoresController (PoFastType.Api).
+2025-07-02 15:23:59.419 -04:00 [INF] Executing action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:23:59.419 -04:00 [INF] Getting shared stats for ANON user
+2025-07-02 15:23:59.432 -04:00 [INF] Retrieved 2 game results for user ANON
+2025-07-02 15:23:59.432 -04:00 [INF] Retrieved 2 game results for ANON user
+2025-07-02 15:23:59.432 -04:00 [INF] Executed action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 12.3243ms.
+2025-07-02 15:23:59.432 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+OrderedIterator`2[[PoFastType.Shared.Models.GameResult, PoFastType.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.DateTime, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-02 15:23:59.432 -04:00 [INF] Executed action PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) in 13.0126ms
+2025-07-02 15:23:59.432 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:23:59.432 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - 200 null application/json; charset=utf-8 13.4979ms
+2025-07-02 15:24:00.618 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - null null
+2025-07-02 15:24:00.619 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:24:00.619 -04:00 [INF] Route matched with {action = "GetUserStats", controller = "Scores"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserStats() on controller PoFastType.Api.Controllers.ScoresController (PoFastType.Api).
+2025-07-02 15:24:00.620 -04:00 [INF] Executing action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:24:00.620 -04:00 [INF] Getting shared stats for ANON user
+2025-07-02 15:24:00.668 -04:00 [INF] Retrieved 2 game results for user ANON
+2025-07-02 15:24:00.669 -04:00 [INF] Retrieved 2 game results for ANON user
+2025-07-02 15:24:00.669 -04:00 [INF] Executed action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 48.6829ms.
+2025-07-02 15:24:00.669 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+OrderedIterator`2[[PoFastType.Shared.Models.GameResult, PoFastType.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.DateTime, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-02 15:24:00.669 -04:00 [INF] Executed action PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) in 49.9164ms
+2025-07-02 15:24:00.670 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:24:00.670 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - 200 null application/json; charset=utf-8 51.8713ms
+2025-07-02 15:24:01.944 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/user/profile - null null
+2025-07-02 15:24:01.944 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api)'
+2025-07-02 15:24:01.944 -04:00 [INF] Route matched with {action = "GetUserProfile", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserProfile() on controller PoFastType.Api.Controllers.UserController (PoFastType.Api).
+2025-07-02 15:24:01.945 -04:00 [INF] Executing action method PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:24:01.945 -04:00 [INF] Getting profile for ANON user
+2025-07-02 15:24:01.972 -04:00 [INF] Retrieved user profile for ANON: 2 tests completed
+2025-07-02 15:24:01.972 -04:00 [INF] Executed action method PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 26.9481ms.
+2025-07-02 15:24:01.972 -04:00 [INF] Executing OkObjectResult, writing value of type 'PoFastType.Shared.Models.UserProfile'.
+2025-07-02 15:24:01.972 -04:00 [INF] Executed action PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api) in 27.731ms
+2025-07-02 15:24:01.972 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api)'
+2025-07-02 15:24:01.972 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/user/profile - 200 null application/json; charset=utf-8 28.3178ms
+2025-07-02 15:24:01.979 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - null null
+2025-07-02 15:24:01.979 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:24:01.980 -04:00 [INF] Route matched with {action = "GetUserStats", controller = "Scores"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserStats() on controller PoFastType.Api.Controllers.ScoresController (PoFastType.Api).
+2025-07-02 15:24:01.980 -04:00 [INF] Executing action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:24:01.980 -04:00 [INF] Getting shared stats for ANON user
+2025-07-02 15:24:01.992 -04:00 [INF] Retrieved 2 game results for user ANON
+2025-07-02 15:24:01.992 -04:00 [INF] Retrieved 2 game results for ANON user
+2025-07-02 15:24:01.992 -04:00 [INF] Executed action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 12.4632ms.
+2025-07-02 15:24:01.992 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+OrderedIterator`2[[PoFastType.Shared.Models.GameResult, PoFastType.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.DateTime, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-02 15:24:01.993 -04:00 [INF] Executed action PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) in 13.0032ms
+2025-07-02 15:24:01.993 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:24:01.993 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - 200 null application/json; charset=utf-8 13.5553ms
+2025-07-02 15:24:05.071 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - null null
+2025-07-02 15:24:05.071 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:24:05.071 -04:00 [INF] Route matched with {action = "GetUserStats", controller = "Scores"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserStats() on controller PoFastType.Api.Controllers.ScoresController (PoFastType.Api).
+2025-07-02 15:24:05.072 -04:00 [INF] Executing action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:24:05.072 -04:00 [INF] Getting shared stats for ANON user
+2025-07-02 15:24:05.092 -04:00 [INF] Retrieved 2 game results for user ANON
+2025-07-02 15:24:05.092 -04:00 [INF] Retrieved 2 game results for ANON user
+2025-07-02 15:24:05.092 -04:00 [INF] Executed action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 20.0453ms.
+2025-07-02 15:24:05.092 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+OrderedIterator`2[[PoFastType.Shared.Models.GameResult, PoFastType.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.DateTime, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-02 15:24:05.092 -04:00 [INF] Executed action PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) in 20.7594ms
+2025-07-02 15:24:05.092 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:24:05.092 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - 200 null application/json; charset=utf-8 21.3628ms
+2025-07-02 15:24:06.041 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/user/profile - null null
+2025-07-02 15:24:06.041 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api)'
+2025-07-02 15:24:06.042 -04:00 [INF] Route matched with {action = "GetUserProfile", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserProfile() on controller PoFastType.Api.Controllers.UserController (PoFastType.Api).
+2025-07-02 15:24:06.042 -04:00 [INF] Executing action method PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:24:06.042 -04:00 [INF] Getting profile for ANON user
+2025-07-02 15:24:06.073 -04:00 [INF] Retrieved user profile for ANON: 2 tests completed
+2025-07-02 15:24:06.073 -04:00 [INF] Executed action method PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 31.1485ms.
+2025-07-02 15:24:06.073 -04:00 [INF] Executing OkObjectResult, writing value of type 'PoFastType.Shared.Models.UserProfile'.
+2025-07-02 15:24:06.073 -04:00 [INF] Executed action PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api) in 31.7488ms
+2025-07-02 15:24:06.073 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api)'
+2025-07-02 15:24:06.073 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/user/profile - 200 null application/json; charset=utf-8 32.2365ms
+2025-07-02 15:24:06.081 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - null null
+2025-07-02 15:24:06.081 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:24:06.081 -04:00 [INF] Route matched with {action = "GetUserStats", controller = "Scores"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserStats() on controller PoFastType.Api.Controllers.ScoresController (PoFastType.Api).
+2025-07-02 15:24:06.081 -04:00 [INF] Executing action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:24:06.081 -04:00 [INF] Getting shared stats for ANON user
+2025-07-02 15:24:06.098 -04:00 [INF] Retrieved 2 game results for user ANON
+2025-07-02 15:24:06.098 -04:00 [INF] Retrieved 2 game results for ANON user
+2025-07-02 15:24:06.098 -04:00 [INF] Executed action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 16.6984ms.
+2025-07-02 15:24:06.098 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+OrderedIterator`2[[PoFastType.Shared.Models.GameResult, PoFastType.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.DateTime, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-02 15:24:06.098 -04:00 [INF] Executed action PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) in 17.3795ms
+2025-07-02 15:24:06.099 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:24:06.099 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - 200 null application/json; charset=utf-8 17.8865ms
+2025-07-02 15:24:09.430 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - null null
+2025-07-02 15:24:09.430 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:24:09.430 -04:00 [INF] Route matched with {action = "GetUserStats", controller = "Scores"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserStats() on controller PoFastType.Api.Controllers.ScoresController (PoFastType.Api).
+2025-07-02 15:24:09.431 -04:00 [INF] Executing action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:24:09.431 -04:00 [INF] Getting shared stats for ANON user
+2025-07-02 15:24:09.454 -04:00 [INF] Retrieved 2 game results for user ANON
+2025-07-02 15:24:09.454 -04:00 [INF] Retrieved 2 game results for ANON user
+2025-07-02 15:24:09.454 -04:00 [INF] Executed action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 23.1474ms.
+2025-07-02 15:24:09.454 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+OrderedIterator`2[[PoFastType.Shared.Models.GameResult, PoFastType.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.DateTime, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-02 15:24:09.454 -04:00 [INF] Executed action PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) in 23.7899ms
+2025-07-02 15:24:09.454 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:24:09.454 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - 200 null application/json; charset=utf-8 24.4571ms
+2025-07-02 15:24:11.623 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/user/profile - null null
+2025-07-02 15:24:11.624 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api)'
+2025-07-02 15:24:11.624 -04:00 [INF] Route matched with {action = "GetUserProfile", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserProfile() on controller PoFastType.Api.Controllers.UserController (PoFastType.Api).
+2025-07-02 15:24:11.624 -04:00 [INF] Executing action method PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:24:11.624 -04:00 [INF] Getting profile for ANON user
+2025-07-02 15:24:11.657 -04:00 [INF] Retrieved user profile for ANON: 2 tests completed
+2025-07-02 15:24:11.657 -04:00 [INF] Executed action method PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 32.8846ms.
+2025-07-02 15:24:11.657 -04:00 [INF] Executing OkObjectResult, writing value of type 'PoFastType.Shared.Models.UserProfile'.
+2025-07-02 15:24:11.658 -04:00 [INF] Executed action PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api) in 33.5325ms
+2025-07-02 15:24:11.658 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api)'
+2025-07-02 15:24:11.658 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/user/profile - 200 null application/json; charset=utf-8 34.4115ms
+2025-07-02 15:24:11.664 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - null null
+2025-07-02 15:24:11.664 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:24:11.664 -04:00 [INF] Route matched with {action = "GetUserStats", controller = "Scores"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserStats() on controller PoFastType.Api.Controllers.ScoresController (PoFastType.Api).
+2025-07-02 15:24:11.665 -04:00 [INF] Executing action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:24:11.665 -04:00 [INF] Getting shared stats for ANON user
+2025-07-02 15:24:11.680 -04:00 [INF] Retrieved 2 game results for user ANON
+2025-07-02 15:24:11.680 -04:00 [INF] Retrieved 2 game results for ANON user
+2025-07-02 15:24:11.680 -04:00 [INF] Executed action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 15.2425ms.
+2025-07-02 15:24:11.680 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+OrderedIterator`2[[PoFastType.Shared.Models.GameResult, PoFastType.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.DateTime, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-02 15:24:11.680 -04:00 [INF] Executed action PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) in 15.7882ms
+2025-07-02 15:24:11.680 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:24:11.680 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - 200 null application/json; charset=utf-8 16.2447ms
+2025-07-02 15:24:13.219 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - null null
+2025-07-02 15:24:13.220 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:24:13.220 -04:00 [INF] Route matched with {action = "GetUserStats", controller = "Scores"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserStats() on controller PoFastType.Api.Controllers.ScoresController (PoFastType.Api).
+2025-07-02 15:24:13.220 -04:00 [INF] Executing action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:24:13.220 -04:00 [INF] Getting shared stats for ANON user
+2025-07-02 15:24:13.241 -04:00 [INF] Retrieved 2 game results for user ANON
+2025-07-02 15:24:13.242 -04:00 [INF] Retrieved 2 game results for ANON user
+2025-07-02 15:24:13.242 -04:00 [INF] Executed action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 21.7204ms.
+2025-07-02 15:24:13.242 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+OrderedIterator`2[[PoFastType.Shared.Models.GameResult, PoFastType.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.DateTime, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-02 15:24:13.242 -04:00 [INF] Executed action PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) in 22.263ms
+2025-07-02 15:24:13.242 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:24:13.242 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - 200 null application/json; charset=utf-8 22.6895ms
+2025-07-02 15:24:13.868 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/user/profile - null null
+2025-07-02 15:24:13.869 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api)'
+2025-07-02 15:24:13.869 -04:00 [INF] Route matched with {action = "GetUserProfile", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserProfile() on controller PoFastType.Api.Controllers.UserController (PoFastType.Api).
+2025-07-02 15:24:13.869 -04:00 [INF] Executing action method PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:24:13.869 -04:00 [INF] Getting profile for ANON user
+2025-07-02 15:24:13.890 -04:00 [INF] Retrieved user profile for ANON: 2 tests completed
+2025-07-02 15:24:13.890 -04:00 [INF] Executed action method PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 20.8701ms.
+2025-07-02 15:24:13.890 -04:00 [INF] Executing OkObjectResult, writing value of type 'PoFastType.Shared.Models.UserProfile'.
+2025-07-02 15:24:13.890 -04:00 [INF] Executed action PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api) in 21.3797ms
+2025-07-02 15:24:13.890 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api)'
+2025-07-02 15:24:13.890 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/user/profile - 200 null application/json; charset=utf-8 21.8444ms
+2025-07-02 15:24:13.899 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - null null
+2025-07-02 15:24:13.899 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:24:13.899 -04:00 [INF] Route matched with {action = "GetUserStats", controller = "Scores"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserStats() on controller PoFastType.Api.Controllers.ScoresController (PoFastType.Api).
+2025-07-02 15:24:13.899 -04:00 [INF] Executing action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:24:13.899 -04:00 [INF] Getting shared stats for ANON user
+2025-07-02 15:24:13.910 -04:00 [INF] Retrieved 2 game results for user ANON
+2025-07-02 15:24:13.910 -04:00 [INF] Retrieved 2 game results for ANON user
+2025-07-02 15:24:13.910 -04:00 [INF] Executed action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 10.3748ms.
+2025-07-02 15:24:13.910 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+OrderedIterator`2[[PoFastType.Shared.Models.GameResult, PoFastType.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.DateTime, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-02 15:24:13.910 -04:00 [INF] Executed action PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) in 11.035ms
+2025-07-02 15:24:13.910 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:24:13.910 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - 200 null application/json; charset=utf-8 11.4399ms
+2025-07-02 15:28:36.354 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/service-worker.js - null null
+2025-07-02 15:28:36.355 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/service-worker.js - 404 0 null 0.4276ms
+2025-07-02 15:28:36.355 -04:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/service-worker.js, Response status code: 404
+2025-07-02 15:34:06.460 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/service-worker.js - null null
+2025-07-02 15:34:06.461 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/service-worker.js - 404 0 null 0.8605ms
+2025-07-02 15:34:06.461 -04:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/service-worker.js, Response status code: 404
+2025-07-02 15:37:24.880 -04:00 [INF] Request starting HTTP/1.1 POST http://localhost:5000/_framework/blazor-hotreload - application/json 6451
+2025-07-02 15:37:24.884 -04:00 [INF] Request finished HTTP/1.1 POST http://localhost:5000/_framework/blazor-hotreload - 200 0 null 4.3254ms
+2025-07-02 15:37:44.991 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/dashboard - null null
+2025-07-02 15:37:44.991 -04:00 [INF] Executing endpoint 'Fallback {*path:nonfile}'
+2025-07-02 15:37:44.993 -04:00 [INF] Sending file. Request path: '/index.html'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\wwwroot\index.html'
+2025-07-02 15:37:44.993 -04:00 [INF] Executed endpoint 'Fallback {*path:nonfile}'
+2025-07-02 15:37:44.993 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/index.html - 200 null text/html 1.9834ms
+2025-07-02 15:37:45.057 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/.well-known/appspecific/com.chrome.devtools.json - null null
+2025-07-02 15:37:45.058 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 0.2895ms
+2025-07-02 15:37:45.058 -04:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2025-07-02 15:37:45.067 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/blazor.webassembly.js - null null
+2025-07-02 15:37:45.067 -04:00 [INF] The file /_framework/blazor.webassembly.js.gz was not modified
+2025-07-02 15:37:45.067 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/blazor.webassembly.js.gz - 304 null text/javascript 0.4452ms
+2025-07-02 15:37:45.233 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/aspnetcore-browser-refresh.js - null null
+2025-07-02 15:37:45.234 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/aspnetcore-browser-refresh.js - 200 16481 application/javascript; charset=utf-8 0.1661ms
+2025-07-02 15:37:45.243 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/dotnet.js - null null
+2025-07-02 15:37:45.244 -04:00 [INF] The file /_framework/dotnet.js.gz was not modified
+2025-07-02 15:37:45.244 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/dotnet.js.gz - 304 null text/javascript 0.4582ms
+2025-07-02 15:37:45.406 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/blazor.boot.json - null null
+2025-07-02 15:37:45.407 -04:00 [INF] The file /_framework/blazor.boot.json.gz was not modified
+2025-07-02 15:37:45.407 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/blazor.boot.json.gz - 304 null application/json 0.5261ms
+2025-07-02 15:37:45.436 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/dotnet.runtime.d1pzlaz2ez.js - null null
+2025-07-02 15:37:45.437 -04:00 [INF] The file /_framework/dotnet.runtime.d1pzlaz2ez.js.gz was not modified
+2025-07-02 15:37:45.437 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/dotnet.runtime.d1pzlaz2ez.js.gz - 304 null text/javascript 0.3181ms
+2025-07-02 15:37:45.441 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/dotnet.native.rtblh4npr3.js - null null
+2025-07-02 15:37:45.441 -04:00 [INF] The file /_framework/dotnet.native.rtblh4npr3.js.gz was not modified
+2025-07-02 15:37:45.441 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/dotnet.native.rtblh4npr3.js.gz - 304 null text/javascript 0.4019ms
+2025-07-02 15:37:45.504 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/appsettings.json - null null
+2025-07-02 15:37:45.504 -04:00 [INF] The file /appsettings.json was not modified
+2025-07-02 15:37:45.504 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/appsettings.json - 304 null application/json 0.3236ms
+2025-07-02 15:37:46.242 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/blazor-hotreload - null null
+2025-07-02 15:37:46.245 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/blazor-hotreload - 200 null null 3.1797ms
+2025-07-02 15:37:47.280 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/user/profile - null null
+2025-07-02 15:37:47.280 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api)'
+2025-07-02 15:37:47.282 -04:00 [INF] Route matched with {action = "GetUserProfile", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserProfile() on controller PoFastType.Api.Controllers.UserController (PoFastType.Api).
+2025-07-02 15:37:47.282 -04:00 [INF] Executing action method PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:37:47.282 -04:00 [INF] Getting profile for ANON user
+2025-07-02 15:37:47.299 -04:00 [INF] Retrieved user profile for ANON: 2 tests completed
+2025-07-02 15:37:47.299 -04:00 [INF] Executed action method PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 16.6823ms.
+2025-07-02 15:37:47.299 -04:00 [INF] Executing OkObjectResult, writing value of type 'PoFastType.Shared.Models.UserProfile'.
+2025-07-02 15:37:47.300 -04:00 [INF] Executed action PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api) in 18.2945ms
+2025-07-02 15:37:47.300 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.UserController.GetUserProfile (PoFastType.Api)'
+2025-07-02 15:37:47.301 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/user/profile - 200 null application/json; charset=utf-8 20.6578ms
+2025-07-02 15:37:47.502 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - null null
+2025-07-02 15:37:47.503 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:37:47.506 -04:00 [INF] Route matched with {action = "GetUserStats", controller = "Scores"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserStats() on controller PoFastType.Api.Controllers.ScoresController (PoFastType.Api).
+2025-07-02 15:37:47.507 -04:00 [INF] Executing action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:37:47.507 -04:00 [INF] Getting shared stats for ANON user
+2025-07-02 15:37:47.519 -04:00 [INF] Retrieved 2 game results for user ANON
+2025-07-02 15:37:47.519 -04:00 [INF] Retrieved 2 game results for ANON user
+2025-07-02 15:37:47.519 -04:00 [INF] Executed action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 12.5994ms.
+2025-07-02 15:37:47.520 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+OrderedIterator`2[[PoFastType.Shared.Models.GameResult, PoFastType.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.DateTime, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-02 15:37:47.520 -04:00 [INF] Executed action PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) in 13.9082ms
+2025-07-02 15:37:47.521 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:37:47.521 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - 200 null application/json; charset=utf-8 18.7676ms
+2025-07-02 15:37:49.514 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/service-worker.js - null null
+2025-07-02 15:37:49.515 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/service-worker.js - 404 0 null 0.5594ms
+2025-07-02 15:37:49.515 -04:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/service-worker.js, Response status code: 404
+2025-07-02 15:38:20.673 -04:00 [INF] Now listening on: http://localhost:5000
+2025-07-02 15:38:20.682 -04:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-07-02 15:38:20.682 -04:00 [INF] Hosting environment: Development
+2025-07-02 15:38:20.682 -04:00 [INF] Content root path: C:\Users\punko\Downloads\PoFastType\PoFastType.Api
+2025-07-02 15:38:20.791 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/ - null null
+2025-07-02 15:38:20.803 -04:00 [WRN] Failed to determine the https port for redirect.
+2025-07-02 15:38:20.809 -04:00 [INF] Executing endpoint 'Fallback {*path:nonfile}'
+2025-07-02 15:38:20.818 -04:00 [INF] Sending file. Request path: '/index.html'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\wwwroot\index.html'
+2025-07-02 15:38:20.819 -04:00 [INF] Executed endpoint 'Fallback {*path:nonfile}'
+2025-07-02 15:38:20.821 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/index.html - 200 null text/html 31.0743ms
+2025-07-02 15:38:20.827 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/?id=66ef27e4-821b-46db-8d15-45cc07e313a2&vscodeBrowserReqId=1751485100303 - null null
+2025-07-02 15:38:20.829 -04:00 [INF] Executing endpoint 'Fallback {*path:nonfile}'
+2025-07-02 15:38:20.830 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/blazor.webassembly.js - null null
+2025-07-02 15:38:20.830 -04:00 [INF] Sending file. Request path: '/index.html'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\wwwroot\index.html'
+2025-07-02 15:38:20.831 -04:00 [INF] Executed endpoint 'Fallback {*path:nonfile}'
+2025-07-02 15:38:20.833 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/index.html?id=66ef27e4-821b-46db-8d15-45cc07e313a2&vscodeBrowserReqId=1751485100303 - 200 1593 text/html 5.9235ms
+2025-07-02 15:38:20.837 -04:00 [INF] The file /_framework/blazor.webassembly.js.gz was not modified
+2025-07-02 15:38:20.839 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/blazor.webassembly.js.gz - 304 null text/javascript 9.5294ms
+2025-07-02 15:38:20.844 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/aspnetcore-browser-refresh.js - null null
+2025-07-02 15:38:20.845 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/aspnetcore-browser-refresh.js - 200 16481 application/javascript; charset=utf-8 0.9666ms
+2025-07-02 15:38:20.875 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/dotnet.js - null null
+2025-07-02 15:38:20.876 -04:00 [INF] The file /_framework/dotnet.js.gz was not modified
+2025-07-02 15:38:20.876 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/dotnet.js.gz - 304 null text/javascript 0.9997ms
+2025-07-02 15:38:20.885 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/dotnet.js - null null
+2025-07-02 15:38:20.885 -04:00 [INF] The file /_framework/dotnet.js.gz was not modified
+2025-07-02 15:38:20.885 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/dotnet.js.gz - 304 null text/javascript 0.7046ms
+2025-07-02 15:38:20.897 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/blazor.boot.json - null null
+2025-07-02 15:38:20.907 -04:00 [INF] Sending file. Request path: '/_framework/blazor.boot.json.gz'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\obj\Debug\net9.0\compressed\i1169h36t7-j4qw405je9.gz'
+2025-07-02 15:38:20.908 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/blazor.boot.json.gz - 200 13187 application/json 10.338ms
+2025-07-02 15:38:20.919 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/dotnet.runtime.d1pzlaz2ez.js - null null
+2025-07-02 15:38:20.919 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/dotnet.native.rtblh4npr3.js - null null
+2025-07-02 15:38:20.921 -04:00 [INF] The file /_framework/dotnet.native.rtblh4npr3.js.gz was not modified
+2025-07-02 15:38:20.922 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/blazor.boot.json - null null
+2025-07-02 15:38:20.922 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/dotnet.native.rtblh4npr3.js.gz - 304 null text/javascript 3.3041ms
+2025-07-02 15:38:20.924 -04:00 [INF] Sending file. Request path: '/_framework/blazor.boot.json.gz'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\obj\Debug\net9.0\compressed\i1169h36t7-j4qw405je9.gz'
+2025-07-02 15:38:20.924 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/blazor.boot.json.gz - 200 13187 application/json 2.5654ms
+2025-07-02 15:38:20.927 -04:00 [INF] The file /_framework/dotnet.runtime.d1pzlaz2ez.js.gz was not modified
+2025-07-02 15:38:20.927 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/dotnet.runtime.d1pzlaz2ez.js.gz - 304 null text/javascript 8.2372ms
+2025-07-02 15:38:20.937 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/appsettings.json - null null
+2025-07-02 15:38:20.938 -04:00 [INF] The file /appsettings.json was not modified
+2025-07-02 15:38:20.938 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/appsettings.json - 304 null application/json 0.9214ms
+2025-07-02 15:38:20.938 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Client.m9qs1ynizj.pdb - null null
+2025-07-02 15:38:20.952 -04:00 [INF] Sending file. Request path: '/_framework/PoFastType.Client.m9qs1ynizj.pdb.gz'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\obj\Debug\net9.0\compressed\9c821l085x-m9qs1ynizj.gz'
+2025-07-02 15:38:20.952 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Client.m9qs1ynizj.pdb.gz - 200 41656 application/octet-stream 14.0709ms
+2025-07-02 15:38:20.966 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/dotnet.runtime.d1pzlaz2ez.js - null null
+2025-07-02 15:38:20.966 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/dotnet.native.rtblh4npr3.js - null null
+2025-07-02 15:38:20.967 -04:00 [INF] The file /_framework/dotnet.native.rtblh4npr3.js.gz was not modified
+2025-07-02 15:38:20.967 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/dotnet.native.rtblh4npr3.js.gz - 304 null text/javascript 0.7758ms
+2025-07-02 15:38:20.967 -04:00 [INF] The file /_framework/dotnet.runtime.d1pzlaz2ez.js.gz was not modified
+2025-07-02 15:38:20.967 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/dotnet.runtime.d1pzlaz2ez.js.gz - 304 null text/javascript 1.4236ms
+2025-07-02 15:38:20.979 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/appsettings.json - null null
+2025-07-02 15:38:20.982 -04:00 [INF] The file /appsettings.json was not modified
+2025-07-02 15:38:20.982 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/appsettings.json - 304 null application/json 2.6707ms
+2025-07-02 15:38:20.982 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Client.m9qs1ynizj.pdb - null null
+2025-07-02 15:38:20.985 -04:00 [INF] Sending file. Request path: '/_framework/PoFastType.Client.m9qs1ynizj.pdb.gz'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\obj\Debug\net9.0\compressed\9c821l085x-m9qs1ynizj.gz'
+2025-07-02 15:38:20.985 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Client.m9qs1ynizj.pdb.gz - 200 41656 application/octet-stream 2.526ms
+2025-07-02 15:38:21.029 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Client.mb5xn3xj2s.wasm - null null
+2025-07-02 15:38:21.040 -04:00 [INF] Sending file. Request path: '/_framework/PoFastType.Client.mb5xn3xj2s.wasm.gz'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\obj\Debug\net9.0\compressed\tk1d0cgifh-mb5xn3xj2s.gz'
+2025-07-02 15:38:21.040 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Client.mb5xn3xj2s.wasm.gz - 200 28286 application/wasm 10.8357ms
+2025-07-02 15:38:21.042 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Client.mb5xn3xj2s.wasm - null null
+2025-07-02 15:38:21.043 -04:00 [INF] Sending file. Request path: '/_framework/PoFastType.Client.mb5xn3xj2s.wasm.gz'. Physical path: 'C:\Users\punko\Downloads\PoFastType\PoFastType.Client\obj\Debug\net9.0\compressed\tk1d0cgifh-mb5xn3xj2s.gz'
+2025-07-02 15:38:21.043 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/PoFastType.Client.mb5xn3xj2s.wasm.gz - 200 28286 application/wasm 1.4901ms
+2025-07-02 15:38:21.367 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/blazor-hotreload - null null
+2025-07-02 15:38:21.368 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/blazor-hotreload - 204 null null 0.9565ms
+2025-07-02 15:38:21.685 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/_framework/blazor-hotreload - null null
+2025-07-02 15:38:21.685 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/_framework/blazor-hotreload - 204 null null 0.2116ms
+2025-07-02 15:38:23.035 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/service-worker.js - null null
+2025-07-02 15:38:23.036 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/service-worker.js - 404 0 null 1.3562ms
+2025-07-02 15:38:23.037 -04:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/service-worker.js, Response status code: 404
+2025-07-02 15:38:23.663 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/service-worker.js - null null
+2025-07-02 15:38:23.669 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/service-worker.js - 404 0 null 5.9692ms
+2025-07-02 15:38:23.670 -04:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/service-worker.js, Response status code: 404
+2025-07-02 15:38:51.399 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/service-worker.js - null null
+2025-07-02 15:38:51.400 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/service-worker.js - 404 0 null 0.6197ms
+2025-07-02 15:38:51.400 -04:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/service-worker.js, Response status code: 404
+2025-07-02 15:39:36.607 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/service-worker.js - null null
+2025-07-02 15:39:36.609 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/service-worker.js - 404 0 null 2.336ms
+2025-07-02 15:39:36.609 -04:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/service-worker.js, Response status code: 404
+2025-07-02 15:42:50.461 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/ - null null
+2025-07-02 15:42:50.462 -04:00 [INF] Executing endpoint 'Fallback {*path:nonfile}'
+2025-07-02 15:42:50.462 -04:00 [INF] The file /index.html was not modified
+2025-07-02 15:42:50.462 -04:00 [INF] Executed endpoint 'Fallback {*path:nonfile}'
+2025-07-02 15:42:50.462 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/index.html - 304 null text/html 1.324ms
+2025-07-02 15:42:50.466 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/.well-known/appspecific/com.chrome.devtools.json - null null
+2025-07-02 15:42:50.466 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/.well-known/appspecific/com.chrome.devtools.json - 404 0 null 0.3434ms
+2025-07-02 15:42:50.466 -04:00 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5000/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+2025-07-02 15:42:52.939 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/game/text - null null
+2025-07-02 15:42:52.941 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.GameController.GetText (PoFastType.Api)'
+2025-07-02 15:42:52.957 -04:00 [INF] Route matched with {action = "GetText", controller = "Game"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetText() on controller PoFastType.Api.Controllers.GameController (PoFastType.Api).
+2025-07-02 15:42:52.961 -04:00 [INF] Executing action method PoFastType.Api.Controllers.GameController.GetText (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:42:52.963 -04:00 [INF] Generating new text for typing test
+2025-07-02 15:42:52.965 -04:00 [INF] Generating text using Hardcoded strategy
+2025-07-02 15:42:52.966 -04:00 [INF] Generating hardcoded text for typing practice
+2025-07-02 15:42:52.983 -04:00 [INF] Successfully generated hardcoded text with 592 characters
+2025-07-02 15:42:52.986 -04:00 [INF] Executed action method PoFastType.Api.Controllers.GameController.GetText (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 22.2456ms.
+2025-07-02 15:42:52.991 -04:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`2[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.DateTime, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-02 15:42:53.010 -04:00 [INF] Executed action PoFastType.Api.Controllers.GameController.GetText (PoFastType.Api) in 51.6979ms
+2025-07-02 15:42:53.011 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.GameController.GetText (PoFastType.Api)'
+2025-07-02 15:42:53.013 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/game/text - 200 null application/json; charset=utf-8 73.2769ms
+2025-07-02 15:43:01.328 -04:00 [INF] Request starting HTTP/1.1 POST http://localhost:5000/api/scores - application/json; charset=utf-8 407
+2025-07-02 15:43:01.330 -04:00 [INF] CORS policy execution successful.
+2025-07-02 15:43:01.331 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.ScoresController.SubmitScore (PoFastType.Api)'
+2025-07-02 15:43:01.336 -04:00 [INF] Route matched with {action = "SubmitScore", controller = "Scores"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] SubmitScore(PoFastType.Shared.Models.GameResult) on controller PoFastType.Api.Controllers.ScoresController (PoFastType.Api).
+2025-07-02 15:43:01.407 -04:00 [INF] Executing action method PoFastType.Api.Controllers.ScoresController.SubmitScore (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:43:01.409 -04:00 [INF] Submitting score for ANON user
+2025-07-02 15:43:01.531 -04:00 [INF] Game result added for user ANON: NetWPM=0.1776362535856207, Accuracy=1.5202702702702704%
+2025-07-02 15:43:01.531 -04:00 [INF] Game result submitted successfully for user ANON
+2025-07-02 15:43:01.531 -04:00 [INF] Score submitted successfully for ANON user
+2025-07-02 15:43:01.531 -04:00 [INF] Executed action method PoFastType.Api.Controllers.ScoresController.SubmitScore (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 123.7289ms.
+2025-07-02 15:43:01.532 -04:00 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType2`3[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Nullable`1[[System.DateTimeOffset, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-02 15:43:01.536 -04:00 [INF] Executed action PoFastType.Api.Controllers.ScoresController.SubmitScore (PoFastType.Api) in 199.5122ms
+2025-07-02 15:43:01.536 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.ScoresController.SubmitScore (PoFastType.Api)'
+2025-07-02 15:43:01.536 -04:00 [INF] Request finished HTTP/1.1 POST http://localhost:5000/api/scores - 200 null application/json; charset=utf-8 207.7787ms
+2025-07-02 15:43:07.521 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/scores/leaderboard?top=10 - null null
+2025-07-02 15:43:07.522 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.ScoresController.GetLeaderboard (PoFastType.Api)'
+2025-07-02 15:43:07.531 -04:00 [INF] Route matched with {action = "GetLeaderboard", controller = "Scores"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetLeaderboard(Int32) on controller PoFastType.Api.Controllers.ScoresController (PoFastType.Api).
+2025-07-02 15:43:07.546 -04:00 [INF] Executing action method PoFastType.Api.Controllers.ScoresController.GetLeaderboard (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:43:07.595 -04:00 [INF] Retrieved top 4 game results
+2025-07-02 15:43:07.595 -04:00 [INF] Retrieved leaderboard with 4 entries
+2025-07-02 15:43:07.595 -04:00 [INF] Executed action method PoFastType.Api.Controllers.ScoresController.GetLeaderboard (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 49.6085ms.
+2025-07-02 15:43:07.596 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+<SelectIterator>d__256`2[[PoFastType.Shared.Models.GameResult, PoFastType.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[PoFastType.Shared.Models.LeaderboardEntry, PoFastType.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-07-02 15:43:07.601 -04:00 [INF] Executed action PoFastType.Api.Controllers.ScoresController.GetLeaderboard (PoFastType.Api) in 69.6899ms
+2025-07-02 15:43:07.601 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.ScoresController.GetLeaderboard (PoFastType.Api)'
+2025-07-02 15:43:07.601 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/scores/leaderboard?top=10 - 200 null application/json; charset=utf-8 80.2388ms
+2025-07-02 15:43:08.919 -04:00 [INF] Request starting HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - null null
+2025-07-02 15:43:08.920 -04:00 [INF] Executing endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:43:08.928 -04:00 [INF] Route matched with {action = "GetUserStats", controller = "Scores"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUserStats() on controller PoFastType.Api.Controllers.ScoresController (PoFastType.Api).
+2025-07-02 15:43:08.932 -04:00 [INF] Executing action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) - Validation state: "Valid"
+2025-07-02 15:43:08.933 -04:00 [INF] Getting shared stats for ANON user
+2025-07-02 15:43:08.950 -04:00 [INF] Retrieved 3 game results for user ANON
+2025-07-02 15:43:08.950 -04:00 [INF] Retrieved 3 game results for ANON user
+2025-07-02 15:43:08.950 -04:00 [INF] Executed action method PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api), returned result Microsoft.AspNetCore.Mvc.OkObjectResult in 18.346ms.
+2025-07-02 15:43:08.950 -04:00 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+OrderedIterator`2[[PoFastType.Shared.Models.GameResult, PoFastType.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.DateTime, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-02 15:43:08.954 -04:00 [INF] Executed action PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api) in 26.3694ms
+2025-07-02 15:43:08.954 -04:00 [INF] Executed endpoint 'PoFastType.Api.Controllers.ScoresController.GetUserStats (PoFastType.Api)'
+2025-07-02 15:43:08.954 -04:00 [INF] Request finished HTTP/1.1 GET http://localhost:5000/api/scores/me/stats - 200 null application/json; charset=utf-8 35.1176ms

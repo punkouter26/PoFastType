@@ -1,8 +1,4 @@
-@using PoFastType.Client.Services
-@using PoFastType.Shared.Models
-@inject IUserService UserService
 @inject NavigationManager Navigation
-@implements IDisposable
 
 <nav class="navbar navbar-expand-lg navbar-dark retro-navbar">
     <div class="container-fluid">
@@ -12,13 +8,9 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
+        <div class="collapse navbar-collapse" id="navbarNav">            <ul class="navbar-nav me-auto">
                 <li class="nav-item">
                     <a class="nav-link retro-nav-link" href="/leaderboard">Leaderboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link retro-nav-link" href="/dashboard">Dashboard</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link retro-nav-link" href="/stats">Stats</a>
@@ -43,10 +35,5 @@
     protected override async Task OnInitializedAsync()
     {
         // No authentication needed - just static ANON user
-    }
-
-    public void Dispose()
-    {
-        // Nothing to dispose
     }
 }
