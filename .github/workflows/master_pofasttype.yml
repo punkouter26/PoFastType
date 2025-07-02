@@ -14,12 +14,16 @@ jobs:
     runs-on: windows-latest
     permissions:
       contents: read #This is required for actions/checkout
-
+    
     steps:
-      - uses: actions/checkout@v4      - name: Set up .NET Core
+      - uses: actions/checkout@v4
+      
+      - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'      - name: Install wasm-tools workload
+          dotnet-version: '9.0.x'
+      
+      - name: Install wasm-tools workload
         run: dotnet workload install wasm-tools
 
       - name: Verify project structure
@@ -37,7 +41,9 @@ jobs:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
           restore-keys: |
-            ${{ runner.os }}-nuget-      - name: Restore dependencies with retry
+            ${{ runner.os }}-nuget-
+      
+      - name: Restore dependencies with retry
         run: |
           $retryCount = 0
           $maxRetries = 3
@@ -61,7 +67,9 @@ jobs:
           }
 
       - name: Build with dotnet
-        run: dotnet build PoFastType.sln --configuration Release --no-restore      - name: dotnet publish
+        run: dotnet build PoFastType.sln --configuration Release --no-restore
+      
+      - name: dotnet publish
         run: |
           Write-Host "Publishing PoFastType.Api project..."
           dotnet publish PoFastType.Api/PoFastType.Api.csproj -c Release -o "./publish" --no-build --verbosity normal
@@ -101,4 +109,3 @@ jobs:
           app-name: 'PoFastType'
           slot-name: 'Production'
           package: .
-          
