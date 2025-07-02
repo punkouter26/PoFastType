@@ -16,12 +16,20 @@ jobs:
       contents: read #This is required for actions/checkout
 
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up .NET Core
+      - uses: actions/checkout@v4      - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'
+          dotnet-version: '9.0.x'      - name: Install wasm-tools workload
+        run: dotnet workload install wasm-tools
+
+      - name: Verify project structure
+        run: |
+          Write-Host "Solution file exists: $(Test-Path 'PoFastType.sln')"
+          Write-Host "API project exists: $(Test-Path 'PoFastType.Api/PoFastType.Api.csproj')"
+          Write-Host "Client project exists: $(Test-Path 'PoFastType.Client/PoFastType.Client.csproj')"
+          Write-Host "Shared project exists: $(Test-Path 'PoFastType.Shared/PoFastType.Shared.csproj')"
+          Get-ChildItem -Path . -Filter "*.sln" | ForEach-Object { Write-Host "Found solution: $($_.Name)" }
+          Get-ChildItem -Path . -Recurse -Filter "*.csproj" | ForEach-Object { Write-Host "Found project: $($_.FullName)" }
 
       - name: Cache NuGet packages
         uses: actions/cache@v4
@@ -29,16 +37,14 @@ jobs:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
           restore-keys: |
-            ${{ runner.os }}-nuget-
-
-      - name: Restore dependencies with retry
+            ${{ runner.os }}-nuget-      - name: Restore dependencies with retry
         run: |
           $retryCount = 0
           $maxRetries = 3
           do {
             $retryCount++
             Write-Host "Restore attempt $retryCount of $maxRetries"
-            dotnet restore --verbosity normal --source https://api.nuget.org/v3/index.json
+            dotnet restore PoFastType.sln --verbosity normal --source https://api.nuget.org/v3/index.json
             if ($LASTEXITCODE -eq 0) {
               Write-Host "Restore successful"
               break
@@ -55,10 +61,12 @@ jobs:
           }
 
       - name: Build with dotnet
-        run: dotnet build --configuration Release --no-restore
-
-      - name: dotnet publish
-        run: dotnet publish -c Release -o "./publish" --no-build
+        run: dotnet build PoFastType.sln --configuration Release --no-restore      - name: dotnet publish
+        run: |
+          Write-Host "Publishing PoFastType.Api project..."
+          dotnet publish PoFastType.Api/PoFastType.Api.csproj -c Release -o "./publish" --no-build --verbosity normal
+          Write-Host "Publish completed. Checking output directory..."
+          Get-ChildItem -Path "./publish" -Recurse | Select-Object FullName, Length | Format-Table -AutoSize
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
