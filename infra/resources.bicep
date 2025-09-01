@@ -18,7 +18,7 @@ var resourceToken = uniqueString(subscription().id, location, environmentName)
 
 // Create a new App Service Plan for this application (S1 Standard tier)
 resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
-  name: 'asp-pofasttype-${resourceToken}'
+  name: 'PoFastType'
   location: location
   tags: tags
   sku: {
@@ -41,14 +41,14 @@ resource existingAppInsights 'Microsoft.Insights/components@2020-02-02' existing
 
 // Create a user-assigned managed identity
 resource userAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
-  name: 'pofasttype-identity-${resourceToken}'
+  name: 'PoFastType-identity'
   location: location
   tags: tags
 }
 
 // Create the App Service for PoFastType
 resource webApp 'Microsoft.Web/sites@2022-03-01' = {
-  name: 'pofasttype-${resourceToken}'
+  name: 'PoFastType'
   location: location
   tags: union(tags, { 'azd-service-name': 'pofasttype-api' })
   kind: 'app'
