@@ -24,7 +24,7 @@ public class GameService : IGameService
         // Validate input parameters
         if (string.IsNullOrEmpty(userId))
             throw new ArgumentException("User ID cannot be null or empty", nameof(userId));
-        
+
         if (string.IsNullOrEmpty(username))
             throw new ArgumentException("Username cannot be null or empty", nameof(username));
 
@@ -47,7 +47,7 @@ public class GameService : IGameService
             gameResult.Timestamp = DateTime.UtcNow;
 
             var result = await _gameResultRepository.AddAsync(gameResult);
-            
+
             _logger.LogInformation("Game result submitted successfully for user {UserId}", userId);
             return result;
         }
@@ -82,7 +82,7 @@ public class GameService : IGameService
         try
         {
             var topResults = await _gameResultRepository.GetTopResultsAsync(topCount);
-              return topResults.Select((result, index) => new LeaderboardEntry
+            return topResults.Select((result, index) => new LeaderboardEntry
             {
                 Rank = index + 1,
                 Username = result.Username,

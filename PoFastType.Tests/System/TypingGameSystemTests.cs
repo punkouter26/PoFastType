@@ -52,14 +52,14 @@ public class TypingGameSystemTests : IDisposable
         // Act & Assert - Step 1: Get text for typing test
         var textResponse = await _client.GetAsync("/api/game/text");
         textResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        
+
         var textContent = await textResponse.Content.ReadAsStringAsync();
         textContent.Should().Contain(generatedText);
 
         // Act & Assert - Step 2: Check initial leaderboard (should be empty)
         var initialLeaderboardResponse = await _client.GetAsync("/api/scores/leaderboard");
         initialLeaderboardResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        
+
         var initialLeaderboard = await initialLeaderboardResponse.Content.ReadFromJsonAsync<List<LeaderboardEntry>>();
         initialLeaderboard.Should().BeEmpty();
 
@@ -119,7 +119,8 @@ public class TypingGameSystemTests : IDisposable
 
         // Assert
         responses.Should().OnlyContain(r => r.StatusCode == HttpStatusCode.OK);
-    }    [Fact]
+    }
+    [Fact]
     public async Task InvalidApiRoutes_ShouldReturnFallbackContent_WhenAccessed()
     {
         // Act & Assert - Invalid routes should be caught by the fallback route

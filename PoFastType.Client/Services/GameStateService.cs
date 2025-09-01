@@ -12,12 +12,12 @@ public class GameStateService
     /// Event fired when a new score is submitted successfully
     /// </summary>
     public event Action? ScoreSubmitted;
-    
+
     /// <summary>
     /// Event fired when leaderboard should refresh
     /// </summary>
     public event Action? LeaderboardRefreshRequested;
-    
+
     /// <summary>
     /// Event fired when user stats should refresh
     /// </summary>

@@ -1,0 +1,79 @@
+classDiagram
+    class GameResult {
+        +string PartitionKey
+        +string RowKey
+        +DateTimeOffset? Timestamp
+        +ETag ETag
+        +string Username
+        +double NetWPM
+        +double Accuracy
+        +double GrossWPM
+        +double CompositeScore
+        +string ProblemKeysJson
+        +DateTime GameTimestamp
+    }
+    
+    class UserProfile {
+        +string UserId
+        +string Username
+        +string Email
+        +DateTime CreatedAt
+        +DateTime LastLoginAt
+        +int TotalTestsCompleted
+        +double BestNetWPM
+        +double AverageNetWPM
+        +double AverageAccuracy
+        +TimeSpan TotalTypingTime
+        +Dictionary~string, int~ ProblemKeys
+    }
+    
+    class UserIdentity {
+        +string UserId
+        +string Username
+        +bool IsAuthenticated
+        +string SessionId
+        +DateTime SessionStartTime
+    }
+    
+    class LeaderboardEntry {
+        +string Username
+        +double CompositeScore
+        +double NetWPM
+        +double Accuracy
+        +DateTime GameTimestamp
+        +int Rank
+    }
+    
+    class UserGameResult {
+        +string UserId
+        +string Username
+        +List~GameResult~ RecentGames
+        +UserProfile Profile
+        +GameStatistics Statistics
+    }
+    
+    class GameStatistics {
+        +double AverageWPM
+        +double BestWPM
+        +double AverageAccuracy
+        +int TotalTests
+        +TimeSpan TotalTime
+        +Dictionary~string, int~ CommonMistakes
+    }
+    
+    class ITableEntity {
+        <<interface>>
+        +string PartitionKey
+        +string RowKey
+        +DateTimeOffset? Timestamp
+        +ETag ETag
+    }
+    
+    %% Relationships
+    UserProfile --> GameResult
+    UserIdentity --> UserProfile
+    UserGameResult --> UserProfile
+    UserGameResult --> GameResult
+    UserGameResult --> GameStatistics
+    GameResult --> LeaderboardEntry
+    GameResult ..|> ITableEntity

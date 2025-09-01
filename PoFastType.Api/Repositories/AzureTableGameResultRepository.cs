@@ -13,19 +13,20 @@ namespace PoFastType.Api.Repositories;
 public class AzureTableGameResultRepository : IGameResultRepository
 {
     private readonly TableClient _tableClient;
-    private readonly ILogger<AzureTableGameResultRepository> _logger;    public AzureTableGameResultRepository(IConfiguration configuration, ILogger<AzureTableGameResultRepository> logger)
+    private readonly ILogger<AzureTableGameResultRepository> _logger; public AzureTableGameResultRepository(IConfiguration configuration, ILogger<AzureTableGameResultRepository> logger)
     {
         if (configuration == null) throw new ArgumentNullException(nameof(configuration));
         if (logger == null) throw new ArgumentNullException(nameof(logger));
-        
-        var connectionString = configuration["AzureTableStorage:ConnectionString"] 
+
+        var connectionString = configuration["AzureTableStorage:ConnectionString"]
             ?? throw new InvalidOperationException("Azure Table Storage connection string is required");
-        var tableName = configuration["AzureTableStorage:TableName"] 
+        var tableName = configuration["AzureTableStorage:TableName"]
             ?? throw new InvalidOperationException("Azure Table Storage table name is required");
 
         _tableClient = new TableClient(connectionString, tableName);
         _logger = logger;
-    }    public async Task<GameResult> AddAsync(GameResult gameResult)
+    }
+    public async Task<GameResult> AddAsync(GameResult gameResult)
     {
         try
         {
@@ -54,17 +55,19 @@ public class AzureTableGameResultRepository : IGameResultRepository
             };
 
             await _tableClient.AddEntityAsync(entity);
-            
-            _logger.LogInformation("Game result added for user {UserId}: NetWPM={NetWPM}, Accuracy={Accuracy}%", 
+
+            _logger.LogInformation("Game result added for user {UserId}: NetWPM={NetWPM}, Accuracy={Accuracy}%",
                 gameResult.PartitionKey, gameResult.NetWPM, gameResult.Accuracy);
 
-            return gameResult;        }
+            return gameResult;
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to add game result for user {UserId}", gameResult?.PartitionKey ?? "null");
             throw;
         }
-    }    public async Task<IEnumerable<GameResult>> GetUserResultsAsync(string userId)
+    }
+    public async Task<IEnumerable<GameResult>> GetUserResultsAsync(string userId)
     {
         if (string.IsNullOrWhiteSpace(userId))
             throw new ArgumentException("User ID cannot be null or empty", nameof(userId));
@@ -79,7 +82,8 @@ public class AzureTableGameResultRepository : IGameResultRepository
             await foreach (var entity in query)
             {
                 results.Add(MapFromTableEntity(entity));
-            }            _logger.LogInformation("Retrieved {Count} game results for user {UserId}", results.Count, userId);
+            }
+            _logger.LogInformation("Retrieved {Count} game results for user {UserId}", results.Count, userId);
             return results.OrderByDescending(r => r.GameTimestamp);
         }
         catch (Exception ex)
@@ -87,7 +91,8 @@ public class AzureTableGameResultRepository : IGameResultRepository
             _logger.LogError(ex, "Failed to retrieve game results for user {UserId}", userId);
             throw;
         }
-    }    public async Task<IEnumerable<GameResult>> GetTopResultsAsync(int count)
+    }
+    public async Task<IEnumerable<GameResult>> GetTopResultsAsync(int count)
     {
         if (count <= 0 || count > 100)
             throw new ArgumentException("Count must be between 1 and 100", nameof(count));
@@ -132,7 +137,8 @@ public class AzureTableGameResultRepository : IGameResultRepository
             _logger.LogError(ex, "Failed to check existence for user {UserId}, rowKey {RowKey}", userId, rowKey);
             return false;
         }
-    }    private static GameResult MapFromTableEntity(TableEntity entity)
+    }
+    private static GameResult MapFromTableEntity(TableEntity entity)
     {
         return new GameResult
         {

@@ -74,7 +74,7 @@ public class TextGenerationServiceTests
     public void Constructor_ShouldThrowArgumentNullException_WhenStrategyIsNull()
     {
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => 
+        Assert.Throws<ArgumentNullException>(() =>
             new TextGenerationService(null!, _mockLogger.Object));
     }
 
@@ -82,7 +82,7 @@ public class TextGenerationServiceTests
     public void Constructor_ShouldThrowArgumentNullException_WhenLoggerIsNull()
     {
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => 
+        Assert.Throws<ArgumentNullException>(() =>
             new TextGenerationService(_mockStrategy.Object, null!));
     }
 }

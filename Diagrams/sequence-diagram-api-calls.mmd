@@ -1,0 +1,59 @@
+sequenceDiagram
+    participant U as User (Browser)
+    participant C as Blazor Client
+    participant API as API Controller
+    participant GS as GameService
+    participant TGS as TextGenerationService
+    participant UIS as UserIdentityService
+    participant R as Repository
+    participant AT as Azure Table Storage
+    
+    Note over U,AT: Starting a New Typing Game
+    
+    U->>C: Click "Start New Game"
+    C->>API: POST /api/game/start
+    
+    API->>UIS: GetUserIdentity()
+    UIS-->>API: UserIdentity
+    
+    API->>TGS: GenerateText()
+    TGS->>TGS: Apply selected strategy
+    TGS-->>API: Generated text
+    
+    API->>GS: StartGame(userId, text)
+    GS-->>API: GameSession
+    
+    API-->>C: Game data (text, session)
+    C-->>U: Display typing interface
+    
+    Note over U,AT: User Types and Submits Result
+    
+    U->>C: Complete typing test
+    C->>C: Calculate WPM, accuracy
+    C->>API: POST /api/game/submit
+    
+    API->>UIS: ValidateUser()
+    UIS-->>API: User validation
+    
+    API->>GS: ProcessGameResult(result)
+    GS->>GS: Calculate composite score
+    GS->>R: SaveGameResult(gameResult)
+    
+    R->>AT: Insert Entity
+    AT-->>R: Success/Failure
+    R-->>GS: Save result
+    
+    GS-->>API: Processed result
+    API-->>C: Game completion response
+    C-->>U: Show results & stats
+    
+    Note over U,AT: Error Handling
+    
+    alt Storage Error
+        AT-->>R: Error
+        R-->>GS: Repository exception
+        GS-->>API: Service exception
+        API->>API: Global exception handler
+        API-->>C: Error response
+        C-->>U: Display error message
+    end

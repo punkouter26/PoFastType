@@ -94,8 +94,8 @@ public class HardcodedTextStrategyTests
         }
 
         // Assert
-        results.Should().OnlyContain(text => 
-            text.Length > 100 && 
+        results.Should().OnlyContain(text =>
+            text.Length > 100 &&
             text.Contains(' ') && // Should contain spaces for word separation
             !text.Contains('\n') && // Should not contain line breaks
             !text.Contains('\t')); // Should not contain tabs

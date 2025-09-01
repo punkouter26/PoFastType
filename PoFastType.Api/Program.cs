@@ -1,20 +1,36 @@
 using PoFastType.Api.Services;
 using PoFastType.Api.Repositories;
+using PoFastType.Api.Middleware;
 using PoFastType.Shared.Models;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Serilog.Formatting.Compact;
+using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure Serilog for file logging to create a single log.txt file (overwrite each run)
+// Ensure DEBUG directory exists
+var debugPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "DEBUG");
+Directory.CreateDirectory(debugPath);
+
+// Configure Serilog with structured JSON logging and overwrite behavior
 Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console()
-    .WriteTo.File("log.txt", 
+    .MinimumLevel.Debug()
+    .WriteTo.Console(new CompactJsonFormatter())
+    .WriteTo.File(
+        new CompactJsonFormatter(),
+        Path.Combine(debugPath, "log.txt"),
         rollingInterval: RollingInterval.Infinite,
         rollOnFileSizeLimit: false,
-        shared: true,
+        shared: false,
+        buffered: false,
         flushToDiskInterval: TimeSpan.FromSeconds(1))
+    .Enrich.WithProperty("Application", "PoFastType")
+    .Enrich.WithProperty("Environment", builder.Environment.EnvironmentName)
     .CreateLogger();
+
+// Log application startup
+Log.Information("PoFastType application starting up at {Timestamp}", DateTime.UtcNow);
 
 builder.Host.UseSerilog();
 
@@ -49,7 +65,8 @@ builder.Services.AddCors(options =>
                       .AllowAnyHeader()
                       .AllowAnyMethod()
                       .AllowCredentials();
-            }            else
+            }
+            else
             {
                 // In production, be more restrictive
                 policy.WithOrigins("https://pofasttype.azurewebsites.net")
@@ -67,10 +84,16 @@ builder.Services.AddScoped<IGameResultRepository, AzureTableGameResultRepository
 builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<ITextGenerationStrategy, HardcodedTextStrategy>();
 builder.Services.AddScoped<ITextGenerationService, TextGenerationService>();
-builder.Services.AddScoped<IUserIdentityService>(provider => 
+builder.Services.AddScoped<IUserIdentityService>(provider =>
     new UserIdentityService(provider.GetRequiredService<ILogger<UserIdentityService>>()));
 
 var app = builder.Build();
+
+// Add global exception handling middleware first
+app.UseMiddleware<GlobalExceptionMiddleware>();
+
+// Add request logging middleware
+app.UseMiddleware<RequestLoggingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -98,7 +121,24 @@ app.MapControllers();
 // Fallback to serve the Blazor WebAssembly app for non-API routes
 app.MapFallbackToFile("index.html");
 
-app.Run();
+// Log application ready state
+Log.Information("PoFastType application configured and ready to serve requests");
+
+try
+{
+    Log.Information("Starting PoFastType web host");
+    app.Run();
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "PoFastType application terminated unexpectedly");
+    throw;
+}
+finally
+{
+    Log.Information("PoFastType application shutting down at {Timestamp}", DateTime.UtcNow);
+    Log.CloseAndFlush();
+}
 
 // Make Program class accessible for testing
 public partial class Program { }

@@ -169,3 +169,4 @@ publish/
 infra/*.json
 !infra/main.parameters.json
 !infra/main.staging.parameters.json
+.azure

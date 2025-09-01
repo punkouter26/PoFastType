@@ -21,7 +21,7 @@ public class AzureTableGameResultRepositoryTests
     {
         _mockConfiguration = new Mock<IConfiguration>();
         _mockLogger = new Mock<ILogger<AzureTableGameResultRepository>>();
-        
+
         // Setup configuration mock
         _mockConfiguration.Setup(x => x["AzureTableStorage:ConnectionString"])
                          .Returns("UseDevelopmentStorage=true");
@@ -46,7 +46,7 @@ public class AzureTableGameResultRepositoryTests
         mockConfig.Setup(x => x["AzureTableStorage:TableName"]).Returns("TestTable");
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => 
+        Assert.Throws<InvalidOperationException>(() =>
             new AzureTableGameResultRepository(mockConfig.Object, _mockLogger.Object));
     }
 
@@ -59,7 +59,7 @@ public class AzureTableGameResultRepositoryTests
         mockConfig.Setup(x => x["AzureTableStorage:TableName"]).Returns((string)null!);
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => 
+        Assert.Throws<InvalidOperationException>(() =>
             new AzureTableGameResultRepository(mockConfig.Object, _mockLogger.Object));
     }
 
@@ -67,7 +67,7 @@ public class AzureTableGameResultRepositoryTests
     public void Constructor_ShouldThrowArgumentNullException_WhenConfigurationIsNull()
     {
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => 
+        Assert.Throws<ArgumentNullException>(() =>
             new AzureTableGameResultRepository(null!, _mockLogger.Object));
     }
 
@@ -75,7 +75,7 @@ public class AzureTableGameResultRepositoryTests
     public void Constructor_ShouldThrowArgumentNullException_WhenLoggerIsNull()
     {
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => 
+        Assert.Throws<ArgumentNullException>(() =>
             new AzureTableGameResultRepository(_mockConfiguration.Object, null!));
     }
 

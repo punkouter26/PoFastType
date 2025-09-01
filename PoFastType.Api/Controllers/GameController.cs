@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PoFastType.Api.Services;
+using Serilog;
 
 namespace PoFastType.Api.Controllers;
 
@@ -29,23 +30,33 @@ public class GameController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetText()
     {
+        var requestId = HttpContext.TraceIdentifier;
+        var userIP = HttpContext.Connection.RemoteIpAddress?.ToString();
+        
         try
         {
+            Log.Information("User action: Text generation requested by {UserIP} (RequestId: {RequestId})", userIP, requestId);
             _logger.LogInformation("Generating new text for typing test");
-            var text = await _textGenerationService.GenerateTextAsync();
             
+            var text = await _textGenerationService.GenerateTextAsync();
+
+            Log.Information("Game state change: New text generated with length {TextLength} for user {UserIP} (RequestId: {RequestId})", 
+                text.Length, userIP, requestId);
+
             return Ok(new { text, timestamp = DateTime.UtcNow });
         }
         catch (InvalidOperationException ex)
         {
+            Log.Warning(ex, "Text generation failed for user {UserIP} - Invalid operation (RequestId: {RequestId})", userIP, requestId);
             _logger.LogWarning(ex, "Invalid operation when generating text");
-            return StatusCode(StatusCodes.Status500InternalServerError, 
+            return StatusCode(StatusCodes.Status500InternalServerError,
                 new { error = "Text generation is currently unavailable" });
         }
         catch (Exception ex)
         {
+            Log.Error(ex, "Text generation failed for user {UserIP} - Unexpected error (RequestId: {RequestId})", userIP, requestId);
             _logger.LogError(ex, "Unexpected error generating text for typing test");
-            return StatusCode(StatusCodes.Status500InternalServerError, 
+            return StatusCode(StatusCodes.Status500InternalServerError,
                 new { error = "An unexpected error occurred" });
         }
     }

@@ -13,4 +13,4 @@ public class UserProfile
     public double AverageAccuracy { get; set; }
     public TimeSpan TotalTypingTime { get; set; }
     public Dictionary<string, int> ProblemKeys { get; set; } = new();
-} 
+}

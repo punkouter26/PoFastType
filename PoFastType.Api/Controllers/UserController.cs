@@ -15,13 +15,13 @@ public class UserController : ControllerBase
     private readonly IUserIdentityService _identityService;
 
     public UserController(
-        IConfiguration configuration, 
+        IConfiguration configuration,
         ILogger<UserController> logger,
         IUserIdentityService identityService)
     {
         var connectionString = configuration["AzureTableStorage:ConnectionString"];
         var tableName = configuration["AzureTableStorage:TableName"];
-        
+
         if (string.IsNullOrEmpty(connectionString) || string.IsNullOrEmpty(tableName))
         {
             throw new InvalidOperationException("Azure Table Storage configuration is missing");
@@ -30,13 +30,15 @@ public class UserController : ControllerBase
         _tableClient = new TableClient(connectionString, tableName);
         _logger = logger;
         _identityService = identityService;
-    }    [HttpGet("profile")]
+    }
+    [HttpGet("profile")]
     public async Task<IActionResult> GetUserProfile()
-    {        try
+    {
+        try
         {
             // Always use ANON user
             var userIdentity = _identityService.GetCurrentUserIdentity(HttpContext);
-            
+
             _logger.LogInformation("Getting profile for ANON user");
 
             // Query all scores for ANON user to calculate statistics
@@ -76,7 +78,7 @@ public class UserController : ControllerBase
                 TotalTypingTime = TimeSpan.FromMinutes(userScores.Count * 1.0) // Assuming 1 minute per test
             };
 
-            _logger.LogInformation("Retrieved user profile for {UserId}: {TestsCompleted} tests completed", 
+            _logger.LogInformation("Retrieved user profile for {UserId}: {TestsCompleted} tests completed",
                 userIdentity.UserId, profile.TotalTestsCompleted);
 
             return Ok(profile);
@@ -86,14 +88,15 @@ public class UserController : ControllerBase
             _logger.LogError(ex, "Error retrieving user profile");
             return StatusCode(500, new { error = "Failed to retrieve user profile" });
         }
-    }    [HttpGet("identity")]
+    }
+    [HttpGet("identity")]
     public IActionResult GetUserIdentity()
     {
         try
         {
             // Always return ANON user identity
             var userIdentity = _identityService.GetCurrentUserIdentity(HttpContext);
-            
+
             _logger.LogInformation("Getting identity for ANON user");
 
             return Ok(userIdentity);

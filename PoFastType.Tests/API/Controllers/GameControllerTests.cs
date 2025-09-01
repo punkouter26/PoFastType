@@ -135,7 +135,7 @@ public class GameControllerTests : IDisposable
         // Arrange
         var texts = new[] { "First text", "Second text", "Third text" };
         var callCount = 0;
-        
+
         _factory.MockTextGenerationStrategy?
                .Setup(x => x.GenerateTextAsync())
                .ReturnsAsync(() => texts[callCount++ % texts.Length]);
@@ -150,7 +150,7 @@ public class GameControllerTests : IDisposable
         // Assert
         response1.StatusCode.Should().Be(HttpStatusCode.OK);
         response2.StatusCode.Should().Be(HttpStatusCode.OK);
-        
+
         var content1 = await response1.Content.ReadAsStringAsync();
         var content2 = await response2.Content.ReadAsStringAsync();
         content1.Should().NotBe(content2);
@@ -173,7 +173,8 @@ public class GameControllerTests : IDisposable
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-    }    [Fact]
+    }
+    [Fact]
     public async Task GetText_ShouldReturnFallbackContent_WhenInvalidRoute()
     {
         // Act

@@ -21,7 +21,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         builder.ConfigureServices(services =>
         {
             // Remove the existing services
-            var descriptors = services.Where(d => 
+            var descriptors = services.Where(d =>
                 d.ServiceType == typeof(IGameResultRepository) ||
                 d.ServiceType == typeof(ITextGenerationStrategy))
                 .ToList();

@@ -1,0 +1,39 @@
+graph TD
+    subgraph "PoFastType Solution"
+        API[PoFastType.Api<br/>ASP.NET Core Web API]
+        CLIENT[PoFastType.Client<br/>Blazor WebAssembly]
+        SHARED[PoFastType.Shared<br/>Class Library]
+        TESTS[PoFastType.Tests<br/>Test Project]
+    end
+    
+    subgraph "External Dependencies"
+        AZURITE[Azurite<br/>Local Storage Emulator]
+        AZURE[Azure Table Storage<br/>Production Database]
+    end
+    
+    %% Project References
+    API --> SHARED
+    CLIENT --> SHARED
+    TESTS --> API
+    TESTS --> CLIENT
+    TESTS --> SHARED
+    
+    %% External Dependencies
+    API --> AZURITE
+    API --> AZURE
+    
+    %% Hosting Relationship
+    API -.->|Hosts| CLIENT
+    
+    %% Styling
+    classDef apiStyle fill:#ff6b6b,stroke:#d63031,stroke-width:2px,color:#fff
+    classDef clientStyle fill:#74b9ff,stroke:#0984e3,stroke-width:2px,color:#fff
+    classDef sharedStyle fill:#fdcb6e,stroke:#e17055,stroke-width:2px,color:#fff
+    classDef testStyle fill:#a29bfe,stroke:#6c5ce7,stroke-width:2px,color:#fff
+    classDef externalStyle fill:#fd79a8,stroke:#e84393,stroke-width:2px,color:#fff
+    
+    class API apiStyle
+    class CLIENT clientStyle
+    class SHARED sharedStyle
+    class TESTS testStyle
+    class AZURITE,AZURE externalStyle

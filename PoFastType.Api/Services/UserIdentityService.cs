@@ -9,7 +9,8 @@ public class UserIdentityService : IUserIdentityService
     public UserIdentityService(ILogger<UserIdentityService> logger)
     {
         _logger = logger;
-    }    public UserIdentity GetCurrentUserIdentity(HttpContext httpContext)
+    }
+    public UserIdentity GetCurrentUserIdentity(HttpContext httpContext)
     {
         // Always return ANON user - no authentication
         _logger.LogDebug("Returning ANON user identity");

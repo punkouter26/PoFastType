@@ -1,0 +1,56 @@
+flowchart TD
+    A[User visits Home page] --> B{Is game active?}
+    
+    B -->|No| C["Show Start New Game button"]
+    B -->|Yes| D[Display typing interface]
+    
+    C --> E[User clicks Start New Game]
+    E --> F[Call API to generate text]
+    F --> G{API call successful?}
+    
+    G -->|No| H[Display error message]
+    G -->|Yes| I[Initialize game state]
+    
+    I --> J[Start timer]
+    J --> K[Enable text input]
+    K --> L[User begins typing]
+    
+    L --> M[Track keystrokes in real-time]
+    M --> N[Update WPM/accuracy display]
+    
+    N --> O{Text completed?}
+    O -->|No| P{User wants to restart?}
+    O -->|Yes| Q[Stop timer]
+    
+    P -->|Yes| R[Reset game state]
+    P -->|No| L
+    R --> I
+    
+    Q --> S[Calculate final stats]
+    S --> T[Submit results to API]
+    T --> U{Submission successful?}
+    
+    U -->|No| V[Show error, offer retry]
+    U -->|Yes| W[Display final results]
+    
+    W --> X[Update user statistics]
+    X --> Y["Show Play Again option"]
+    
+    Y --> Z{User plays again?}
+    Z -->|Yes| E
+    Z -->|No| AA[Return to main menu]
+    
+    H --> BB[Offer retry option]
+    BB --> E
+    V --> T
+    
+    %% Styling
+    classDef startEnd fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    classDef process fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    classDef decision fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    classDef error fill:#ffebee,stroke:#c62828,stroke-width:2px
+    
+    class A,AA startEnd
+    class C,E,F,I,J,K,L,M,N,Q,S,T,W,X,Y process
+    class B,G,O,P,U,Z decision
+    class H,V,BB error

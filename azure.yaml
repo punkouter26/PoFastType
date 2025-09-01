@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+
+name: po-fast-type
+metadata:
+    template: azd-init@1.18.2
+services:
+    pofasttype-api:
+        project: PoFastType.Api
+        host: appservice
+        language: dotnet
+resources:
+    pofasttype-api:
+        type: host.appservice
+        runtime:
+            type: dotnet
+            version: '9.0'

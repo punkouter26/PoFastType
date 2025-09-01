@@ -10,8 +10,8 @@ public class TextGenerationService : ITextGenerationService
     private readonly ITextGenerationStrategy _strategy;
     private readonly ILogger<TextGenerationService> _logger;
 
-    public TextGenerationService(ITextGenerationStrategy strategy, ILogger<TextGenerationService> logger) 
-    { 
+    public TextGenerationService(ITextGenerationStrategy strategy, ILogger<TextGenerationService> logger)
+    {
         _strategy = strategy ?? throw new ArgumentNullException(nameof(strategy));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
@@ -22,7 +22,7 @@ public class TextGenerationService : ITextGenerationService
         {
             _logger.LogInformation("Generating text using {Strategy} strategy", _strategy.StrategyName);
             var text = await _strategy.GenerateTextAsync();
-            
+
             if (string.IsNullOrEmpty(text))
             {
                 _logger.LogWarning("Text generation strategy returned null or empty text");

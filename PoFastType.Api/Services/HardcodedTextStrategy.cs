@@ -20,7 +20,7 @@ namespace PoFastType.Api.Services
         public async Task<string> GenerateTextAsync()
         {
             _logger.LogInformation("Generating hardcoded text for typing practice");
-            
+
             var texts = new List<string>
             {
                 "The quick brown fox jumps over the lazy dog. This pangram contains every letter of the alphabet at least once. It has been used for typing practice for decades because it covers all the keys on a keyboard. When practicing typing, it's important to focus on accuracy first, then speed. Many professional typists can type this sentence at speeds exceeding 100 words per minute while maintaining perfect accuracy. The sentence demonstrates proper finger placement across all keyboard zones including the home row, upper row, and lower row. Regular practice with varied text improves muscle memory and typing fluency. Whether you're a beginner learning to type or an expert honing your skills, consistent practice with diverse content will help you achieve your typing goals. Remember that typing is a skill that improves with deliberate practice and patience.",
@@ -35,7 +35,7 @@ namespace PoFastType.Api.Services
             var text = texts[index];
 
             await Task.Delay(10); // Simulate async operation
-            
+
             _logger.LogInformation("Successfully generated hardcoded text with {Length} characters", text.Length);
             return text.Trim();
         }

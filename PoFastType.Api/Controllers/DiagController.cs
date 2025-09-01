@@ -127,7 +127,7 @@ public class DiagController : ControllerBase
         var openAIStatus = new DiagCheckResult { Name = "Azure OpenAI" };
         try
         {
-            var endpoint = _configuration["AzureOpenAI:Endpoint"];            if (!string.IsNullOrEmpty(endpoint))
+            var endpoint = _configuration["AzureOpenAI:Endpoint"]; if (!string.IsNullOrEmpty(endpoint))
             {
                 using var httpClient = _httpClientFactory.CreateClient();
                 httpClient.Timeout = TimeSpan.FromSeconds(10);
@@ -149,7 +149,7 @@ public class DiagController : ControllerBase
             openAIStatus.Message = "Cannot reach Azure OpenAI service";
             _logger.LogError(ex, "[Diag] Azure OpenAI check failed");
         }
-        results.Add(openAIStatus);        _logger.LogInformation("[Diag] Diagnostic checks completed. Overall status: {Status}", allOk ? "OK" : "Issues detected");
+        results.Add(openAIStatus); _logger.LogInformation("[Diag] Diagnostic checks completed. Overall status: {Status}", allOk ? "OK" : "Issues detected");
 
         var response = new DiagHealthResponse
         {

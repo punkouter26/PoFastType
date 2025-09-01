@@ -45,11 +45,11 @@ public class ScoresControllerTests : IDisposable
 
         _factory.MockGameResultRepository?
                .Setup(x => x.GetTopResultsAsync(It.IsAny<int>()))
-               .ReturnsAsync(leaderboardData.Select(l => new GameResult 
-               { 
-                   Username = l.Username, 
-                   NetWPM = l.NetWPM, 
-                   GameTimestamp = l.Timestamp 
+               .ReturnsAsync(leaderboardData.Select(l => new GameResult
+               {
+                   Username = l.Username,
+                   NetWPM = l.NetWPM,
+                   GameTimestamp = l.Timestamp
                }));
 
         // Act
@@ -118,13 +118,13 @@ public class ScoresControllerTests : IDisposable
     {
         // Arrange
         const int customCount = 5;
-        var results = Enumerable.Range(1, customCount)                               .Select(i => new GameResult 
-                               { 
-                                   Username = $"user{i}", 
-                                   NetWPM = 100 - i, 
-                                   Accuracy = 95 + i,
-                                   GameTimestamp = DateTime.UtcNow 
-                               })
+        var results = Enumerable.Range(1, customCount).Select(i => new GameResult
+        {
+            Username = $"user{i}",
+            NetWPM = 100 - i,
+            Accuracy = 95 + i,
+            GameTimestamp = DateTime.UtcNow
+        })
                                .ToList();
 
         _factory.MockGameResultRepository?
@@ -137,7 +137,8 @@ public class ScoresControllerTests : IDisposable
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         _factory.MockGameResultRepository?.Verify(x => x.GetTopResultsAsync(customCount), Times.Once);
-    }    [Fact]
+    }
+    [Fact]
     public async Task GetLeaderboard_ShouldReturnCorrectRanking_WhenMultipleResults()
     {
         // Arrange
@@ -199,7 +200,8 @@ public class ScoresControllerTests : IDisposable
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         _factory.MockGameResultRepository?.Verify(x => x.GetTopResultsAsync(10), Times.Once);
-    }    [Fact]
+    }
+    [Fact]
     public async Task GetLeaderboard_ShouldReturnFallbackContent_WhenInvalidRoute()
     {
         // Act
