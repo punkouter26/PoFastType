@@ -92,9 +92,6 @@ var app = builder.Build();
 // Add global exception handling middleware first
 app.UseMiddleware<GlobalExceptionMiddleware>();
 
-// Add request logging middleware
-app.UseMiddleware<RequestLoggingMiddleware>();
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

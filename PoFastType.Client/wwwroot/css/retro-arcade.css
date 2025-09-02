@@ -41,10 +41,148 @@
 html, body {
   background: var(--arcade-black) !important;
   color: var(--arcade-orange) !important;
-  font-family: var(--arcade-font-secondary) !important;
+  font-family: 'Electrolize', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
   margin: 0;
   padding: 0;
   min-height: 100vh;
+}
+
+/* Focus styles */
+h1:focus {
+  outline: none;
+}
+
+/* Link styles */
+a, .btn-link {
+  color: var(--arcade-orange);
+  transition: color 0.3s ease;
+}
+
+a:hover, .btn-link:hover {
+  color: var(--arcade-orange-bright);
+  text-shadow: var(--arcade-text-glow);
+}
+
+/* Button styles */
+.btn-primary {
+  color: var(--arcade-black);
+  background: var(--arcade-gradient-main);
+  border-color: var(--arcade-orange-bright);
+  box-shadow: var(--arcade-glow-shadow);
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem var(--arcade-black), 0 0 0 0.25rem var(--arcade-orange);
+}
+
+/* Content and validation styles */
+.content {
+  padding-top: 1.1rem;
+}
+
+.valid.modified:not([type=checkbox]) {
+  outline: 1px solid var(--arcade-green);
+}
+
+.invalid {
+  outline: 1px solid var(--arcade-red);
+}
+
+.validation-message {
+  color: var(--arcade-red);
+}
+
+/* Blazor error UI */
+#blazor-error-ui {
+  color-scheme: dark;
+  background: var(--arcade-red);
+  color: var(--arcade-black);
+  bottom: 0;
+  box-shadow: 0 -1px 2px rgba(255, 140, 0, 0.5);
+  box-sizing: border-box;
+  display: none;
+  left: 0;
+  padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+  border-top: 2px solid var(--arcade-orange);
+}
+
+#blazor-error-ui .dismiss {
+  cursor: pointer;
+  position: absolute;
+  right: 0.75rem;
+  top: 0.5rem;
+  color: var(--arcade-black);
+}
+
+.blazor-error-boundary {
+  background: var(--arcade-red);
+  border: 2px solid var(--arcade-orange);
+  padding: 1rem 1rem 1rem 3.7rem;
+  color: var(--arcade-black);
+  border-radius: var(--arcade-border-radius);
+}
+
+.blazor-error-boundary::after {
+  content: "An error has occurred."
+}
+
+/* Loading progress */
+.loading-progress {
+  position: relative;
+  display: block;
+  width: 8rem;
+  height: 8rem;
+  margin: 20vh auto 1rem auto;
+}
+
+.loading-progress circle {
+  fill: none;
+  stroke: var(--arcade-medium-gray);
+  stroke-width: 0.6rem;
+  transform-origin: 50% 50%;
+  transform: rotate(-90deg);
+}
+
+.loading-progress circle:last-child {
+  stroke: var(--arcade-orange);
+  stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
+  transition: stroke-dasharray 0.05s ease-in-out;
+}
+
+.loading-progress-text {
+  position: absolute;
+  text-align: center;
+  font-weight: bold;
+  font-family: var(--arcade-font-primary);
+  color: var(--arcade-orange);
+  text-shadow: var(--arcade-text-glow);
+  inset: calc(20vh + 3.25rem) 0 auto 0.2rem;
+}
+
+.loading-progress-text:after {
+  content: var(--blazor-load-percentage-text, "Loading");
+}
+
+/* Code styling */
+code {
+  color: var(--arcade-cyan);
+  background: var(--arcade-dark-gray);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+}
+
+/* Form floating labels */
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--arcade-light-gray);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
 }
 
 /* Add subtle grid pattern background */
@@ -598,108 +736,37 @@ textarea.typing-input::-webkit-scrollbar-thumb:hover {
     font-size: 3rem !important;
   }
   
-  .stat-value {
-    font-size: 1.5rem !important;
-  }
-  
-  /* Mobile portrait optimization */
   .game-container {
     padding: 10px !important;
-    max-width: 100% !important;
-    height: calc(100vh - 80px) !important; /* Adjust for smaller navbar */
+    height: calc(100vh - 80px) !important;
   }
   
-  /* Reduce card padding on mobile */
   .retro-card .card-body {
     padding: 10px !important;
   }
-    /* Make text display more compact */
+  
   .text-display {
     padding: 10px !important;
     font-size: 0.9rem !important;
-    line-height: 1.4 !important;
     max-height: 200px !important;
-    overflow-y: auto !important;
-    color: var(--arcade-orange-bright) !important;
-    text-shadow: 0 0 5px rgba(255, 165, 0, 0.5) !important;
   }
   
-  /* Compact typing input */
   .typing-input {
     padding: 10px !important;
     font-size: 0.9rem !important;
-    line-height: 1.4 !important;
     height: 150px !important;
-  }
-  
-  /* Reduce spacing between rows */
-  .row {
-    margin-bottom: 10px !important;
-  }
-  
-  .row.mt-4 {
-    margin-top: 10px !important;
-  }
-  
-  /* Compact stats cards */
-  .stat-card {
-    padding: 6px !important;
-    margin: 2px 0 !important;
   }
   
   .stat-value {
     font-size: 1rem !important;
   }
   
-  .stat-label {
-    font-size: 0.6rem !important;
-    margin-bottom: 1px !important;
-  }
-  
-  /* Optimize results section for mobile */
-  .results-section {
-    max-height: 25vh !important;
-  }
-  
-  .results-stats {
-    padding: 5px !important;
-  }
-  
-  /* Reduce vertical spacing in main layout */
   main {
     padding: 10px !important;
   }
-  
-  /* Compact navbar */
-  .navbar {
-    padding: 0.25rem 1rem !important;
-  }
 }
 
-/* Extra small screens (phones in portrait) */
 @media (max-width: 576px) {
-  .game-container {
-    padding: 5px !important;
-    height: calc(100vh - 70px) !important;
-  }
-  
-  .retro-card .card-body {
-    padding: 8px !important;
-  }
-    .text-display {
-    padding: 8px !important;
-    font-size: 0.8rem !important;
-    max-height: 150px !important;
-    color: var(--arcade-orange-bright) !important;
-    text-shadow: 0 0 5px rgba(255, 165, 0, 0.5) !important;
-  }
-  
-  .typing-input {
-    padding: 8px !important;
-    font-size: 0.8rem !important;
-    height: 120px !important;
-  }
-  
   .timer {
     font-size: 1.5rem !important;
   }
@@ -708,73 +775,40 @@ textarea.typing-input::-webkit-scrollbar-thumb:hover {
     font-size: 2.5rem !important;
   }
   
-  .stat-card {
-    padding: 4px !important;
+  .game-container {
+    padding: 5px !important;
+    height: calc(100vh - 70px) !important;
   }
   
-  .stat-value {
-    font-size: 0.9rem !important;
-  }
-  
-  .stat-label {
-    font-size: 0.55rem !important;
-  }
-  
-  /* Stack statistics in 2 columns instead of 4 */
-  .stat-card {
-    margin: 1px 0 !important;
-  }
-  
-  /* Compact table for problem keys */
-  .table-responsive {
-    font-size: 0.7rem !important;
-  }
-  
-  .table th,
-  .table td {
-    padding: 0.2rem !important;
-  }
-  
-  /* Ultra compact results for small screens */
-  .results-section {
-    max-height: 30vh !important;
-  }
-}
-
-/* Landscape orientation adjustments for mobile */
-@media (max-height: 500px) and (orientation: landscape) {
   .text-display {
-    max-height: 100px !important;
     font-size: 0.8rem !important;
-    color: var(--arcade-orange-bright) !important;
-    text-shadow: 0 0 5px rgba(255, 165, 0, 0.5) !important;
+    max-height: 150px !important;
   }
   
   .typing-input {
-    height: 80px !important;
     font-size: 0.8rem !important;
-  }
-  
-  .timer {
-    font-size: 1.2rem !important;
-    margin: 10px 0 !important;
-  }
-  
-  .countdown {
-    font-size: 2rem !important;
-  }
-  
-  .retro-card .card-body {
-    padding: 5px !important;
-  }
-  
-  .game-container {
-    padding: 5px !important;
+    height: 120px !important;
   }
   
   main {
     padding: 5px !important;
   }
+}
+
+/* Page layout */
+.page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--arcade-black);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+main {
+  flex: 1;
+  background: transparent;
+  padding: 20px;
 }
 
 /* Animation for page transitions */
