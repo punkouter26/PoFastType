@@ -16,27 +16,16 @@ param principalType string = 'User'
 // Generate a unique token for resource naming
 var resourceToken = uniqueString(subscription().id, location, environmentName)
 
-// Create a new App Service Plan for this application (S1 Standard tier)
-resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
-  name: 'PoFastType'
-  location: location
-  tags: tags
-  sku: {
-    name: 'S1'
-    tier: 'Standard'
-    size: 'S1'
-    family: 'S'
-    capacity: 1
-  }
-  properties: {
-    reserved: false
-  }
+// Use existing shared App Service Plan
+resource existingAppServicePlan 'Microsoft.Web/serverfarms@2022-03-01' existing = {
+  name: 'PoSharedAppServicePlan'
+  scope: resourceGroup('PoShared')
 }
 
 // Use existing shared Application Insights (as mentioned in requirements)
 resource existingAppInsights 'Microsoft.Insights/components@2020-02-02' existing = {
   name: 'PoSharedApplicationInsights'
-  scope: resourceGroup('poshared') // Using the actual resource group name (lowercase)
+  scope: resourceGroup('PoShared')
 }
 
 // Create a user-assigned managed identity
@@ -53,7 +42,7 @@ resource webApp 'Microsoft.Web/sites@2022-03-01' = {
   tags: union(tags, { 'azd-service-name': 'pofasttype-api' })
   kind: 'app'
   properties: {
-    serverFarmId: appServicePlan.id
+    serverFarmId: existingAppServicePlan.id
     httpsOnly: true
     siteConfig: {
       netFrameworkVersion: 'v9.0'
@@ -94,9 +83,9 @@ resource webAppConfig 'Microsoft.Web/sites/config@2022-03-01' = {
   properties: {
     netFrameworkVersion: 'v9.0'
     scmType: 'GitHubAction'
-    use32BitWorkerProcess: false
+    use32BitWorkerProcess: true
     webSocketsEnabled: false
-    alwaysOn: true // S1 tier supports AlwaysOn
+    alwaysOn: false // F1 tier doesn't support AlwaysOn
     managedPipelineMode: 'Integrated'
     virtualApplications: [
       {
