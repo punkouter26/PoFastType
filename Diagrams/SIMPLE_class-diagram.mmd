@@ -1,0 +1,14 @@
+classDiagram
+    class GameResult {
+        +WPM
+        +Accuracy
+        +UserId
+    }
+    
+    class UserIdentity {
+        +UserId
+        +Username
+        +BestWPM
+    }
+    
+    GameResult --> UserIdentity

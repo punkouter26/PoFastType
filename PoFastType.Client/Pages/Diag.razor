@@ -118,42 +118,56 @@
         error = null;
         diagChecks.Clear();
         healthResponse = null;
-        StateHasChanged();        try
+        StateHasChanged();
+
+        try
         {
-            // Check backend health
-            var response = await Http.GetAsync("api/diag/health");
+            // Check backend health using the new /api/health endpoint
+            var response = await Http.GetAsync("api/health");
             if (response.IsSuccessStatusCode)
             {
-                // Check if the response is actually JSON
                 var contentType = response.Content.Headers.ContentType?.MediaType;
                 if (contentType != "application/json")
                 {
                     var content = await response.Content.ReadAsStringAsync();
                     error = $"API returned unexpected content type: {contentType}. Content: {content.Substring(0, Math.Min(200, content.Length))}...";
-                    Logger.LogWarning("Diagnostics API returned unexpected content type: {ContentType}", contentType);
+                    Logger.LogWarning("Health API returned unexpected content type: {ContentType}", contentType);
                     return;
-                }                var result = await response.Content.ReadFromJsonAsync<DiagHealthResponse>();
+                }
+
+                var result = await response.Content.ReadFromJsonAsync<HealthCheckResponse>();
                 if (result != null)
                 {
-                    healthResponse = result;
-                    diagChecks = result.Checks;
+                    healthResponse = new DiagHealthResponse
+                    {
+                        Status = result.Status,
+                        Timestamp = DateTime.UtcNow
+                    };
+
+                    // Convert health checks to diag checks
+                    diagChecks = result.Checks.Select(c => new DiagCheckResult
+                    {
+                        Name = c.Name,
+                        Status = c.Status == "Healthy" ? "OK" : c.Status == "Degraded" ? "Warning" : "Error",
+                        Message = c.Description ?? "No description available"
+                    }).ToList();
                 }
                 else
                 {
                     error = "API returned null response";
-                    Logger.LogWarning("Diagnostics API returned null response");
+                    Logger.LogWarning("Health API returned null response");
                 }
             }
             else
             {
                 var content = await response.Content.ReadAsStringAsync();
                 error = $"Failed to contact backend: {response.StatusCode}. Response: {content.Substring(0, Math.Min(200, content.Length))}...";
-                Logger.LogWarning("Diagnostics API error: {StatusCode}, Content: {Content}", response.StatusCode, content);
+                Logger.LogWarning("Health API error: {StatusCode}, Content: {Content}", response.StatusCode, content);
             }
         }
         catch (Exception ex)
         {
-            error = "An error occurred while running diagnostics.";
+            error = $"An error occurred while running diagnostics: {ex.Message}";
             Logger.LogError(ex, "Diagnostics error");
         }
 
@@ -188,10 +202,29 @@
         public string Name { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
         public string Message { get; set; } = string.Empty;
-    }    public class DiagHealthResponse
+    }
+
+    public class DiagHealthResponse
     {
         public string Status { get; set; } = string.Empty;
         public List<DiagCheckResult> Checks { get; set; } = new();
         public DateTime Timestamp { get; set; }
+    }
+
+    // Models for the /api/health endpoint response
+    public class HealthCheckResponse
+    {
+        public string Status { get; set; } = string.Empty;
+        public List<HealthCheckEntry> Checks { get; set; } = new();
+        public string TotalDuration { get; set; } = string.Empty;
+    }
+
+    public class HealthCheckEntry
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
+        public string? Description { get; set; }
+        public string Duration { get; set; } = string.Empty;
+        public string? Exception { get; set; }
     }
 }

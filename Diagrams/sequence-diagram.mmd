@@ -1,0 +1,63 @@
+sequenceDiagram
+    %% Game Submission Flow
+    
+    actor User
+    participant UI as Home.razor
+    participant HTTP as HttpClient
+    participant API as GameController
+    participant Svc as GameService
+    participant Repo as GameResultRepository
+    participant Azure as Azure Table Storage
+    
+    User->>UI: Types text & clicks Submit
+    activate UI
+    
+    UI->>UI: Calculate WPM & Accuracy
+    UI->>HTTP: POST /api/game/results
+    activate HTTP
+    
+    HTTP->>API: SubmitGameResult(result)
+    activate API
+    
+    API->>API: Validate input
+    
+    alt Validation fails
+        API-->>HTTP: 400 Bad Request
+        HTTP-->>UI: Error response
+        UI-->>User: Show error message
+    else Validation succeeds
+        API->>Svc: CalculateWPM(chars, seconds)
+        activate Svc
+        Svc-->>API: WPM value
+        deactivate Svc
+        
+        API->>Svc: CalculateAccuracy(correct, total)
+        activate Svc
+        Svc-->>API: Accuracy percentage
+        deactivate Svc
+        
+        API->>Repo: AddResultAsync(result)
+        activate Repo
+        
+        Repo->>Repo: Generate PartitionKey (userId)
+        Repo->>Repo: Generate RowKey (timestamp)
+        
+        Repo->>Azure: UpsertEntityAsync(entity)
+        activate Azure
+        Azure-->>Repo: Success
+        deactivate Azure
+        
+        Repo-->>API: true
+        deactivate Repo
+        
+        API-->>HTTP: 201 Created
+        deactivate API
+        
+        HTTP-->>UI: Success response
+        deactivate HTTP
+        
+        UI-->>User: Show results (WPM, Accuracy)
+        deactivate UI
+    end
+    
+    Note over User,Azure: Total round-trip: ~300-500ms

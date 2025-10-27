@@ -97,11 +97,11 @@
     </div>    <!-- Results Card (shown after game) -->
     @if (gameState == GameState.PostGame)
     {
-        <div class="row g-2 mt-2">
+        <div class="row g-2 mt-1">
             <div class="col-12">
                 <div class="card retro-card results-section">
                     <div class="card-header retro-card-header">
-                        <h6 class="mb-0">Results</h6>
+                        <h6 class="mb-0" style="font-size: 0.9rem;">Results</h6>
                     </div>                    <div class="card-body results-stats">
                         <!-- Main stats in 7 columns - adjusted for mobile and desktop -->
                         <div class="row g-1">
@@ -149,7 +149,7 @@
                             </div>
                         </div>
                         
-                        <div class="text-center mt-2">
+                        <div class="text-center mt-1">
                             <button class="btn btn-primary btn-sm glow-hover" @onclick="ResetGame">Try Again</button>
                         </div>
                     </div>

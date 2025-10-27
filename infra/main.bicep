@@ -20,7 +20,7 @@ var tags = {
   'azd-env-name': environmentName
 }
 
-// Organize resources in a resource group
+// Organize resources in a resource group (name derived from solution)
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: 'PoFastType'
   location: location

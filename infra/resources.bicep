@@ -16,16 +16,87 @@ param principalType string = 'User'
 // Generate a unique token for resource naming
 var resourceToken = uniqueString(subscription().id, location, environmentName)
 
-// Use existing shared App Service Plan
+// Use existing shared App Service Plan from PoShared resource group
+// Note: Reference to existing resource in different resource group
 resource existingAppServicePlan 'Microsoft.Web/serverfarms@2022-03-01' existing = {
-  name: 'PoSharedAppServicePlan'
+  name: 'PoShared4'
   scope: resourceGroup('PoShared')
 }
 
-// Use existing shared Application Insights (as mentioned in requirements)
-resource existingAppInsights 'Microsoft.Insights/components@2020-02-02' existing = {
-  name: 'PoSharedApplicationInsights'
-  scope: resourceGroup('PoShared')
+// Create Log Analytics Workspace in the same resource group
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
+  name: 'PoFastType-logs'
+  location: location
+  tags: tags
+  properties: {
+    sku: {
+      name: 'PerGB2018'
+    }
+    retentionInDays: 30
+    features: {
+      enableLogAccessUsingOnlyResourcePermissions: true
+    }
+    workspaceCapping: {
+      dailyQuotaGb: 1
+    }
+    publicNetworkAccessForIngestion: 'Enabled'
+    publicNetworkAccessForQuery: 'Enabled'
+  }
+}
+
+// Create Application Insights in the same resource group
+resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
+  name: 'PoFastType-ai'
+  location: location
+  tags: tags
+  kind: 'web'
+  properties: {
+    Application_Type: 'web'
+    WorkspaceResourceId: logAnalyticsWorkspace.id
+    IngestionMode: 'LogAnalytics'
+    publicNetworkAccessForIngestion: 'Enabled'
+    publicNetworkAccessForQuery: 'Enabled'
+  }
+}
+
+// Create Azure Storage Account for Table Storage
+resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
+  name: 'pofasttype${resourceToken}'
+  location: location
+  tags: tags
+  sku: {
+    name: 'Standard_LRS'
+  }
+  kind: 'StorageV2'
+  properties: {
+    accessTier: 'Hot'
+    allowBlobPublicAccess: false
+    minimumTlsVersion: 'TLS1_2'
+    supportsHttpsTrafficOnly: true
+    encryption: {
+      services: {
+        table: {
+          enabled: true
+        }
+        blob: {
+          enabled: true
+        }
+      }
+      keySource: 'Microsoft.Storage'
+    }
+  }
+}
+
+// Create Table Service
+resource tableService 'Microsoft.Storage/storageAccounts/tableServices@2023-01-01' = {
+  parent: storageAccount
+  name: 'default'
+}
+
+// Create the game results table
+resource gameResultsTable 'Microsoft.Storage/storageAccounts/tableServices/tables@2023-01-01' = {
+  parent: tableService
+  name: 'PoFastTypeGameResults'
 }
 
 // Create a user-assigned managed identity
@@ -50,20 +121,22 @@ resource webApp 'Microsoft.Web/sites@2022-03-01' = {
         allowedOrigins: ['*']
         supportCredentials: false
       }
-      metadata: [
-        {
-          name: 'CURRENT_STACK'
-          value: 'dotnet'
-        }
-      ]
       appSettings: [
         {
           name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
-          value: existingAppInsights.properties.ConnectionString
+          value: appInsights.properties.ConnectionString
         }
         {
           name: 'ASPNETCORE_ENVIRONMENT'
           value: 'Production'
+        }
+        {
+          name: 'AzureTableStorage__ConnectionString'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
+        }
+        {
+          name: 'AzureTableStorage__TableName'
+          value: 'PoFastTypeGameResults'
         }
       ]
     }
@@ -137,3 +210,6 @@ output WEBSITE_URL string = 'https://${webApp.properties.defaultHostName}'
 output API_BASE_URL string = 'https://${webApp.properties.defaultHostName}/api'
 output AZURE_RESOURCE_GROUP_NAME string = resourceGroup().name
 output AZURE_WEB_APP_NAME string = webApp.name
+output AZURE_STORAGE_ACCOUNT_NAME string = storageAccount.name
+output AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING string = appInsights.properties.ConnectionString
+output AZURE_LOG_ANALYTICS_WORKSPACE_ID string = logAnalyticsWorkspace.id

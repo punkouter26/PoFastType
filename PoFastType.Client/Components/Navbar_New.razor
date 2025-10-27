@@ -32,8 +32,9 @@
 </nav>
 
 @code {
-    protected override async Task OnInitializedAsync()
+    protected override Task OnInitializedAsync()
     {
         // No authentication needed - just static ANON user
+        return Task.CompletedTask;
     }
 }

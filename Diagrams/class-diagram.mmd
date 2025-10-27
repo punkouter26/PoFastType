@@ -1,0 +1,91 @@
+classDiagram
+    %% Domain Entities
+    
+    class GameResult {
+        +string PartitionKey
+        +string RowKey
+        +DateTimeOffset Timestamp
+        +string UserId
+        +string Username
+        +double WPM
+        +double Accuracy
+        +int DurationSeconds
+        +int CharactersTyped
+        +int ErrorCount
+        +string ProblemKeysJson
+        +DateTime GameDate
+    }
+    
+    class LeaderboardEntry {
+        +int Rank
+        +string UserId
+        +string Username
+        +double WPM
+        +double Accuracy
+        +DateTime GameDate
+    }
+    
+    class UserGameResult {
+        +string UserId
+        +string Username
+        +double WPM
+        +double Accuracy
+        +int DurationSeconds
+        +DateTime GameDate
+        +bool PersonalBest
+    }
+    
+    class UserIdentity {
+        +string PartitionKey
+        +string RowKey
+        +DateTimeOffset Timestamp
+        +string UserId
+        +string Username
+        +int TotalGamesPlayed
+        +double BestWPM
+        +double AverageWPM
+        +double TotalAccuracy
+        +DateTime FirstGameDate
+        +DateTime LastGameDate
+    }
+    
+    %% Interfaces
+    class ITableEntity {
+        <<interface>>
+        +string PartitionKey
+        +string RowKey
+        +DateTimeOffset Timestamp
+    }
+    
+    %% Repository Interface
+    class IGameResultRepository {
+        <<interface>>
+        +Task~bool~ AddResultAsync(GameResult)
+        +Task~IEnumerable~GameResult~~ GetTopScoresAsync(int)
+        +Task~IEnumerable~GameResult~~ GetUserResultsAsync(string)
+    }
+    
+    %% Service Interfaces
+    class IGameService {
+        <<interface>>
+        +double CalculateWPM(int chars, double seconds)
+        +double CalculateAccuracy(int correct, int total)
+    }
+    
+    class ITextGenerationService {
+        <<interface>>
+        +Task~string~ GenerateTextAsync(int length)
+    }
+    
+    class IUserIdentityService {
+        <<interface>>
+        +Task~string~ GetOrCreateUserIdAsync()
+        +bool ValidateUserId(string)
+    }
+    
+    %% Relationships
+    GameResult ..|> ITableEntity : implements
+    UserIdentity ..|> ITableEntity : implements
+    
+    GameResult --> LeaderboardEntry : transforms to
+    GameResult --> UserGameResult : transforms to

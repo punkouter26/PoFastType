@@ -1,0 +1,56 @@
+flowchart TD
+    %% Typing Test Game Flow
+    
+    Start([User visits Home page]) --> LoadUser{User ID exists<br/>in LocalStorage?}
+    
+    LoadUser -->|No| CreateUser[Generate new GUID<br/>Store in LocalStorage]
+    LoadUser -->|Yes| RetrieveUser[Retrieve existing UserId]
+    
+    CreateUser --> ReadyState[Game Ready State]
+    RetrieveUser --> ReadyState
+    
+    ReadyState --> ClickStart[User clicks Start Game]
+    ClickStart --> FetchText[GET /api/game/text]
+    FetchText --> DisplayText[Display random text<br/>Start timer]
+    
+    DisplayText --> UserTypes[User types in input box]
+    UserTypes --> CheckChar{Character<br/>matches?}
+    
+    CheckChar -->|Yes| CorrectChar[Increment correct count<br/>Green highlight]
+    CheckChar -->|No| ErrorChar[Increment error count<br/>Red highlight<br/>Record problem key]
+    
+    CorrectChar --> CheckComplete{All text<br/>typed?}
+    ErrorChar --> CheckComplete
+    
+    CheckComplete -->|No| UserTypes
+    CheckComplete -->|Yes| StopTimer[Stop timer<br/>Calculate elapsed time]
+    
+    StopTimer --> CalcMetrics[Calculate WPM:<br/>chars/5/minutes<br/><br/>Calculate Accuracy:<br/>correct/total * 100]
+    
+    CalcMetrics --> SubmitResult[POST /api/game/results<br/>GameResult JSON]
+    
+    SubmitResult --> SaveDB[(Save to Azure<br/>Table Storage)]
+    
+    SaveDB --> UpdateUser[Update UserIdentity:<br/>TotalGamesPlayed++<br/>BestWPM if new record<br/>Calculate new AverageWPM]
+    
+    UpdateUser --> ShowResults[Display results panel:<br/>WPM, Accuracy, Duration<br/>Personal best indicator]
+    
+    ShowResults --> UserChoice{User action?}
+    
+    UserChoice -->|Play Again| ClickStart
+    UserChoice -->|View Leaderboard| NavLeader[Navigate to<br/>/leaderboard]
+    UserChoice -->|View Stats| NavStats[Navigate to<br/>/user-stats]
+    
+    NavLeader --> End([End])
+    NavStats --> End
+    
+    %% Styling
+    classDef startEnd fill:#107c10,stroke:#0b5a0c,stroke-width:2px,color:#fff
+    classDef process fill:#0078d4,stroke:#005a9e,stroke-width:2px,color:#fff
+    classDef decision fill:#ffb900,stroke:#c28600,stroke-width:2px,color:#000
+    classDef data fill:#8764b8,stroke:#5c3c87,stroke-width:2px,color:#fff
+    
+    class Start,End startEnd
+    class ReadyState,ClickStart,FetchText,DisplayText,UserTypes,CorrectChar,ErrorChar,StopTimer,CalcMetrics,SubmitResult,UpdateUser,ShowResults,NavLeader,NavStats process
+    class LoadUser,CheckChar,CheckComplete,UserChoice decision
+    class SaveDB data

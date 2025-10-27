@@ -1,0 +1,62 @@
+graph TD
+    %% Blazor Component Hierarchy
+    
+    Root[App.razor<br/>Router Configuration]
+    
+    Root --> Layout[MainLayout.razor<br/>Page Container]
+    
+    Layout --> Navbar[Navbar_New.razor<br/>Navigation Component]
+    Layout --> Content[Page Content<br/>@Body]
+    
+    Content --> Home[Home.razor<br/>Typing Test Page]
+    Content --> Leaderboard[Leaderboard.razor<br/>Global Rankings]
+    Content --> UserStats[UserStats.razor<br/>Personal Dashboard]
+    Content --> Diag[Diag.razor<br/>System Health]
+    
+    %% Home Page Components
+    Home --> GameState[GameStateService<br/>State Management]
+    Home --> RadzenBtn1[RadzenButton<br/>Start Game]
+    Home --> RadzenCard1[RadzenCard<br/>Results Panel]
+    Home --> TextArea[Textarea<br/>Typing Input]
+    Home --> TextDisplay[Div<br/>Text Display with Highlights]
+    
+    %% Leaderboard Components
+    Leaderboard --> RadzenGrid[RadzenDataGrid<br/>Scores Table]
+    Leaderboard --> RadzenBtn2[RadzenButton<br/>Refresh]
+    Leaderboard --> Filter[RadzenDropDown<br/>Count Filter]
+    
+    %% UserStats Components
+    UserStats --> UserSvc[UserService<br/>LocalStorage Access]
+    UserStats --> RadzenChart[RadzenChart<br/>Performance Graph]
+    UserStats --> StatsCard[RadzenCard<br/>Statistics Display]
+    UserStats --> RecentTable[RadzenDataGrid<br/>Recent Games]
+    
+    %% Diag Components
+    Diag --> HealthCards[RadzenCard Array<br/>6 Health Checks]
+    Diag --> TestPanel[RadzenCard<br/>API Test Form]
+    Diag --> SysInfo[RadzenCard<br/>System Information]
+    
+    %% Error Boundary
+    Layout --> ErrorBound[ErrorBoundary.razor<br/>Global Error Handler]
+    
+    %% Services (Injected)
+    Home -.->|inject| HTTP1[HttpClient]
+    Leaderboard -.->|inject| HTTP2[HttpClient]
+    UserStats -.->|inject| HTTP3[HttpClient]
+    Diag -.->|inject| HTTP4[HttpClient]
+    
+    GameState -.->|Uses| LocalStore1[LocalStorage]
+    UserSvc -.->|Uses| LocalStore2[LocalStorage]
+    
+    %% Styling
+    classDef rootClass fill:#8764b8,stroke:#5c3c87,stroke-width:3px,color:#fff
+    classDef layoutClass fill:#0078d4,stroke:#005a9e,stroke-width:2px,color:#fff
+    classDef pageClass fill:#107c10,stroke:#0b5a0c,stroke-width:2px,color:#fff
+    classDef componentClass fill:#ffb900,stroke:#c28600,stroke-width:1px,color:#000
+    classDef serviceClass fill:#d83b01,stroke:#a52a00,stroke-width:2px,color:#fff
+    
+    class Root rootClass
+    class Layout,Navbar,Content layoutClass
+    class Home,Leaderboard,UserStats,Diag pageClass
+    class GameState,UserSvc,HTTP1,HTTP2,HTTP3,HTTP4,LocalStore1,LocalStore2 serviceClass
+    class RadzenBtn1,RadzenCard1,TextArea,TextDisplay,RadzenGrid,RadzenBtn2,Filter,RadzenChart,StatsCard,RecentTable,HealthCards,TestPanel,SysInfo,ErrorBound componentClass

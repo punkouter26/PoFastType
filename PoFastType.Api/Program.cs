@@ -1,8 +1,10 @@
 using PoFastType.Api.Services;
 using PoFastType.Api.Repositories;
 using PoFastType.Api.Middleware;
+using PoFastType.Api.HealthChecks;
 using PoFastType.Shared.Models;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Serilog;
 using Serilog.Formatting.Compact;
 using System.IO;
@@ -87,6 +89,13 @@ builder.Services.AddScoped<ITextGenerationService, TextGenerationService>();
 builder.Services.AddScoped<IUserIdentityService>(provider =>
     new UserIdentityService(provider.GetRequiredService<ILogger<UserIdentityService>>()));
 
+// Add Health Checks
+builder.Services.AddHealthChecks()
+    .AddCheck<AzureTableStorageHealthCheck>(
+        "azure_table_storage",
+        failureStatus: HealthStatus.Degraded,
+        tags: new[] { "storage", "database" });
+
 var app = builder.Build();
 
 // Add global exception handling middleware first
@@ -114,6 +123,29 @@ app.UseRouting();
 
 // Map API controllers first - they have priority over fallback routes
 app.MapControllers();
+
+// Map Health Check endpoint
+app.MapHealthChecks("/api/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+{
+    ResponseWriter = async (context, report) =>
+    {
+        context.Response.ContentType = "application/json";
+        var result = System.Text.Json.JsonSerializer.Serialize(new
+        {
+            status = report.Status.ToString(),
+            checks = report.Entries.Select(e => new
+            {
+                name = e.Key,
+                status = e.Value.Status.ToString(),
+                description = e.Value.Description,
+                duration = e.Value.Duration.ToString(),
+                exception = e.Value.Exception?.Message
+            }),
+            totalDuration = report.TotalDuration.ToString()
+        });
+        await context.Response.WriteAsync(result);
+    }
+});
 
 // Fallback to serve the Blazor WebAssembly app for non-API routes
 app.MapFallbackToFile("index.html");

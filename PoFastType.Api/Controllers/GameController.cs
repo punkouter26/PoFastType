@@ -32,15 +32,15 @@ public class GameController : ControllerBase
     {
         var requestId = HttpContext.TraceIdentifier;
         var userIP = HttpContext.Connection.RemoteIpAddress?.ToString();
-        
+
         try
         {
             Log.Information("User action: Text generation requested by {UserIP} (RequestId: {RequestId})", userIP, requestId);
             _logger.LogInformation("Generating new text for typing test");
-            
+
             var text = await _textGenerationService.GenerateTextAsync();
 
-            Log.Information("Game state change: New text generated with length {TextLength} for user {UserIP} (RequestId: {RequestId})", 
+            Log.Information("Game state change: New text generated with length {TextLength} for user {UserIP} (RequestId: {RequestId})",
                 text.Length, userIP, requestId);
 
             return Ok(new { text, timestamp = DateTime.UtcNow });

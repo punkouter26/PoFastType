@@ -52,6 +52,7 @@ __blobstorage__/
 __queuestorage__/
 AzuriteConfig
 *.azurite
+azurite-data/
 
 # User-specific files
 *.rsuser

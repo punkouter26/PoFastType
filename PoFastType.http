@@ -1,0 +1,204 @@
+### PoFastType API Test Collection
+### Use with VS Code REST Client extension
+### Base URL for local development
+@baseUrl = http://localhost:5000
+@baseUrlHttps = https://localhost:5001
+
+###############################################################################
+# Health & Diagnostics
+###############################################################################
+
+### GET Health Check
+GET {{baseUrl}}/api/health
+Accept: application/json
+
+###############################################################################
+# Game Controller - Text Generation
+###############################################################################
+
+### GET Game Text (Typing Test Content)
+GET {{baseUrl}}/api/game/text
+Accept: application/json
+
+###############################################################################
+# Scores Controller - Game Results & Leaderboard
+###############################################################################
+
+### POST Submit Score (Valid Game Result)
+POST {{baseUrl}}/api/scores
+Content-Type: application/json
+
+{
+  "userId": "test-user-123",
+  "username": "TestUser",
+  "textContent": "The quick brown fox jumps over the lazy dog",
+  "wpm": 65.5,
+  "netWPM": 63.2,
+  "accuracy": 96.5,
+  "errors": 3,
+  "duration": 45.2,
+  "timestamp": "{{$datetime iso8601}}",
+  "textSource": "HardcodedStrategy"
+}
+
+### POST Submit Score (High WPM)
+POST {{baseUrl}}/api/scores
+Content-Type: application/json
+
+{
+  "userId": "speed-demon-456",
+  "username": "SpeedDemon",
+  "textContent": "Lorem ipsum dolor sit amet",
+  "wpm": 125.8,
+  "netWPM": 120.5,
+  "accuracy": 98.2,
+  "errors": 1,
+  "duration": 25.5,
+  "timestamp": "{{$datetime iso8601}}",
+  "textSource": "HardcodedStrategy"
+}
+
+### POST Submit Score (Perfect Accuracy)
+POST {{baseUrl}}/api/scores
+Content-Type: application/json
+
+{
+  "userId": "perfect-789",
+  "username": "PerfectTypist",
+  "textContent": "The typing test continues with more words",
+  "wpm": 80.0,
+  "netWPM": 80.0,
+  "accuracy": 100.0,
+  "errors": 0,
+  "duration": 35.0,
+  "timestamp": "{{$datetime iso8601}}",
+  "textSource": "HardcodedStrategy"
+}
+
+### POST Submit Score (Invalid - Missing Required Fields)
+POST {{baseUrl}}/api/scores
+Content-Type: application/json
+
+{
+  "userId": "incomplete-user",
+  "wpm": 50.0
+}
+
+### POST Submit Score (Invalid - Negative Values)
+POST {{baseUrl}}/api/scores
+Content-Type: application/json
+
+{
+  "userId": "invalid-user",
+  "username": "InvalidUser",
+  "textContent": "Test",
+  "wpm": -10.0,
+  "netWPM": -5.0,
+  "accuracy": 150.0,
+  "errors": -3,
+  "duration": -20.0,
+  "timestamp": "{{$datetime iso8601}}",
+  "textSource": "HardcodedStrategy"
+}
+
+### GET Leaderboard (Default top 10)
+GET {{baseUrl}}/api/scores/leaderboard
+Accept: application/json
+
+### GET Leaderboard (Top 5)
+GET {{baseUrl}}/api/scores/leaderboard?top=5
+Accept: application/json
+
+### GET Leaderboard (Top 20)
+GET {{baseUrl}}/api/scores/leaderboard?top=20
+Accept: application/json
+
+### GET Leaderboard (Top 100)
+GET {{baseUrl}}/api/scores/leaderboard?top=100
+Accept: application/json
+
+### GET User Stats (Specific User)
+GET {{baseUrl}}/api/scores/user/test-user-123
+Accept: application/json
+
+### GET User Stats (Speed Demon)
+GET {{baseUrl}}/api/scores/user/speed-demon-456
+Accept: application/json
+
+### GET User Stats (Non-existent User)
+GET {{baseUrl}}/api/scores/user/does-not-exist-999
+Accept: application/json
+
+###############################################################################
+# User Controller - Current User Identity
+###############################################################################
+
+### GET Current User Identity
+GET {{baseUrl}}/api/user/current
+Accept: application/json
+
+###############################################################################
+# HTTPS Endpoints (for production testing)
+###############################################################################
+
+### GET Health Check (HTTPS)
+GET {{baseUrlHttps}}/api/health
+Accept: application/json
+
+### GET Game Text (HTTPS)
+GET {{baseUrlHttps}}/api/game/text
+Accept: application/json
+
+### GET Leaderboard (HTTPS)
+GET {{baseUrlHttps}}/api/scores/leaderboard
+Accept: application/json
+
+###############################################################################
+# Edge Cases & Error Scenarios
+###############################################################################
+
+### GET Invalid Endpoint (404 Test)
+GET {{baseUrl}}/api/invalid/endpoint
+Accept: application/json
+
+### POST to GET-only Endpoint (405 Test)
+POST {{baseUrl}}/api/game/text
+Content-Type: application/json
+
+{}
+
+### GET with Invalid Query Parameter
+GET {{baseUrl}}/api/scores/leaderboard?top=invalid
+Accept: application/json
+
+###############################################################################
+# Performance & Load Testing Scenarios
+###############################################################################
+
+### Concurrent Request Simulation - Text Generation (Run multiple times)
+GET {{baseUrl}}/api/game/text
+Accept: application/json
+
+### Concurrent Request Simulation - Leaderboard (Run multiple times)
+GET {{baseUrl}}/api/scores/leaderboard
+Accept: application/json
+
+###############################################################################
+# Notes
+###############################################################################
+# 
+# REST Client Extension Tips:
+# - Click "Send Request" above each ### comment to execute
+# - Use {{$datetime iso8601}} for current timestamp
+# - Use {{$guid}} for unique IDs
+# - Use {{$randomInt min max}} for random numbers
+# - View response in "Response" tab
+# - Save responses with "Save Response" button
+#
+# Common HTTP Status Codes:
+# - 200 OK: Request succeeded
+# - 400 Bad Request: Invalid request data
+# - 404 Not Found: Endpoint doesn't exist
+# - 405 Method Not Allowed: Wrong HTTP method
+# - 500 Internal Server Error: Server-side error
+#

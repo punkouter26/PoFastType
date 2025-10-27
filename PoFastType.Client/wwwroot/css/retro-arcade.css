@@ -410,12 +410,14 @@ main {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
+  padding: 8px 12px !important;
 }
 
 /* Override Bootstrap's default styles more specifically */
 .retro-card .card-body {
   background: var(--arcade-dark-gray) !important;
   color: var(--arcade-orange) !important;
+  padding: 12px !important;
 }
 
 /* Text highlighting for errors */
@@ -533,21 +535,23 @@ textarea.typing-input::-webkit-scrollbar-thumb:hover {
 .game-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
-  height: calc(100vh - 120px); /* Reserve space for navbar and minimal margins */
+  padding: 10px;
+  height: calc(100vh - 80px); /* Reserve space for navbar */
   display: flex;
   flex-direction: column;
+  overflow: hidden; /* Prevent any overflow */
 }
 
-/* Main game area takes up 80% when results are shown */
+/* Main game area takes flexible space */
 .game-container .row:first-child {
-  flex: 1;
-  min-height: 0; /* Allow shrinking */
+  flex: 0 1 auto; /* Don't grow, allow shrinking */
+  min-height: 0;
+  max-height: 55vh; /* Limit to 55% of viewport when results showing */
 }
 
-/* Results section constrained to bottom 20% */
+/* Results section constrained to bottom portion */
 .results-section {
-  max-height: 20vh;
+  max-height: 25vh; /* Use 25% of viewport height */
   overflow-y: auto;
   flex-shrink: 0;
 }
@@ -557,6 +561,7 @@ textarea.typing-input::-webkit-scrollbar-thumb:hover {
   height: 100% !important;
   display: flex;
   flex-direction: column;
+  max-height: 100%;
 }
 
 .retro-card.h-100 .card-body {
@@ -564,12 +569,15 @@ textarea.typing-input::-webkit-scrollbar-thumb:hover {
   display: flex;
   flex-direction: column;
   min-height: 0; /* Allow shrinking */
+  overflow: hidden; /* Prevent card body overflow */
 }
 
 .retro-card.h-100 .text-display,
 .retro-card.h-100 .typing-input {
   flex: 1;
   min-height: 0; /* Allow shrinking */
+  max-height: 100%; /* Respect parent height */
+  overflow-y: auto; /* Add scroll within the element if needed */
 }
 
 /* Better spacing for mobile */
@@ -586,27 +594,27 @@ textarea.typing-input::-webkit-scrollbar-thumb:hover {
   background: var(--arcade-black) !important;
   border: 2px solid var(--arcade-orange) !important;
   border-radius: var(--arcade-border-radius);
-  padding: 20px;
+  padding: 12px;
   font-family: 'Courier New', monospace !important;
-  font-size: 1.1rem;
-  line-height: 1.6;
+  font-size: 1rem;
+  line-height: 1.5;
   color: var(--arcade-orange-bright) !important;
   box-shadow: inset 0 0 20px rgba(255, 140, 0, 0.2);
   text-shadow: 0 0 5px rgba(255, 165, 0, 0.5);
+  overflow-y: auto;
 }
 
 .typing-input {
   background: var(--arcade-dark-gray) !important;
   border: 2px solid var(--arcade-orange) !important;
   border-radius: var(--arcade-border-radius);
-  padding: 20px;
+  padding: 12px;
   font-family: 'Courier New', monospace !important;
-  font-size: 1.1rem;
-  line-height: 1.6;
+  font-size: 1rem;
+  line-height: 1.5;
   color: var(--arcade-orange-bright) !important;
   box-shadow: var(--arcade-glow-shadow);
-  /* Removed fixed height to allow flex to control vertical space */
-  min-height: 120px; /* Minimum height */
+  overflow-y: auto;
 }
 
 .typing-input:focus {
@@ -618,17 +626,17 @@ textarea.typing-input::-webkit-scrollbar-thumb:hover {
 /* Timer display */
 .timer {
   font-family: var(--arcade-font-primary) !important;
-  font-size: 3rem !important;
+  font-size: 2rem !important;
   font-weight: 900 !important;
   color: var(--arcade-cyan) !important;
   text-shadow: 0 0 20px var(--arcade-cyan-glow);
   text-align: center;
-  margin: 20px 0;
+  margin: 5px 0;
 }
 
 .countdown {
   font-family: var(--arcade-font-primary) !important;
-  font-size: 5rem !important;
+  font-size: 4rem !important;
   font-weight: 900 !important;
   color: var(--arcade-orange-bright) !important;
   text-shadow: 0 0 30px var(--arcade-orange-glow);
@@ -652,8 +660,8 @@ textarea.typing-input::-webkit-scrollbar-thumb:hover {
   background: var(--arcade-dark-gray) !important;
   border: 2px solid var(--arcade-orange) !important;
   border-radius: var(--arcade-border-radius);
-  padding: 8px;
-  margin: 3px 0;
+  padding: 4px 6px;
+  margin: 2px 0;
   text-align: center;
   box-shadow: var(--arcade-glow-shadow);
 }
@@ -661,29 +669,31 @@ textarea.typing-input::-webkit-scrollbar-thumb:hover {
 
 .stat-label {
   font-family: var(--arcade-font-secondary) !important;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: var(--arcade-light-gray) !important;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 2px;
+  letter-spacing: 0.5px;
+  margin-bottom: 1px;
+  line-height: 1;
 }
 
 .stat-value {
   font-family: var(--arcade-font-primary) !important;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--arcade-orange-bright) !important;
   text-shadow: var(--arcade-text-glow);
+  line-height: 1.2;
 }
 
-/* Results section optimization - use bottom 20% of screen */
+/* Results section optimization - use bottom portion of screen */
 .results-section {
-  max-height: 20vh;
+  max-height: 25vh;
   overflow-y: auto;
 }
 
 .results-stats {
-  padding: 8px !important;
+  padding: 6px !important;
 }
 
 .results-stats .row {
@@ -725,11 +735,12 @@ textarea.typing-input::-webkit-scrollbar-thumb:hover {
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .navbar-brand {
-    font-size: 1.4rem !important;
+    font-size: 1.3rem !important;
   }
   
   .timer {
-    font-size: 2rem !important;
+    font-size: 1.5rem !important;
+    margin: 3px 0;
   }
   
   .countdown {
@@ -737,38 +748,51 @@ textarea.typing-input::-webkit-scrollbar-thumb:hover {
   }
   
   .game-container {
-    padding: 10px !important;
-    height: calc(100vh - 80px) !important;
+    padding: 8px !important;
+    height: calc(100vh - 70px) !important;
   }
   
   .retro-card .card-body {
-    padding: 10px !important;
+    padding: 8px !important;
   }
   
   .text-display {
-    padding: 10px !important;
-    font-size: 0.9rem !important;
-    max-height: 200px !important;
+    padding: 8px !important;
+    font-size: 0.85rem !important;
+    line-height: 1.4;
   }
   
   .typing-input {
-    padding: 10px !important;
-    font-size: 0.9rem !important;
-    height: 150px !important;
+    padding: 8px !important;
+    font-size: 0.85rem !important;
+    line-height: 1.4;
   }
   
   .stat-value {
-    font-size: 1rem !important;
+    font-size: 0.9rem !important;
+  }
+  
+  .stat-label {
+    font-size: 0.6rem !important;
   }
   
   main {
-    padding: 10px !important;
+    padding: 8px !important;
+  }
+  
+  .results-section {
+    max-height: 22vh;
   }
 }
 
 @media (max-width: 576px) {
+  .navbar-brand {
+    font-size: 1.1rem !important;
+  }
+  
   .timer {
-    font-size: 1.5rem !important;
+    font-size: 1.3rem !important;
+    margin: 2px 0;
   }
   
   .countdown {
@@ -777,21 +801,39 @@ textarea.typing-input::-webkit-scrollbar-thumb:hover {
   
   .game-container {
     padding: 5px !important;
-    height: calc(100vh - 70px) !important;
+    height: calc(100vh - 65px) !important;
+  }
+  
+  .retro-card .card-body {
+    padding: 6px !important;
   }
   
   .text-display {
     font-size: 0.8rem !important;
-    max-height: 150px !important;
+    padding: 6px !important;
+    line-height: 1.3;
   }
   
   .typing-input {
     font-size: 0.8rem !important;
-    height: 120px !important;
+    padding: 6px !important;
+    line-height: 1.3;
+  }
+  
+  .stat-value {
+    font-size: 0.85rem !important;
+  }
+  
+  .stat-label {
+    font-size: 0.55rem !important;
   }
   
   main {
     padding: 5px !important;
+  }
+  
+  .results-section {
+    max-height: 20vh;
   }
 }
 
@@ -808,7 +850,8 @@ textarea.typing-input::-webkit-scrollbar-thumb:hover {
 main {
   flex: 1;
   background: transparent;
-  padding: 20px;
+  padding: 10px;
+  overflow: hidden; /* Prevent main from causing scrollbars */
 }
 
 /* Animation for page transitions */

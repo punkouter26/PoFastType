@@ -37,20 +37,20 @@ public class ScoresController : ControllerBase
     {
         var requestId = HttpContext.TraceIdentifier;
         var userIP = HttpContext.Connection.RemoteIpAddress?.ToString();
-        
+
         try
         {
             // Always use ANON user for high scores
             var userIdentity = _identityService.GetCurrentUserIdentity(HttpContext);
 
-            Log.Information("User action: Score submission by {UserIP} - NetWPM: {NetWPM}, Accuracy: {Accuracy}% (RequestId: {RequestId})", 
+            Log.Information("User action: Score submission by {UserIP} - NetWPM: {NetWPM}, Accuracy: {Accuracy}% (RequestId: {RequestId})",
                 userIP, gameResult.NetWPM, gameResult.Accuracy, requestId);
 
             _logger.LogInformation("Submitting score for ANON user");
 
             var result = await _gameService.SubmitGameResultAsync(gameResult, userIdentity.UserId, "ANON");
 
-            Log.Information("Game state change: Score saved with ID {GameId} for user {UserIP} - NetWPM: {NetWPM}, Accuracy: {Accuracy}% (RequestId: {RequestId})", 
+            Log.Information("Game state change: Score saved with ID {GameId} for user {UserIP} - NetWPM: {NetWPM}, Accuracy: {Accuracy}% (RequestId: {RequestId})",
                 result.RowKey, userIP, gameResult.NetWPM, gameResult.Accuracy, requestId);
 
             _logger.LogInformation("Score submitted successfully for ANON user");
@@ -85,7 +85,7 @@ public class ScoresController : ControllerBase
     {
         var requestId = HttpContext.TraceIdentifier;
         var userIP = HttpContext.Connection.RemoteIpAddress?.ToString();
-        
+
         // Validate top parameter
         if (top <= 0 || top > 100)
         {
@@ -96,10 +96,10 @@ public class ScoresController : ControllerBase
         try
         {
             Log.Information("User action: Leaderboard requested by {UserIP} (top {Top}) (RequestId: {RequestId})", userIP, top, requestId);
-            
+
             var leaderboard = await _gameService.GetLeaderboardAsync(top);
 
-            Log.Information("Leaderboard data retrieved for user {UserIP} - {Count} entries returned (RequestId: {RequestId})", 
+            Log.Information("Leaderboard data retrieved for user {UserIP} - {Count} entries returned (RequestId: {RequestId})",
                 userIP, leaderboard.Count(), requestId);
 
             _logger.LogInformation("Retrieved leaderboard with {Count} entries", leaderboard.Count());
@@ -129,7 +129,7 @@ public class ScoresController : ControllerBase
     {
         var requestId = HttpContext.TraceIdentifier;
         var userIP = HttpContext.Connection.RemoteIpAddress?.ToString();
-        
+
         try
         {
             var userIdentity = _identityService.GetCurrentUserIdentity(HttpContext);
@@ -141,7 +141,7 @@ public class ScoresController : ControllerBase
             // Since all users are ANON, all stats are shared
             var userStats = await _gameService.GetUserStatsAsync(userIdentity.UserId);
 
-            Log.Information("User stats retrieved for user {UserIP} - {Count} game results (RequestId: {RequestId})", 
+            Log.Information("User stats retrieved for user {UserIP} - {Count} game results (RequestId: {RequestId})",
                 userIP, userStats.Count(), requestId);
 
             _logger.LogInformation("Retrieved {Count} game results for ANON user",

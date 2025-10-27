@@ -12,10 +12,10 @@ public class UserService : IUserService
         _httpClient = httpClient;
     }
 
-    public async Task<UserIdentity?> GetCurrentUserIdentityAsync()
+    public Task<UserIdentity?> GetCurrentUserIdentityAsync()
     {
         if (_cachedIdentity != null)
-            return _cachedIdentity;
+            return Task.FromResult<UserIdentity?>(_cachedIdentity);
 
         // For anonymous users, return a default identity
         _cachedIdentity = new UserIdentity
@@ -26,7 +26,7 @@ public class UserService : IUserService
             CreatedAt = DateTime.UtcNow
         };
 
-        return _cachedIdentity;
+        return Task.FromResult<UserIdentity?>(_cachedIdentity);
     }
 
     public void ClearCache()
@@ -34,9 +34,9 @@ public class UserService : IUserService
         _cachedIdentity = null;
     }
 
-    public async Task RefreshUserAsync()
+    public Task RefreshUserAsync()
     {
         ClearCache();
-        await GetCurrentUserIdentityAsync();
+        return GetCurrentUserIdentityAsync();
     }
 }

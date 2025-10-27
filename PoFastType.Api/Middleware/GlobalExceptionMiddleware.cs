@@ -23,13 +23,13 @@ public class GlobalExceptionMiddleware
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Unhandled exception occurred. RequestPath: {RequestPath}, Method: {Method}, UserAgent: {UserAgent}", 
-                context.Request.Path, 
-                context.Request.Method, 
+            Log.Error(ex, "Unhandled exception occurred. RequestPath: {RequestPath}, Method: {Method}, UserAgent: {UserAgent}",
+                context.Request.Path,
+                context.Request.Method,
                 context.Request.Headers["User-Agent"].ToString());
 
             _logger.LogError(ex, "Unhandled exception occurred processing request {RequestPath}", context.Request.Path);
-            
+
             await HandleExceptionAsync(context, ex);
         }
     }
@@ -37,14 +37,14 @@ public class GlobalExceptionMiddleware
     private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
         context.Response.ContentType = "application/json";
-        
+
         var response = new
         {
             error = new
             {
                 message = "An internal server error occurred.",
-                details = context.RequestServices.GetRequiredService<IWebHostEnvironment>().IsDevelopment() 
-                    ? exception.Message 
+                details = context.RequestServices.GetRequiredService<IWebHostEnvironment>().IsDevelopment()
+                    ? exception.Message
                     : "Please try again later."
             }
         };
