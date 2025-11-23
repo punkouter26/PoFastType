@@ -1,0 +1,12 @@
+// Application Performance Overview
+// Shows request count, duration, and success rate over time
+requests
+| where timestamp > ago(24h)
+| summarize 
+    RequestCount = count(),
+    AvgDuration = avg(duration),
+    P95Duration = percentile(duration, 95),
+    SuccessRate = countif(success == true) * 100.0 / count()
+    by bin(timestamp, 5m)
+| order by timestamp desc
+| render timechart

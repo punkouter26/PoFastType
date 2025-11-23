@@ -35,8 +35,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PoFastType.Api\PoFastType.Api.csproj" />
-    <ProjectReference Include="..\PoFastType.Shared\PoFastType.Shared.csproj" />
+    <ProjectReference Include="..\..\src\PoFastType.Api\PoFastType.Api.csproj" />
+    <ProjectReference Include="..\..\src\PoFastType.Shared\PoFastType.Shared.csproj" />
   </ItemGroup>
 
 </Project>

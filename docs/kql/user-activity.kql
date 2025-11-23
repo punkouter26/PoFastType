@@ -1,0 +1,12 @@
+// User Activity Tracking
+// Shows unique users and their game sessions
+customEvents
+| where timestamp > ago(7d)
+| where name in ("GameStarted", "GameCompleted")
+| extend userId = tostring(customDimensions.UserId)
+| summarize 
+    SessionCount = dcount(operation_Id),
+    EventCount = count()
+    by userId, name
+| order by SessionCount desc
+| take 100

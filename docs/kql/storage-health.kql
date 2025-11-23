@@ -1,0 +1,12 @@
+// Azure Storage Health
+// Monitors dependency calls to Azure Storage
+dependencies
+| where timestamp > ago(1h)
+| where type == "Azure table"
+| summarize 
+    CallCount = count(),
+    AvgDuration = avg(duration),
+    FailureCount = countif(success == false),
+    SuccessRate = countif(success == true) * 100.0 / count()
+    by target, name
+| order by FailureCount desc

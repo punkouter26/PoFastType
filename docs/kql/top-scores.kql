@@ -1,0 +1,14 @@
+// Top Game Scores
+// Shows top typing speeds and accuracy
+customMetrics
+| where timestamp > ago(7d)
+| where name in ("WordsPerMinute", "Accuracy")
+| extend userId = tostring(customDimensions.UserId)
+| summarize 
+    AvgWPM = avgif(value, name == "WordsPerMinute"),
+    MaxWPM = maxif(value, name == "WordsPerMinute"),
+    AvgAccuracy = avgif(value, name == "Accuracy")
+    by userId
+| where AvgWPM > 0
+| order by MaxWPM desc
+| take 50
