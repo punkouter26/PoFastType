@@ -169,7 +169,8 @@
 
     private async void OnUserStatsRefreshRequested()
     {
-        await LoadUserStats();        StateHasChanged();
+        await LoadUserStats();
+        StateHasChanged();
     }
 
     private async Task LoadUserStats()
