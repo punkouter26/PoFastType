@@ -4,7 +4,7 @@
 [![CD](https://github.com/YOUR_USERNAME/PoFastType/actions/workflows/cd.yml/badge.svg)](https://github.com/YOUR_USERNAME/PoFastType/actions/workflows/cd.yml)
 [![PR Validation](https://github.com/YOUR_USERNAME/PoFastType/actions/workflows/pr-validation.yml/badge.svg)](https://github.com/YOUR_USERNAME/PoFastType/actions/workflows/pr-validation.yml)
 
-A modern typing speed test application built with .NET 9 and Blazor WebAssembly. Test your typing speed, track your progress, and compete on the leaderboard!
+A modern typing speed test application built with .NET 10 and Blazor WebAssembly. Test your typing speed, track your progress, and compete on the leaderboard!
 
 ## 🚀 Features
 
@@ -12,34 +12,36 @@ A modern typing speed test application built with .NET 9 and Blazor WebAssembly.
 - **Personal Statistics** - Track your WPM, accuracy, and improvement over time
 - **Global Leaderboard** - Compete with other users for the top spot
 - **Responsive Design** - Works seamlessly on desktop and mobile devices
-- **Azure-Powered** - Scalable infrastructure with Azure Table Storage and Container Apps
+- **Azure-Powered** - Scalable infrastructure with Azure Table Storage and App Service
 
 ## 📚 Documentation
 
-- **[PRD.md](PRD.md)** - Product Requirements Document with detailed UI component specifications
+- **[docs/PRD.md](docs/PRD.md)** - Product Requirements Document with detailed UI component specifications
 - **[AGENTS.md](AGENTS.md)** - AI Coding Agent Guide with project conventions and gotchas
-- **[PoFastType.Api/README.md](PoFastType.Api/README.md)** - Backend API documentation
-- **[PoFastType.Client/README.md](PoFastType.Client/README.md)** - Frontend Blazor documentation
-- **[PoFastType.Shared/README.md](PoFastType.Shared/README.md)** - Shared models and DTOs documentation
-- **[PoFastType.Tests/README.md](PoFastType.Tests/README.md)** - Comprehensive test suite documentation
+- **[docs/README.md](docs/README.md)** - Documentation index
+- **[docs/kql/](docs/kql/)** - KQL query library for Application Insights monitoring
+- **[src/PoFastType.Api/README.md](src/PoFastType.Api/README.md)** - Backend API documentation
+- **[src/PoFastType.Client/README.md](src/PoFastType.Client/README.md)** - Frontend Blazor documentation
+- **[src/PoFastType.Shared/README.md](src/PoFastType.Shared/README.md)** - Shared models and DTOs documentation
+- **[tests/PoFastType.Tests/README.md](tests/PoFastType.Tests/README.md)** - Comprehensive test suite documentation
 
 ## 🏗️ Architecture
 
 This project follows **Vertical Slice Architecture** with **Clean Architecture principles**:
 
-- **PoFastType.Api** - ASP.NET Core Web API backend
-- **PoFastType.Client** - Blazor WebAssembly frontend (hosted in API)
-- **PoFastType.Shared** - Shared models and contracts
-- **PoFastType.Tests** - Comprehensive test suite (96 tests, 31.34% coverage)
+- **src/PoFastType.Api** - ASP.NET Core Web API backend
+- **src/PoFastType.Client** - Blazor WebAssembly frontend (hosted in API)
+- **src/PoFastType.Shared** - Shared models and contracts
+- **tests/PoFastType.Tests** - Comprehensive test suite (96 tests, 31.34% coverage)
 
 ### Technology Stack
 
 - **Frontend:** Blazor WebAssembly, Radzen UI Components
-- **Backend:** .NET 9, ASP.NET Core Web API
-- **Database:** Azure Table Storage
-- **Monitoring:** Application Insights, Serilog
+- **Backend:** .NET 10, ASP.NET Core Web API
+- **Database:** Azure Table Storage (Azurite for local development)
+- **Monitoring:** Application Insights, Serilog, OpenTelemetry
 - **CI/CD:** GitHub Actions with Azure Developer CLI
-- **Infrastructure:** Azure App Service (F1 Free Tier) + Bicep IaC
+- **Infrastructure:** Azure App Service + Bicep IaC
 
 ### Architecture Diagrams
 
@@ -47,50 +49,50 @@ This project follows **Vertical Slice Architecture** with **Clean Architecture p
 <summary>📊 Click to view architecture diagrams</summary>
 
 #### Project Dependencies
-![Project Dependencies](Diagrams/project-dependency.svg)
+![Project Dependencies](docs/Diagrams/project-dependency.svg)
 <details>
 <summary>Simple version</summary>
 
-![Simple Project Dependencies](Diagrams/SIMPLE_project-dependency.svg)
+![Simple Project Dependencies](docs/Diagrams/SIMPLE_project-dependency.svg)
 </details>
 
 #### Domain Model (Class Diagram)
-![Class Diagram](Diagrams/class-diagram.svg)
+![Class Diagram](docs/Diagrams/class-diagram.svg)
 <details>
 <summary>Simple version</summary>
 
-![Simple Class Diagram](Diagrams/SIMPLE_class-diagram.svg)
+![Simple Class Diagram](docs/Diagrams/SIMPLE_class-diagram.svg)
 </details>
 
 #### API Call Flow (Sequence Diagram)
-![Sequence Diagram](Diagrams/sequence-diagram.svg)
+![Sequence Diagram](docs/Diagrams/sequence-diagram.svg)
 <details>
 <summary>Simple version</summary>
 
-![Simple Sequence Diagram](Diagrams/SIMPLE_sequence-diagram.svg)
+![Simple Sequence Diagram](docs/Diagrams/SIMPLE_sequence-diagram.svg)
 </details>
 
 #### Game Play Use Case (Flowchart)
-![Flowchart](Diagrams/flowchart.svg)
+![Flowchart](docs/Diagrams/flowchart.svg)
 <details>
 <summary>Simple version</summary>
 
-![Simple Flowchart](Diagrams/SIMPLE_flowchart.svg)
+![Simple Flowchart](docs/Diagrams/SIMPLE_flowchart.svg)
 </details>
 
 #### Blazor Component Hierarchy
-![Component Hierarchy](Diagrams/component-hierarchy.svg)
+![Component Hierarchy](docs/Diagrams/component-hierarchy.svg)
 <details>
 <summary>Simple version</summary>
 
-![Simple Component Hierarchy](Diagrams/SIMPLE_component-hierarchy.svg)
+![Simple Component Hierarchy](docs/Diagrams/SIMPLE_component-hierarchy.svg)
 </details>
 
 </details>
 
 ## 📋 Prerequisites
 
-- [.NET 9.0 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
+- [.NET 10.0 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
 - [Azure Developer CLI (azd)](https://aka.ms/azure-dev/install)
 - [Azure CLI (az)](https://docs.microsoft.com/cli/azure/install-azure-cli)
 - [Node.js](https://nodejs.org/) (for Azurite)
@@ -114,7 +116,7 @@ cd PoFastType
 ### 3. Run the application
 
 ```powershell
-dotnet run --project PoFastType.Api
+dotnet run --project src/PoFastType.Api
 ```
 
 Or press **F5** in Visual Studio/VS Code.
@@ -123,7 +125,7 @@ Or press **F5** in Visual Studio/VS Code.
 
 - **App:** https://localhost:5001
 - **Swagger API:** https://localhost:5001/swagger
-- **Health Check:** https://localhost:5001/api/diag/health
+- **Health Check:** https://localhost:5001/api/health
 - **Diagnostics:** https://localhost:5001/diag
 
 ## 🧪 Testing
@@ -275,37 +277,54 @@ The application includes comprehensive health checks:
 ```
 PoFastType/
 ├── .github/
-│   └── workflows/          # GitHub Actions CI/CD workflows
-│       ├── ci.yml          # Continuous Integration (build, test, quality checks)
-│       ├── cd.yml          # Continuous Deployment (deploy to Azure)
-│       └── pr-validation.yml # Pull Request validation
-├── Diagrams/               # Mermaid architecture diagrams (.mmd and .svg)
-├── infra/                  # Bicep infrastructure templates
-│   ├── main.bicep          # Main infrastructure template
-│   ├── main.parameters.json # Infrastructure parameters
-│   └── resources.bicep     # Azure resources (App Service, Storage)
-├── scripts/                # Automation scripts
-│   └── start-azurite.ps1   # Start local Azure Storage emulator
-├── PoFastType.Api/         # Backend API project
-│   ├── Controllers/        # API controllers (Game, Scores, Diag, User)
-│   ├── Services/           # Business logic services
-│   ├── Repositories/       # Data access layer (Azure Table Storage)
-│   └── Middleware/         # Global exception handling (RFC 7807)
-├── PoFastType.Client/      # Blazor WebAssembly frontend
-│   ├── Pages/              # Razor pages (Home, Leaderboard, UserStats, Diag)
-│   ├── Components/         # Reusable UI components (Navbar, ErrorBoundary)
-│   ├── Layout/             # Application layout (MainLayout)
-│   └── Services/           # Frontend services (GameState, UserService)
-├── PoFastType.Shared/      # Shared models and DTOs
-│   └── Models/             # Domain models (GameResult, UserIdentity, etc.)
-├── PoFastType.Tests/       # Test projects (96 tests, 31.34% coverage)
-│   ├── Unit/               # Unit tests (services, repositories)
-│   ├── Integration/        # Integration tests (with Azurite)
-│   ├── API/                # API endpoint tests
-│   ├── E2E/                # End-to-end tests (Playwright)
-│   └── System/             # System-level tests
-├── PRD.md                  # Product Requirements Document
-├── AGENTS.md               # AI Coding Agent Guide
+│   └── workflows/              # GitHub Actions CI/CD workflows
+├── .vscode/
+│   ├── launch.json             # F5 debug configuration
+│   └── tasks.json              # Build tasks
+├── docs/                       # Documentation
+│   ├── Diagrams/               # Mermaid architecture diagrams (.mmd and .svg)
+│   ├── kql/                    # KQL queries for Application Insights
+│   ├── coverage/               # Code coverage reports
+│   ├── PRD.md                  # Product Requirements Document
+│   └── README.md               # Documentation index
+├── infra/                      # Bicep infrastructure templates
+│   ├── main.bicep              # Main infrastructure template
+│   ├── main.parameters.json    # Infrastructure parameters
+│   └── resources.bicep         # Azure resources (App Insights, App Service, Storage)
+├── scripts/                    # Automation scripts
+│   ├── start-azurite.ps1       # Start local Azure Storage emulator (Windows)
+│   ├── start-azurite.sh        # Start local Azure Storage emulator (Linux/macOS)
+│   ├── run-coverage.ps1        # Run code coverage analysis (Windows)
+│   └── run-coverage.sh         # Run code coverage analysis (Linux/macOS)
+├── src/                        # Source code
+│   ├── PoFastType.Api/         # Backend API project
+│   │   ├── Controllers/        # API controllers (Game, Scores, Diag, User)
+│   │   ├── Services/           # Business logic services
+│   │   ├── Repositories/       # Data access layer (Azure Table Storage)
+│   │   ├── Middleware/         # Global exception handling (RFC 7807)
+│   │   └── HealthChecks/       # Health check implementations
+│   ├── PoFastType.Client/      # Blazor WebAssembly frontend
+│   │   ├── Pages/              # Razor pages (Home, Leaderboard, UserStats, Diag)
+│   │   ├── Components/         # Reusable UI components (Navbar, ErrorBoundary)
+│   │   ├── Layout/             # Application layout (MainLayout)
+│   │   └── Services/           # Frontend services (GameState, UserService)
+│   └── PoFastType.Shared/      # Shared models and DTOs
+│       └── Models/             # Domain models (GameResult, UserIdentity, etc.)
+├── tests/                      # Test projects
+│   └── PoFastType.Tests/       # Comprehensive test suite (96 tests, 31.34% coverage)
+│       ├── Unit/               # Unit tests (services, repositories)
+│       ├── Integration/        # Integration tests (with Azurite)
+│       ├── API/                # API endpoint tests
+│       ├── E2E/                # End-to-end tests (Playwright)
+│       └── System/             # System-level tests
+├── Directory.Packages.props    # Centralized package management
+├── global.json                 # .NET SDK version lock (10.0.100)
+├── PoFastType.sln              # Solution file
+├── PoFastType.http             # API test collection
+├── AGENTS.md                   # AI Coding Agent Guide
+├── README.md                   # This file
+└── azure.yaml                  # Azure Developer CLI configuration
+```
 └── azure.yaml              # Azure Developer CLI configuration
 ```
 

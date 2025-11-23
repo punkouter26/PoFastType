@@ -99,6 +99,45 @@ resource gameResultsTable 'Microsoft.Storage/storageAccounts/tableServices/table
   name: 'PoFastTypeGameResults'
 }
 
+// Create Key Vault for secrets
+resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
+  name: 'pofasttype-kv'
+  location: location
+  tags: tags
+  properties: {
+    sku: {
+      family: 'A'
+      name: 'standard'
+    }
+    tenantId: subscription().tenantId
+    enableRbacAuthorization: true
+    enableSoftDelete: true
+    softDeleteRetentionInDays: 7
+    enabledForDeployment: false
+    enabledForDiskEncryption: false
+    enabledForTemplateDeployment: false
+    publicNetworkAccess: 'Enabled'
+  }
+}
+
+// Create Action Group for budget alerts
+resource budgetAlertActionGroup 'Microsoft.Insights/actionGroups@2023-01-01' = {
+  name: 'PoFastType-budget-alerts'
+  location: 'global'
+  tags: tags
+  properties: {
+    groupShortName: 'BudgetAlert'
+    enabled: true
+    emailReceivers: [
+      {
+        name: 'OwnerEmail'
+        emailAddress: 'punkouter26@gmail.com'
+        useCommonAlertSchema: true
+      }
+    ]
+  }
+}
+
 // Create a user-assigned managed identity
 resource userAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
   name: 'PoFastType-identity'
@@ -116,7 +155,7 @@ resource webApp 'Microsoft.Web/sites@2022-03-01' = {
     serverFarmId: existingAppServicePlan.id
     httpsOnly: true
     siteConfig: {
-      netFrameworkVersion: 'v9.0'
+      netFrameworkVersion: 'v10.0'
       cors: {
         allowedOrigins: ['*']
         supportCredentials: false
@@ -138,6 +177,36 @@ resource webApp 'Microsoft.Web/sites@2022-03-01' = {
           name: 'AzureTableStorage__TableName'
           value: 'PoFastTypeGameResults'
         }
+        {
+          name: 'AzureKeyVault__VaultUri'
+          value: keyVault.properties.vaultUri
+        }
+        // Enable Application Insights Snapshot Debugger
+        {
+          name: 'APPINSIGHTS_SNAPSHOTFEATURE_VERSION'
+          value: '1.0.0'
+        }
+        {
+          name: 'SnapshotDebugger__IsEnabled'
+          value: 'true'
+        }
+        {
+          name: 'SnapshotDebugger__UploadAllSnapshots'
+          value: 'true'
+        }
+        // Enable Application Insights Profiler
+        {
+          name: 'APPINSIGHTS_PROFILERFEATURE_VERSION'
+          value: '1.0.0'
+        }
+        {
+          name: 'ApplicationInsightsProfiler__IsEnabled'
+          value: 'true'
+        }
+        {
+          name: 'DiagnosticServices__EnableProfiler'
+          value: 'true'
+        }
       ]
     }
   }
@@ -154,7 +223,7 @@ resource webAppConfig 'Microsoft.Web/sites/config@2022-03-01' = {
   parent: webApp
   name: 'web'
   properties: {
-    netFrameworkVersion: 'v9.0'
+    netFrameworkVersion: 'v10.0'
     scmType: 'GitHubAction'
     use32BitWorkerProcess: true
     webSocketsEnabled: false
@@ -213,3 +282,6 @@ output AZURE_WEB_APP_NAME string = webApp.name
 output AZURE_STORAGE_ACCOUNT_NAME string = storageAccount.name
 output AZURE_APPLICATION_INSIGHTS_CONNECTION_STRING string = appInsights.properties.ConnectionString
 output AZURE_LOG_ANALYTICS_WORKSPACE_ID string = logAnalyticsWorkspace.id
+output AZURE_KEY_VAULT_NAME string = keyVault.name
+output AZURE_KEY_VAULT_URI string = keyVault.properties.vaultUri
+output BUDGET_ACTION_GROUP_ID string = budgetAlertActionGroup.id

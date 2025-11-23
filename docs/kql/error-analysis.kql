@@ -1,0 +1,10 @@
+// Error Analysis
+// Shows exceptions and failed requests
+union exceptions, requests
+| where timestamp > ago(24h)
+| where success == false or itemType == "exception"
+| summarize 
+    ErrorCount = count(),
+    Sample = any(message)
+    by problemId, type
+| order by ErrorCount desc

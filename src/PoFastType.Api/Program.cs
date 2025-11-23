@@ -6,32 +6,38 @@ using PoFastType.Shared.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Serilog;
-using Serilog.Formatting.Compact;
-using System.IO;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Trace;
+using OpenTelemetry.Resources;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Ensure DEBUG directory exists
-var debugPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "DEBUG");
-Directory.CreateDirectory(debugPath);
+// Configure Azure Key Vault for Production only
+if (builder.Environment.IsProduction())
+{
+    var keyVaultUri = builder.Configuration["AzureKeyVault:VaultUri"];
+    if (!string.IsNullOrEmpty(keyVaultUri))
+    {
+        var secretClient = new SecretClient(
+            new Uri(keyVaultUri),
+            new DefaultAzureCredential());
 
-// Configure Serilog with structured JSON logging and overwrite behavior
+        builder.Configuration.AddAzureKeyVault(
+            new Uri(keyVaultUri),
+            new DefaultAzureCredential());
+    }
+}
+
+// Configure Serilog from appsettings.json
 Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Debug()
-    .WriteTo.Console(new CompactJsonFormatter())
-    .WriteTo.File(
-        new CompactJsonFormatter(),
-        Path.Combine(debugPath, "log.txt"),
-        rollingInterval: RollingInterval.Infinite,
-        rollOnFileSizeLimit: false,
-        shared: false,
-        buffered: false,
-        flushToDiskInterval: TimeSpan.FromSeconds(1))
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
     .Enrich.WithProperty("Application", "PoFastType")
     .Enrich.WithProperty("Environment", builder.Environment.EnvironmentName)
     .CreateLogger();
 
-// Log application startup
 Log.Information("PoFastType application starting up at {Timestamp}", DateTime.UtcNow);
 
 builder.Host.UseSerilog();
@@ -39,13 +45,27 @@ builder.Host.UseSerilog();
 // Add Application Insights
 builder.Services.AddApplicationInsightsTelemetry();
 
-// Configure logging to write to console and file
+// Add OpenTelemetry
+builder.Services.AddOpenTelemetry()
+    .ConfigureResource(resource => resource
+        .AddService("PoFastType")
+        .AddAttributes(new Dictionary<string, object>
+        {
+            ["deployment.environment"] = builder.Environment.EnvironmentName
+        }))
+    .WithMetrics(metrics => metrics
+        .AddAspNetCoreInstrumentation()
+        .AddRuntimeInstrumentation()
+        .AddMeter("PoFastType.Metrics"))
+    .WithTracing(tracing => tracing
+        .AddAspNetCoreInstrumentation()
+        .AddHttpClientInstrumentation());
+
+// Configure logging
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog();
-builder.Logging.SetMinimumLevel(LogLevel.Debug);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+// Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -70,8 +90,10 @@ builder.Services.AddCors(options =>
             }
             else
             {
-                // In production, be more restrictive
-                policy.WithOrigins("https://pofasttype.azurewebsites.net")
+                // In production, use configured origins
+                var allowedOrigins = builder.Configuration.GetSection("CORS:AllowedOrigins").Get<string[]>()
+                    ?? new[] { "https://pofasttype.azurewebsites.net" };
+                policy.WithOrigins(allowedOrigins)
                       .AllowAnyHeader()
                       .AllowAnyMethod()
                       .AllowCredentials();
@@ -101,10 +123,10 @@ var app = builder.Build();
 // Add global exception handling middleware first
 app.UseMiddleware<GlobalExceptionMiddleware>();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage(); // Add this for detailed error pages in development
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
     app.UseWebAssemblyDebugging();
@@ -150,7 +172,6 @@ app.MapHealthChecks("/api/health", new Microsoft.AspNetCore.Diagnostics.HealthCh
 // Fallback to serve the Blazor WebAssembly app for non-API routes
 app.MapFallbackToFile("index.html");
 
-// Log application ready state
 Log.Information("PoFastType application configured and ready to serve requests");
 
 try
