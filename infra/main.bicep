@@ -39,8 +39,23 @@ module resources 'resources.bicep' = {
   }
 }
 
+// Deploy budget with alert
+module budget 'budget.bicep' = {
+  scope: rg
+  name: 'budget'
+  params: {
+    budgetName: 'PoFastType-MonthlyBudget'
+    amount: 5
+    actionGroupId: resources.outputs.BUDGET_ACTION_GROUP_ID
+  }
+  dependsOn: [
+    resources
+  ]
+}
+
 output AZURE_LOCATION string = location
 output AZURE_TENANT_ID string = tenant().tenantId
 output WEBSITE_URL string = resources.outputs.WEBSITE_URL
 output API_BASE_URL string = resources.outputs.API_BASE_URL
 output RESOURCE_GROUP_ID string = rg.id
+output BUDGET_ID string = budget.outputs.budgetId
