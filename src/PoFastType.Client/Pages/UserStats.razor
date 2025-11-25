@@ -1,4 +1,5 @@
 @page "/stats"
+@using PoFastType.Shared.Models
 @inject HttpClient Http
 @inject ILogger<UserStats> Logger
 @inject GameStateService GameState
@@ -6,11 +7,11 @@
 
 <PageTitle>PoFastType - My Stats</PageTitle>
 
-<div class="container">
+<div class="game-container page-content">
     <div class="row">
         <div class="col-12">
-            <div class="card">                <div class="card-header">
-                    <h3 class="mb-0">📊 ANON User Statistics</h3>
+            <div class="card retro-card">                <div class="card-header retro-card-header">
+                    <h3 class="mb-0">Statistics</h3>
                 </div>
                 <div class="card-body">
                     @if (isLoading)
@@ -19,7 +20,6 @@
                             <div class="spinner-border text-primary" role="status">
                                 <span class="visually-hidden">Loading...</span>
                             </div>
-                            <p class="mt-3">Loading shared statistics...</p>
                         </div>
                     }
                     else if (error != null)
@@ -27,7 +27,6 @@
                         <div class="alert alert-danger" role="alert">
                             <h4 class="alert-heading">Error Loading Statistics</h4>
                             <p>@error</p>
-                            <button class="btn btn-outline-danger" @onclick="LoadUserStats">Try Again</button>
                         </div>
                     }
                     else if (!userStats.Any())
@@ -42,102 +41,142 @@
                     {
                         <!-- Summary Statistics -->
                         <div class="row mb-4">
-                            <div class="col-md-3">
-                                <div class="card bg-primary text-white">
-                                    <div class="card-body text-center">
-                                        <h4 class="card-title">@userStats.Count</h4>
-                                        <p class="card-text">Tests Completed</p>
-                                    </div>
+                            <div class="col-md-4 col-6 mb-2">
+                                <div class="stat-card">
+                                    <div class="stat-label">Tests Completed</div>
+                                    <div class="stat-value">@userStats.Count</div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="card bg-success text-white">
-                                    <div class="card-body text-center">
-                                        <h4 class="card-title">@bestNetWPM.ToString("F1")</h4>
-                                        <p class="card-text">Best Net WPM</p>
-                                    </div>
+                            <div class="col-md-4 col-6 mb-2">
+                                <div class="stat-card">
+                                    <div class="stat-label">Best Gross WPM</div>
+                                    <div class="stat-value">@bestGrossWPM.ToString("F1")</div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="card bg-info text-white">
-                                    <div class="card-body text-center">
-                                        <h4 class="card-title">@averageAccuracy.ToString("F1")%</h4>
-                                        <p class="card-text">Average Accuracy</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="card bg-warning text-dark">
-                                    <div class="card-body text-center">
-                                        <h4 class="card-title">@averageNetWPM.ToString("F1")</h4>
-                                        <p class="card-text">Average Net WPM</p>
-                                    </div>
+                            <div class="col-md-4 col-6 mb-2">
+                                <div class="stat-card">
+                                    <div class="stat-label">Average Accuracy</div>
+                                    <div class="stat-value">@averageAccuracy.ToString("F1")%</div>
                                 </div>
                             </div>
                         </div>
 
+                        <!-- Performance Charts -->
+                        @if (userStats.Count >= 2)
+                        {
+                            <div class="row mt-4">
+                                <div class="col-lg-8 col-12 mb-3">
+                                    <h5>WPM Progress (Last 20 Tests)</h5>
+                                    <RadzenChart>
+                                        <RadzenLineSeries Data="@GetChartData()" CategoryProperty="TestNumber" ValueProperty="GrossWPM" 
+                                                         Title="Gross WPM" Stroke="var(--arcade-cyan)" Smooth="true">
+                                            <RadzenMarkers MarkerType="MarkerType.Circle" Fill="var(--arcade-cyan)" />
+                                        </RadzenLineSeries>
+                                        <RadzenCategoryAxis>
+                                            <RadzenGridLines Visible="true" />
+                                        </RadzenCategoryAxis>
+                                        <RadzenValueAxis>
+                                            <RadzenGridLines Visible="true" />
+                                        </RadzenValueAxis>
+                                        <RadzenLegend Position="LegendPosition.Top" />
+                                    </RadzenChart>
+                                </div>
+                                <div class="col-lg-4 col-12 mb-3">
+                                    <h5>Accuracy Distribution</h5>
+                                    <RadzenChart>
+                                        <RadzenDonutSeries Data="@GetAccuracyDistribution()" CategoryProperty="Category" ValueProperty="Count" 
+                                                          Title="Tests" Fills="@(new[] { "#00ff41", "#ffa500", "#ff3333" })">
+                                            <RadzenSeriesDataLabels Visible="true" />
+                                        </RadzenDonutSeries>
+                                        <RadzenLegend Position="LegendPosition.Bottom" />
+                                    </RadzenChart>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-12 text-center">
+                                    <h5>Your Skill Level</h5>
+                                    <RadzenRadialGauge Style="width: 300px; height: 300px; margin: 0 auto;">
+                                        <RadzenRadialGaugeScale Min="0" Max="100" StartAngle="-90" EndAngle="270">
+                                            <RadzenRadialGaugeScalePointer Value="@averageGrossWPM" ShowValue="true" />
+                                            <RadzenRadialGaugeScaleRange From="0" To="30" Fill="#ff3333" />
+                                            <RadzenRadialGaugeScaleRange From="30" To="50" Fill="#ffa500" />
+                                            <RadzenRadialGaugeScaleRange From="50" To="100" Fill="#00ff41" />
+                                        </RadzenRadialGaugeScale>
+                                    </RadzenRadialGauge>
+                                    <p class="mt-2">
+                                        @if (averageGrossWPM >= 50)
+                                        {
+                                            <span class="badge bg-success">Expert Typist 🏆</span>
+                                        }
+                                        else if (averageGrossWPM >= 30)
+                                        {
+                                            <span class="badge bg-warning text-dark">Intermediate ⭐</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Beginner 🌱</span>
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        }
+
                         <!-- Recent Tests Table -->
                         <h5>Recent Tests</h5>
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th scope="col">Date</th>
-                                        <th scope="col" class="text-center">Net WPM</th>
-                                        <th scope="col" class="text-center">Gross WPM</th>
-                                        <th scope="col" class="text-center">Accuracy</th>
-                                        <th scope="col" class="text-center">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var stat in userStats.Take(10))
-                                    {
-                                        <tr>
-                                            <td>
-                                                <small>@stat.Timestamp.ToString("MMM dd, yyyy HH:mm")</small>
-                                            </td>
-                                            <td class="text-center">
-                                                <span class="fw-bold @(stat.NetWPM >= 40 ? "text-success" : stat.NetWPM >= 30 ? "text-warning" : "text-danger")">
-                                                    @stat.NetWPM.ToString("F1")
-                                                </span>
-                                            </td>
-                                            <td class="text-center">
-                                                <small class="text-muted">@stat.GrossWPM.ToString("F1")</small>
-                                            </td>
-                                            <td class="text-center">
-                                                <span class="@(stat.Accuracy >= 95 ? "text-success" : stat.Accuracy >= 90 ? "text-warning" : "text-danger")">
-                                                    @stat.Accuracy.ToString("F1")%
-                                                </span>
-                                            </td>
-                                            <td class="text-center">
-                                                @if (stat.NetWPM >= 40 && stat.Accuracy >= 95)
-                                                {
-                                                    <span class="badge bg-success">Excellent</span>
-                                                }
-                                                else if (stat.NetWPM >= 30 && stat.Accuracy >= 90)
-                                                {
-                                                    <span class="badge bg-warning text-dark">Good</span>
-                                                }
-                                                else
-                                                {
-                                                    <span class="badge bg-secondary">Practice</span>
-                                                }
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
+                        <RadzenDataGrid Data="@userStats" TItem="UserGameResult" 
+                                       AllowSorting="true" AllowFiltering="true" AllowPaging="true" 
+                                       PageSize="10" PagerHorizontalAlign="HorizontalAlign.Center"
+                                       FilterMode="FilterMode.Simple"
+                                       GridLines="DataGridGridLines.Horizontal">
+                            <Columns>
+                                <RadzenDataGridColumn TItem="UserGameResult" Property="Timestamp" Title="Date" Width="180px">
+                                    <Template Context="stat">
+                                        <small>@stat.Timestamp.ToString("MMM dd, yyyy HH:mm")</small>
+                                    </Template>
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="UserGameResult" Property="GrossWPM" Title="Gross WPM" Width="120px" TextAlign="TextAlign.Center">
+                                    <Template Context="stat">
+                                        <span class="fw-bold @(stat.GrossWPM >= 40 ? "text-success" : stat.GrossWPM >= 30 ? "text-warning" : "text-danger")">
+                                            @stat.GrossWPM.ToString("F1")
+                                        </span>
+                                    </Template>
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="UserGameResult" Property="Accuracy" Title="Accuracy" Width="120px" TextAlign="TextAlign.Center">
+                                    <Template Context="stat">
+                                        <span class="@(stat.Accuracy >= 95 ? "text-success" : stat.Accuracy >= 90 ? "text-warning" : "text-danger")">
+                                            @stat.Accuracy.ToString("F1")%
+                                        </span>
+                                    </Template>
+                                </RadzenDataGridColumn>
+                                <RadzenDataGridColumn TItem="UserGameResult" Property="GrossWPM" Title="Status" Width="120px" TextAlign="TextAlign.Center" Sortable="false">
+                                    <Template Context="stat">
+                                        @if (stat.GrossWPM >= 40 && stat.Accuracy >= 95)
+                                        {
+                                            <span class="badge bg-success">Excellent</span>
+                                        }
+                                        else if (stat.GrossWPM >= 30 && stat.Accuracy >= 90)
+                                        {
+                                            <span class="badge bg-warning text-dark">Good</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Practice</span>
+                                        }
+                                    </Template>
+                                </RadzenDataGridColumn>
+                            </Columns>
+                        </RadzenDataGrid>
 
                         @if (userStats.Count > 10)
                         {
                             <div class="text-center mt-3">
-                                <small class="text-muted">Showing your 10 most recent tests. You have completed @userStats.Count total tests.</small>
+                                <small class="text-muted">You have completed @userStats.Count total tests.</small>
                             </div>
                         }
 
                         <div class="text-center mt-4">
-                            <button class="btn btn-outline-primary" @onclick="LoadUserStats">
+                            <button class="btn btn-outline-primary glow-hover" @onclick="LoadUserStats">
                                 <i class="bi bi-arrow-clockwise"></i> Refresh
                             </button>
                         </div>
@@ -204,16 +243,36 @@
         }
     }
 
-    private double bestNetWPM => userStats.Any() ? userStats.Max(s => s.NetWPM) : 0;
-    private double averageNetWPM => userStats.Any() ? userStats.Average(s => s.NetWPM) : 0;
+    private double bestGrossWPM => userStats.Any() ? userStats.Max(s => s.GrossWPM) : 0;
+    private double averageGrossWPM => userStats.Any() ? userStats.Average(s => s.GrossWPM) : 0;
     private double averageAccuracy => userStats.Any() ? userStats.Average(s => s.Accuracy) : 0;
 
-    public class UserGameResult
+    private List<ChartDataPoint> GetChartData()
     {
-        public double NetWPM { get; set; }
-        public double Accuracy { get; set; }
-        public double GrossWPM { get; set; }
-        public string ProblemKeysJson { get; set; } = string.Empty;
-        public DateTime Timestamp { get; set; }
+        return userStats
+            .OrderBy(s => s.Timestamp)
+            .TakeLast(20)
+            .Select((stat, index) => new ChartDataPoint
+            {
+                TestNumber = index + 1,
+                NetWPM = stat.NetWPM,
+                GrossWPM = stat.GrossWPM
+            })
+            .ToList();
     }
+
+    private List<AccuracyDistribution> GetAccuracyDistribution()
+    {
+        var excellent = userStats.Count(s => s.Accuracy >= 95);
+        var good = userStats.Count(s => s.Accuracy >= 85 && s.Accuracy < 95);
+        var needsPractice = userStats.Count(s => s.Accuracy < 85);
+
+        return new List<AccuracyDistribution>
+        {
+            new AccuracyDistribution { Category = "Excellent (≥95%)", Count = excellent },
+            new AccuracyDistribution { Category = "Good (85-95%)", Count = good },
+            new AccuracyDistribution { Category = "Needs Practice (<85%)", Count = needsPractice }
+        };
+    }
+
 } 

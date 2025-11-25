@@ -1,0 +1,475 @@
+@page "/heatmap"
+@inject HttpClient Http
+@inject ILogger<Heatmap> Logger
+@inject IJSRuntime JSRuntime
+
+<PageTitle>PoFastType - Typing Heatmap</PageTitle>
+
+<div class="container mt-4 page-content">
+    <div class="row">
+        <div class="col-12">
+            <div class="card retro-card">
+                <div class="card-header retro-card-header">
+                    <h3 class="mb-0">TYPING BIOMETRICS & HEATMAP</h3>
+                </div>
+                <div class="card-body">
+                {
+                    <div class="text-center py-5">
+                        <div class="spinner-border" style="color: var(--arcade-orange);" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                }
+                else if (errorMessage != null)
+                {
+                    <div class="alert alert-danger">
+                        <strong>Error:</strong> @errorMessage
+                    </div>
+                }
+                else if (biometricStats == null || biometricStats.TotalKeystrokes == 0)
+                {
+                    <div class="alert alert-info">
+                        <h4>No typing data available yet</h4>
+                        <p class="mt-2">
+                            Complete some typing tests to see your detailed biometric analysis and keyboard heatmap.
+                        </p>
+                    </div>
+                    <button class="btn btn-primary mt-3" @onclick="@(() => Navigation.NavigateTo("/"))">Start Typing Test</button>
+                }
+                else
+                {
+                    <!-- Summary Statistics -->
+                    <div class="row mb-2">
+                        <div class="col-md-3 mb-2">
+                            <div class="stat-card">
+                                <div class="stat-value">
+                                    @biometricStats.TotalKeystrokes.ToString("N0")
+                                </div>
+                                <div class="stat-label">
+                                    Total Keystrokes
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <div class="stat-card">
+                                <div class="stat-value">
+                                    @biometricStats.PeakWPM.ToString("F1")
+                                </div>
+                                <div class="stat-label">
+                                    Peak WPM
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <div class="stat-card">
+                                <div class="stat-value">
+                                    @(biometricStats.OverallAccuracy.ToString("F1"))
+                                </div>
+                                <div class="stat-label">
+                                    Overall Accuracy
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                            <div class="stat-card">
+                                <div class="stat-value">
+                                    @biometricStats.AverageKeystrokeInterval.ToString("F0") ms
+                                </div>
+                                <div class="stat-label">
+                                    Avg Keystroke Speed
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Keyboard Heatmap -->
+                    <div class="card retro-card mb-2">
+                        <div class="card-header retro-card-header">
+                            <h5 class="mb-0">KEYBOARD HEATMAP</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted mb-2">
+                                Color: <span style="color: var(--arcade-green);">Green = High</span>, 
+                                <span style="color: var(--arcade-orange);">Orange = Medium</span>, 
+                                <span style="color: var(--arcade-red);">Red = Low</span>
+                            </p>
+
+                        <div class="keyboard-container">
+                            @foreach (var row in keyboardLayout)
+                            {
+                                <div class="keyboard-row">
+                                    @foreach (var key in row)
+                                    {
+                                        var metrics = GetKeyMetrics(key);
+                                        var heatColor = GetHeatColor(metrics);
+                                        var tooltipText = GetTooltipText(key, metrics);
+
+                                        <div class="key" 
+                                             style="background-color: @heatColor; @GetKeySize(key)"
+                                             title="@tooltipText">
+                                            <span class="key-label">@key</span>
+                                            @if (metrics != null)
+                                            {
+                                                <span class="key-accuracy">@metrics.Accuracy.ToString("F0")%</span>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                        </div>
+                    </div>
+
+                    <!-- Problem Keys Section -->
+                    @if (biometricStats.ProblemKeys.Any())
+                    {
+                        <div class="card retro-card mb-2">
+                            <div class="card-header retro-card-header">
+                                <h5 class="mb-0">PROBLEM KEYS</h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="text-muted mb-2">
+                                    Keys with accuracy below 85%
+                                </p>
+                            <div class="d-flex flex-wrap gap-2">
+                                @foreach (var key in biometricStats.ProblemKeys.Take(10))
+                                {
+                                    var metrics = GetKeyMetrics(key);
+                                    <span class="badge bg-danger">
+                                        @key: @(metrics?.Accuracy.ToString("F0") ?? "0")%
+                                    </span>
+                                }
+                            </div>
+                            </div>
+                        </div>
+                    }
+
+                    <!-- Strong Keys Section -->
+                    @if (biometricStats.StrongKeys.Any())
+                    {
+                        <div class="card retro-card mb-2">
+                            <div class="card-header retro-card-header">
+                                <h5 class="mb-0">STRONG KEYS</h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="text-muted mb-2">
+                                    Keys with accuracy above 95%
+                                </p>
+                            <div class="d-flex flex-wrap gap-2">
+                                @foreach (var key in biometricStats.StrongKeys.Take(10))
+                                {
+                                    var metrics = GetKeyMetrics(key);
+                                    <span class="badge bg-success">
+                                        @key: @(metrics?.Accuracy.ToString("F0") ?? "0")%
+                                    </span>
+                                }
+                            </div>
+                            </div>
+                        </div>
+                    }
+
+                    <!-- Error Patterns -->
+                    @if (biometricStats.ErrorPatterns.Any())
+                    {
+                        <div class="card retro-card mb-2">
+                            <div class="card-header retro-card-header">
+                                <h5 class="mb-0">COMMON MISTAKES</h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="text-muted mb-2">
+                                    Keys you frequently confuse
+                                </p>
+                            <div class="table-responsive">
+                                <table class="table table-dark">
+                                    <thead>
+                                        <tr>
+                                            <th>Expected Key</th>
+                                            <th>Typed Instead</th>
+                                            <th>Times</th>
+                                            <th>Error Rate</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var pattern in biometricStats.ErrorPatterns.Take(10))
+                                        {
+                                            <tr>
+                                                <td>@pattern.ExpectedKey</td>
+                                                <td>@pattern.ActualKey</td>
+                                                <td>@pattern.Occurrences</td>
+                                                <td>
+                                                    <span class="badge @(pattern.ErrorRate > 20 ? "bg-danger" : "bg-warning")">
+                                                        @pattern.ErrorRate.ToString("F1")%
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            </div>
+                        </div>
+                    }
+
+                    <!-- Advanced Metrics -->
+                    <div class="card retro-card">
+                        <div class="card-header retro-card-header">
+                            <h5 class="mb-0">ADVANCED METRICS</h5>
+                        </div>
+                        <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <strong>Games Analyzed:</strong>
+                                @biometricStats.GamesAnalyzed
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <strong>Typing Rhythm Variance:</strong>
+                                @biometricStats.TypingRhythmVariance.ToString("F2") ms
+                                <small class="d-block text-muted">(Lower is more consistent)</small>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <strong>Fatigue Index:</strong>
+                                @biometricStats.FatigueIndex.ToString("F2")%
+                                @if (biometricStats.FatigueIndex > 0)
+                                {
+                                    <small class="d-block text-warning">(Speed decreased over time)</small>
+                                }
+                                else if (biometricStats.FatigueIndex < 0)
+                                {
+                                    <small class="d-block text-success">(Speed increased - warmed up!)</small>
+                                }
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <strong>Average WPM:</strong>
+                                @biometricStats.AverageWPM.ToString("F1")
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <!-- Last Updated -->
+                    <div class="mt-2 text-center text-muted">
+                        <small>Last updated: @biometricStats.LastUpdated.ToString("g")</small>
+                    </div>
+                }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .keyboard-container {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 20px;
+        background-color: var(--arcade-black);
+        border: 2px solid var(--arcade-orange);
+        border-radius: var(--arcade-border-radius);
+        overflow-x: auto;
+        box-shadow: inset 0 0 20px rgba(255, 140, 0, 0.2);
+    }
+
+    .keyboard-row {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+    }
+
+    .key {
+        min-width: 50px;
+        height: 50px;
+        border: 2px solid var(--arcade-orange);
+        border-radius: 6px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--arcade-font-primary);
+        font-weight: bold;
+        cursor: help;
+        transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        box-shadow: 0 0 10px rgba(255, 140, 0, 0.3);
+        color: var(--arcade-black);
+    }
+
+    .key:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 0 20px var(--arcade-orange-glow);
+        border-color: var(--arcade-orange-bright);
+    }
+
+    .key-label {
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .key-accuracy {
+        font-size: 10px;
+        margin-top: 2px;
+        font-family: var(--arcade-font-secondary);
+    }
+
+    .key-space {
+        min-width: 300px;
+    }
+
+    .key-tab, .key-caps {
+        min-width: 70px;
+    }
+
+    .key-shift, .key-enter {
+        min-width: 90px;
+    }
+
+    .key-backspace {
+        min-width: 100px;
+    }
+
+    /* Mobile responsiveness */
+    @@media (max-width: 768px) {
+        .key {
+            min-width: 35px;
+            height: 35px;
+            font-size: 10px;
+        }
+
+        .key-space {
+            min-width: 180px;
+        }
+
+        .keyboard-container {
+            padding: 10px;
+        }
+        
+        .stat-card {
+            margin-bottom: 10px;
+        }
+    }
+    
+    @@media (max-width: 576px) {
+        .key {
+            min-width: 30px;
+            height: 30px;
+        }
+        
+        .key-label {
+            font-size: 11px;
+        }
+        
+        .key-accuracy {
+            font-size: 8px;
+        }
+    }
+</style>
+
+@code {
+    [Inject] private NavigationManager Navigation { get; set; } = default!;
+
+    private BiometricStats? biometricStats;
+    private string? errorMessage;
+
+    // QWERTY keyboard layout
+    private List<List<string>> keyboardLayout = new()
+    {
+        new List<string> { "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=" },
+        new List<string> { "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\\" },
+        new List<string> { "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'" },
+        new List<string> { "z", "x", "c", "v", "b", "n", "m", ",", ".", "/" },
+        new List<string> { " " } // Spacebar
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadBiometrics();
+    }
+
+    private async Task LoadBiometrics()
+    {
+        errorMessage = null;
+
+        try
+        {
+            var userId = await GetUserIdAsync();
+            var response = await Http.GetFromJsonAsync<BiometricStats>($"/api/biometrics/user/{userId}/stats");
+
+            if (response != null)
+            {
+                biometricStats = response;
+                Logger.LogInformation("Loaded biometric statistics: {Total} keystrokes", response.TotalKeystrokes);
+            }
+        }
+        catch (HttpRequestException ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+        {
+            Logger.LogInformation("No biometric data found for user");
+            biometricStats = null;
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Failed to load biometric statistics");
+            errorMessage = $"Failed to load biometric data: {ex.Message}";
+        }
+    }
+
+    private async Task<string> GetUserIdAsync()
+    {
+        try
+        {
+            var userId = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "userId");
+            if (string.IsNullOrEmpty(userId))
+            {
+                userId = Guid.NewGuid().ToString();
+                await JSRuntime.InvokeVoidAsync("localStorage.setItem", "userId", userId);
+            }
+            return userId;
+        }
+        catch
+        {
+            return "ANON";
+        }
+    }
+
+    private KeyMetrics? GetKeyMetrics(string key)
+    {
+        if (biometricStats == null) return null;
+        return biometricStats.KeyboardHeatmap.FirstOrDefault(k => k.Key.Equals(key, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private string GetHeatColor(KeyMetrics? metrics)
+    {
+        if (metrics == null) return "rgba(26, 26, 26, 0.8)"; // Dark gray - no data
+
+        var accuracy = metrics.Accuracy;
+
+        // Use arcade theme colors with gradients
+        if (accuracy >= 95) return "linear-gradient(135deg, #00ff00 0%, #00cc00 100%)"; // Bright green - excellent
+        if (accuracy >= 85) return "linear-gradient(135deg, #ffa500 0%, #ff8c00 100%)"; // Orange - good
+        if (accuracy >= 70) return "linear-gradient(135deg, #ff8c00 0%, #ff6600 100%)"; // Dark orange - needs work
+        return "linear-gradient(135deg, #ff0000 0%, #cc0000 100%)"; // Red - problem key
+    }
+
+    private string GetTooltipText(string key, KeyMetrics? metrics)
+    {
+        if (metrics == null)
+            return $"Key '{key}': No data yet";
+
+        return $"Key '{key}'\n" +
+               $"Accuracy: {metrics.Accuracy:F1}%\n" +
+               $"Presses: {metrics.TotalPresses}\n" +
+               $"Correct: {metrics.CorrectPresses}\n" +
+               $"Incorrect: {metrics.IncorrectPresses}\n" +
+               $"Avg Speed: {metrics.AverageIntervalMs:F0}ms";
+    }
+
+    private string GetKeySize(string key)
+    {
+        return key switch
+        {
+            " " => "min-width: 300px;",
+            _ => ""
+        };
+    }
+}
+
+@using PoFastType.Shared.Models

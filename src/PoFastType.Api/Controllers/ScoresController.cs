@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PoFastType.Shared.Models;
 using PoFastType.Api.Services;
+using PoFastType.Api.Extensions;
 using Serilog;
 
 namespace PoFastType.Api.Controllers;
@@ -15,17 +16,11 @@ namespace PoFastType.Api.Controllers;
 public class ScoresController : ControllerBase
 {
     private readonly IGameService _gameService;
-    private readonly IUserIdentityService _identityService;
-    private readonly ILogger<ScoresController> _logger;
 
-    public ScoresController(
-        IGameService gameService,
-        IUserIdentityService identityService,
-        ILogger<ScoresController> logger)
+    public ScoresController(IGameService gameService)
     {
-        _gameService = gameService ?? throw new ArgumentNullException(nameof(gameService));
-        _identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        ArgumentNullException.ThrowIfNull(gameService);
+        _gameService = gameService;
     }    /// <summary>
          /// Submits a game result for any user (authenticated or anonymous)
          /// </summary>
@@ -35,25 +30,19 @@ public class ScoresController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> SubmitScore([FromBody] GameResult gameResult)
     {
-        var requestId = HttpContext.TraceIdentifier;
-        var userIP = HttpContext.Connection.RemoteIpAddress?.ToString();
+        var ctx = HttpContext.GetRequestContext();
 
         try
         {
             // Always use ANON user for high scores
-            var userIdentity = _identityService.GetCurrentUserIdentity(HttpContext);
+            Log.Information("User action: Score submission - NetWPM: {NetWPM}, Accuracy: {Accuracy}% (IP: {UserIP}, RequestId: {RequestId})",
+                gameResult.NetWPM, gameResult.Accuracy, ctx.UserIP, ctx.RequestId);
 
-            Log.Information("User action: Score submission by {UserIP} - NetWPM: {NetWPM}, Accuracy: {Accuracy}% (RequestId: {RequestId})",
-                userIP, gameResult.NetWPM, gameResult.Accuracy, requestId);
+            var result = await _gameService.SubmitGameResultAsync(gameResult, "ANON", "ANON");
 
-            _logger.LogInformation("Submitting score for ANON user");
+            Log.Information("Game state change: Score saved with ID {GameId} - NetWPM: {NetWPM}, Accuracy: {Accuracy}% (IP: {UserIP}, RequestId: {RequestId})",
+                result.RowKey, gameResult.NetWPM, gameResult.Accuracy, ctx.UserIP, ctx.RequestId);
 
-            var result = await _gameService.SubmitGameResultAsync(gameResult, userIdentity.UserId, "ANON");
-
-            Log.Information("Game state change: Score saved with ID {GameId} for user {UserIP} - NetWPM: {NetWPM}, Accuracy: {Accuracy}% (RequestId: {RequestId})",
-                result.RowKey, userIP, gameResult.NetWPM, gameResult.Accuracy, requestId);
-
-            _logger.LogInformation("Score submitted successfully for ANON user");
             return Ok(new
             {
                 message = "Score submitted successfully",
@@ -63,14 +52,12 @@ public class ScoresController : ControllerBase
         }
         catch (ArgumentException ex)
         {
-            Log.Warning(ex, "Invalid score submission by user {UserIP} (RequestId: {RequestId})", userIP, requestId);
-            _logger.LogWarning(ex, "Invalid game result submitted");
+            Log.Warning(ex, "Invalid score submission (IP: {UserIP}, RequestId: {RequestId})", ctx.UserIP, ctx.RequestId);
             return BadRequest(new { error = ex.Message });
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Score submission failed for user {UserIP} (RequestId: {RequestId})", userIP, requestId);
-            _logger.LogError(ex, "Error submitting score");
+            Log.Error(ex, "Score submission failed (IP: {UserIP}, RequestId: {RequestId})", ctx.UserIP, ctx.RequestId);
             return StatusCode(StatusCodes.Status500InternalServerError,
                 new { error = "Failed to submit score" });
         }
@@ -78,43 +65,42 @@ public class ScoresController : ControllerBase
          /// Retrieves the leaderboard with top performers
          /// </summary>
     [HttpGet("leaderboard")]
+    [HttpGet("")] // RESTful alias: GET /api/scores returns leaderboard
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetLeaderboard([FromQuery] int top = 10)
     {
-        var requestId = HttpContext.TraceIdentifier;
-        var userIP = HttpContext.Connection.RemoteIpAddress?.ToString();
+        var ctx = HttpContext.GetRequestContext();
 
         // Validate top parameter
         if (top <= 0 || top > 100)
         {
-            Log.Warning("Invalid leaderboard request by user {UserIP} - invalid top parameter: {Top} (RequestId: {RequestId})", userIP, top, requestId);
+            Log.Warning("Invalid leaderboard request - invalid top parameter: {Top} (IP: {UserIP}, RequestId: {RequestId})", 
+                top, ctx.UserIP, ctx.RequestId);
             return BadRequest($"Top count must be between 1 and 100. Provided: {top}");
         }
 
         try
         {
-            Log.Information("User action: Leaderboard requested by {UserIP} (top {Top}) (RequestId: {RequestId})", userIP, top, requestId);
+            Log.Information("User action: Leaderboard requested (top {Top}) (IP: {UserIP}, RequestId: {RequestId})", 
+                top, ctx.UserIP, ctx.RequestId);
 
             var leaderboard = await _gameService.GetLeaderboardAsync(top);
 
-            Log.Information("Leaderboard data retrieved for user {UserIP} - {Count} entries returned (RequestId: {RequestId})",
-                userIP, leaderboard.Count(), requestId);
+            Log.Information("Leaderboard data retrieved - {Count} entries returned (IP: {UserIP}, RequestId: {RequestId})",
+                leaderboard.Count(), ctx.UserIP, ctx.RequestId);
 
-            _logger.LogInformation("Retrieved leaderboard with {Count} entries", leaderboard.Count());
             return Ok(leaderboard);
         }
         catch (ArgumentException ex)
         {
-            Log.Warning(ex, "Invalid leaderboard request by user {UserIP} (RequestId: {RequestId})", userIP, requestId);
-            _logger.LogWarning(ex, "Invalid leaderboard request");
+            Log.Warning(ex, "Invalid leaderboard request (IP: {UserIP}, RequestId: {RequestId})", ctx.UserIP, ctx.RequestId);
             return BadRequest(new { error = ex.Message });
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Leaderboard retrieval failed for user {UserIP} (RequestId: {RequestId})", userIP, requestId);
-            _logger.LogError(ex, "Error retrieving leaderboard");
+            Log.Error(ex, "Leaderboard retrieval failed (IP: {UserIP}, RequestId: {RequestId})", ctx.UserIP, ctx.RequestId);
             return StatusCode(StatusCodes.Status500InternalServerError,
                 new { error = "Failed to retrieve leaderboard" });
         }
@@ -127,38 +113,28 @@ public class ScoresController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetUserStats()
     {
-        var requestId = HttpContext.TraceIdentifier;
-        var userIP = HttpContext.Connection.RemoteIpAddress?.ToString();
+        var ctx = HttpContext.GetRequestContext();
 
         try
         {
-            var userIdentity = _identityService.GetCurrentUserIdentity(HttpContext);
-
-            Log.Information("User action: User stats requested by {UserIP} (RequestId: {RequestId})", userIP, requestId);
-
-            _logger.LogInformation("Getting shared stats for ANON user");
+            Log.Information("User action: User stats requested (IP: {UserIP}, RequestId: {RequestId})", ctx.UserIP, ctx.RequestId);
 
             // Since all users are ANON, all stats are shared
-            var userStats = await _gameService.GetUserStatsAsync(userIdentity.UserId);
+            var userStats = await _gameService.GetUserStatsAsync("ANON");
 
-            Log.Information("User stats retrieved for user {UserIP} - {Count} game results (RequestId: {RequestId})",
-                userIP, userStats.Count(), requestId);
-
-            _logger.LogInformation("Retrieved {Count} game results for ANON user",
-                userStats.Count());
+            Log.Information("User stats retrieved - {Count} game results (IP: {UserIP}, RequestId: {RequestId})",
+                userStats.Count(), ctx.UserIP, ctx.RequestId);
 
             return Ok(userStats);
         }
         catch (ArgumentException ex)
         {
-            Log.Warning(ex, "Invalid user stats request by user {UserIP} (RequestId: {RequestId})", userIP, requestId);
-            _logger.LogWarning(ex, "Invalid user stats request");
+            Log.Warning(ex, "Invalid user stats request (IP: {UserIP}, RequestId: {RequestId})", ctx.UserIP, ctx.RequestId);
             return BadRequest(new { error = ex.Message });
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "User stats retrieval failed for user {UserIP} (RequestId: {RequestId})", userIP, requestId);
-            _logger.LogError(ex, "Error retrieving user stats");
+            Log.Error(ex, "User stats retrieval failed (IP: {UserIP}, RequestId: {RequestId})", ctx.UserIP, ctx.RequestId);
             return StatusCode(StatusCodes.Status500InternalServerError,
                 new { error = "Failed to retrieve user stats" });
         }

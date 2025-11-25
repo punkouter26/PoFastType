@@ -1,14 +1,15 @@
 @page "/diag"
+@using PoFastType.Shared.Models
 @inject HttpClient Http
 @inject ILogger<Diag> Logger
 
 <PageTitle>Diagnostics</PageTitle>
 
-<div class="container mt-4">
+<div class="game-container page-content">
     <div class="row">
         <div class="col-12">
-            <div class="card">
-                <div class="card-header">
+            <div class="card retro-card">
+                <div class="card-header retro-card-header">
                     <h3 class="mb-0">System Diagnostics</h3>
                 </div>
                 <div class="card-body">
@@ -18,7 +19,6 @@
                             <div class="spinner-border text-primary" role="status">
                                 <span class="visually-hidden">Loading...</span>
                             </div>
-                            <p class="mt-3">Running diagnostics...</p>
                         </div>
                     }
                     else if (error != null)
@@ -26,7 +26,6 @@
                         <div class="alert alert-danger" role="alert">
                             <h4 class="alert-heading">Diagnostics Error</h4>
                             <p>@error</p>
-                            <button class="btn btn-outline-danger" @onclick="RunDiagnostics">Try Again</button>
                         </div>
                     }                    else
                     {
@@ -89,7 +88,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="text-center mt-4">
+                                <div class="text-center mt-4">
                             <button class="btn btn-outline-primary" @onclick="RunDiagnostics">
                                 <i class="bi bi-arrow-clockwise"></i> Refresh
                             </button>
@@ -195,36 +194,5 @@
             "Error" => "bi-x-circle-fill",
             _ => "bi-info-circle-fill"
         };
-    }
-
-    public class DiagCheckResult
-    {
-        public string Name { get; set; } = string.Empty;
-        public string Status { get; set; } = string.Empty;
-        public string Message { get; set; } = string.Empty;
-    }
-
-    public class DiagHealthResponse
-    {
-        public string Status { get; set; } = string.Empty;
-        public List<DiagCheckResult> Checks { get; set; } = new();
-        public DateTime Timestamp { get; set; }
-    }
-
-    // Models for the /api/health endpoint response
-    public class HealthCheckResponse
-    {
-        public string Status { get; set; } = string.Empty;
-        public List<HealthCheckEntry> Checks { get; set; } = new();
-        public string TotalDuration { get; set; } = string.Empty;
-    }
-
-    public class HealthCheckEntry
-    {
-        public string Name { get; set; } = string.Empty;
-        public string Status { get; set; } = string.Empty;
-        public string? Description { get; set; }
-        public string Duration { get; set; } = string.Empty;
-        public string? Exception { get; set; }
     }
 }

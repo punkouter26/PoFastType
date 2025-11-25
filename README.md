@@ -18,30 +18,69 @@ A modern typing speed test application built with .NET 10 and Blazor WebAssembly
 
 - **[docs/PRD.md](docs/PRD.md)** - Product Requirements Document with detailed UI component specifications
 - **[AGENTS.md](AGENTS.md)** - AI Coding Agent Guide with project conventions and gotchas
-- **[docs/README.md](docs/README.md)** - Documentation index
+- **[docs/KEY_VAULT_SETUP.md](docs/KEY_VAULT_SETUP.md)** - Azure Key Vault setup and configuration guide
 - **[docs/kql/](docs/kql/)** - KQL query library for Application Insights monitoring
-- **[src/PoFastType.Api/README.md](src/PoFastType.Api/README.md)** - Backend API documentation
-- **[src/PoFastType.Client/README.md](src/PoFastType.Client/README.md)** - Frontend Blazor documentation
-- **[src/PoFastType.Shared/README.md](src/PoFastType.Shared/README.md)** - Shared models and DTOs documentation
-- **[tests/PoFastType.Tests/README.md](tests/PoFastType.Tests/README.md)** - Comprehensive test suite documentation
+- **[docs/Diagrams/](docs/Diagrams/)** - Architecture diagrams (Mermaid .mmd and .svg)
 
 ## 🏗️ Architecture
 
 This project follows **Vertical Slice Architecture** with **Clean Architecture principles**:
 
-- **src/PoFastType.Api** - ASP.NET Core Web API backend
-- **src/PoFastType.Client** - Blazor WebAssembly frontend (hosted in API)
-- **src/PoFastType.Shared** - Shared models and contracts
-- **tests/PoFastType.Tests** - Comprehensive test suite (96 tests, 31.34% coverage)
+- **src/PoFastType.Api** - ASP.NET Core Web API backend (hosts Blazor WASM client)
+- **src/PoFastType.Client** - Blazor WebAssembly frontend  
+- **src/PoFastType.Shared** - Shared models, DTOs, and contracts
+- **tests/PoFastType.Tests** - Comprehensive test suite (143 tests, 31.34% coverage)
 
 ### Technology Stack
 
 - **Frontend:** Blazor WebAssembly, Radzen UI Components
-- **Backend:** .NET 10, ASP.NET Core Web API
+- **Backend:** .NET 10, ASP.NET Core Web API, Minimal APIs
 - **Database:** Azure Table Storage (Azurite for local development)
 - **Monitoring:** Application Insights, Serilog, OpenTelemetry
-- **CI/CD:** GitHub Actions with Azure Developer CLI
-- **Infrastructure:** Azure App Service + Bicep IaC
+- **CI/CD:** GitHub Actions with Azure Developer CLI (azd)
+- **Infrastructure:** Azure App Service (F1 Free Tier) + Bicep IaC
+
+### Key Design Patterns
+
+- **Vertical Slice Architecture** - Features are self-contained slices
+- **Repository Pattern** - Data access abstraction (`IGameResultRepository`)
+- **Strategy Pattern** - Text generation strategies (`ITextGenerationStrategy`)
+- **Middleware Pattern** - Global exception handling (RFC 7807 Problem Details)
+- **Health Checks** - Comprehensive diagnostics at `/api/diag/health`
+
+### API Endpoints
+
+**Game Management:**
+- `GET /api/game/text` - Get random typing text
+- `POST /api/game/results` - Submit completed game result
+
+**Scores & Leaderboard:**
+- `GET /api/scores/leaderboard?count={n}` - Get top N scores (default 50)
+- `GET /api/scores/user/{userId}` - Get user's game history
+- `POST /api/scores/submit` - Submit score (with composite scoring)
+
+**Diagnostics:**
+- `GET /api/health` - Simple health check (HTTP 200/500)
+- `GET /api/diag/health` - Detailed health with 6 checks:
+  - Internet connectivity
+  - Azure connectivity  
+  - Self health check
+  - API endpoint validation
+  - Azure Table Storage
+  - OpenAI service (if configured)
+
+**Biometrics:**
+- `GET /api/biometrics/user/{userId}/stats` - Get typing heatmap data
+- `GET /api/biometrics/user/{userId}/problem-keys` - Get problem key analysis
+- `GET /api/biometrics/game/{gameId}` - Get game-specific biometrics
+
+### Blazor Pages
+
+- **Home** (`/`) - Interactive typing test with real-time WPM/accuracy
+- **Leaderboard** (`/leaderboard`) - Global top scores with auto-refresh
+- **User Stats** (`/user-stats`) - Personal performance dashboard
+- **Heatmap** (`/heatmap`) - Typing accuracy heatmap and problem key analysis
+- **Diagnostics** (`/diag`) - System health monitoring UI
 
 ### Architecture Diagrams
 
@@ -50,43 +89,18 @@ This project follows **Vertical Slice Architecture** with **Clean Architecture p
 
 #### Project Dependencies
 ![Project Dependencies](docs/Diagrams/project-dependency.svg)
-<details>
-<summary>Simple version</summary>
-
-![Simple Project Dependencies](docs/Diagrams/SIMPLE_project-dependency.svg)
-</details>
 
 #### Domain Model (Class Diagram)
 ![Class Diagram](docs/Diagrams/class-diagram.svg)
-<details>
-<summary>Simple version</summary>
-
-![Simple Class Diagram](docs/Diagrams/SIMPLE_class-diagram.svg)
-</details>
 
 #### API Call Flow (Sequence Diagram)
 ![Sequence Diagram](docs/Diagrams/sequence-diagram.svg)
-<details>
-<summary>Simple version</summary>
-
-![Simple Sequence Diagram](docs/Diagrams/SIMPLE_sequence-diagram.svg)
-</details>
 
 #### Game Play Use Case (Flowchart)
 ![Flowchart](docs/Diagrams/flowchart.svg)
-<details>
-<summary>Simple version</summary>
-
-![Simple Flowchart](docs/Diagrams/SIMPLE_flowchart.svg)
-</details>
 
 #### Blazor Component Hierarchy
 ![Component Hierarchy](docs/Diagrams/component-hierarchy.svg)
-<details>
-<summary>Simple version</summary>
-
-![Simple Component Hierarchy](docs/Diagrams/SIMPLE_component-hierarchy.svg)
-</details>
 
 </details>
 
@@ -107,13 +121,21 @@ git clone https://github.com/YOUR_USERNAME/PoFastType.git
 cd PoFastType
 ```
 
-### 2. Start Azurite (local Azure Storage emulator)
+### 2. Login to Azure (for Key Vault access)
+
+```powershell
+az login
+```
+
+The app uses Azure Key Vault for configuration. Locally, it uses your Azure CLI credentials.
+
+### 3. Start Azurite (local Azure Storage emulator)
 
 ```powershell
 .\scripts\start-azurite.ps1
 ```
 
-### 3. Run the application
+### 4. Run the application
 
 ```powershell
 dotnet run --project src/PoFastType.Api
@@ -121,7 +143,7 @@ dotnet run --project src/PoFastType.Api
 
 Or press **F5** in Visual Studio/VS Code.
 
-### 4. Access the application
+### 5. Access the application
 
 - **App:** https://localhost:5001
 - **Swagger API:** https://localhost:5001/swagger
@@ -130,32 +152,97 @@ Or press **F5** in Visual Studio/VS Code.
 
 ## 🧪 Testing
 
-Run all tests:
+The project includes **143 automated tests** organized into 5 test layers, achieving **31.34% line coverage**.
+
+### Test Organization
+
+1. **Unit Tests** (`/Unit/`) - 60+ tests for isolated components
+   - Services (GameService, TextGenerationService) - 100% coverage
+   - Repositories (AzureTableGameResultRepository) - 100% coverage
+   - Strategies (HardcodedTextStrategy) - 100% coverage
+
+2. **Integration Tests** (`/Integration/`) - 10 tests with Azurite
+   - Azure Table Storage operations
+   - Repository integration
+   - Data persistence validation
+
+3. **API Tests** (`/API/`) - 18+ tests for HTTP endpoints
+   - Controller tests (Game, Scores, Diag, Biometrics)
+   - Health check validation
+   - Request/response validation
+
+4. **System Tests** (`/System/`) - 8+ tests for complete workflows
+   - End-to-end user scenarios
+   - Integration across all layers
+
+5. **E2E Tests** (`/E2E/`) - 36 Playwright browser tests
+   - Desktop (1920x1080) and mobile (390x844) viewports
+   - Page load, navigation, responsive design
+   - All major pages (Home, Leaderboard, UserStats, Diag)
+
+### Running Tests
 
 ```powershell
-dotnet test
-```
+# All tests (excluding E2E)
+dotnet test --filter "FullyQualifiedName!~E2E"
 
-Run specific test categories:
-
-```powershell
-# Unit tests only
+# Unit tests only (fastest)
 dotnet test --filter "FullyQualifiedName~Unit"
 
-# Integration tests only
+# Integration tests (requires Azurite)
 dotnet test --filter "FullyQualifiedName~Integration"
 
-# API tests only
+# API tests
 dotnet test --filter "FullyQualifiedName~API"
+
+# E2E tests (requires running app on localhost:5208)
+dotnet test --filter "FullyQualifiedName~E2E"
 ```
 
 ### Test Coverage
 
 ```powershell
+# Generate coverage report
 dotnet test --collect:"XPlat Code Coverage"
+
+# Coverage reports saved to: TestResults/{guid}/coverage.cobertura.xml
 ```
 
-**Current Coverage:** 31.34% (96 tests)
+**Current Coverage:** 31.34% (442/1410 lines)
+
+**Coverage by Component:**
+- GameService: 100%
+- TextGenerationService: 100%
+- HardcodedTextStrategy: 100%
+- AzureTableGameResultRepository: 100%
+- Program.cs: 75.89%
+- ScoresController: 80.76%
+- GameController: 73.91%
+- DiagController: 65.21%
+
+### E2E Test Requirements
+
+**Prerequisites:**
+1. Install Playwright browsers:
+   ```powershell
+   pwsh bin/Debug/net10.0/playwright.ps1 install chromium
+   ```
+
+2. Start the application:
+   ```powershell
+   dotnet run --project src/PoFastType.Api
+   ```
+
+3. Run E2E tests (in separate terminal):
+   ```powershell
+   dotnet test --filter "FullyQualifiedName~E2E"
+   ```
+
+**E2E Test Coverage:**
+- Home page (10 tests - desktop/mobile, typing area, start button)
+- Leaderboard page (10 tests - table display, scores, responsive)
+- User Stats page (6 tests - statistics display, navigation)
+- Responsive Design (10 tests - all pages on desktop/mobile)
 
 ## 🚢 Deployment
 
@@ -266,11 +353,14 @@ The application includes comprehensive health checks:
 ## 🔐 Security
 
 - ✅ HTTPS enforced for all traffic
-- ✅ Secrets managed via Azure App Service configuration
+- ✅ **Secrets managed via Azure Key Vault** (connection strings, API keys)
+- ✅ **RBAC-based access** (Managed Identity for App Service, Azure CLI for local dev)
 - ✅ Private GitHub repository
 - ✅ TLS 1.2+ minimum
 - ✅ Storage encryption (Microsoft-managed keys)
 - ✅ Automated security scanning in CI pipeline
+
+**See [docs/KEY_VAULT_SETUP.md](docs/KEY_VAULT_SETUP.md) for Key Vault configuration details.**
 
 ## 📁 Project Structure
 

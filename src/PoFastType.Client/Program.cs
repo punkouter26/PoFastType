@@ -28,7 +28,4 @@ builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().Cre
 // Register game state service for component communication
 builder.Services.AddSingleton<GameStateService>();
 
-// Register user service for anonymous user handling
-builder.Services.AddScoped<IUserService, UserService>();
-
 await builder.Build().RunAsync();

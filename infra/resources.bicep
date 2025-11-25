@@ -138,13 +138,6 @@ resource budgetAlertActionGroup 'Microsoft.Insights/actionGroups@2023-01-01' = {
   }
 }
 
-// Create a user-assigned managed identity
-resource userAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
-  name: 'PoFastType-identity'
-  location: location
-  tags: tags
-}
-
 // Create the App Service for PoFastType
 resource webApp 'Microsoft.Web/sites@2022-03-01' = {
   name: 'PoFastType'
@@ -163,7 +156,7 @@ resource webApp 'Microsoft.Web/sites@2022-03-01' = {
       appSettings: [
         {
           name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
-          value: appInsights.properties.ConnectionString
+          value: '@Microsoft.KeyVault(SecretUri=${keyVault.properties.vaultUri}secrets/ApplicationInsights--ConnectionString/)'
         }
         {
           name: 'ASPNETCORE_ENVIRONMENT'
@@ -171,7 +164,7 @@ resource webApp 'Microsoft.Web/sites@2022-03-01' = {
         }
         {
           name: 'AzureTableStorage__ConnectionString'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
+          value: '@Microsoft.KeyVault(SecretUri=${keyVault.properties.vaultUri}secrets/AzureTableStorage--ConnectionString/)'
         }
         {
           name: 'AzureTableStorage__TableName'
@@ -211,10 +204,58 @@ resource webApp 'Microsoft.Web/sites@2022-03-01' = {
     }
   }
   identity: {
-    type: 'UserAssigned'
-    userAssignedIdentities: {
-      '${userAssignedIdentity.id}': {}
-    }
+    type: 'SystemAssigned'
+  }
+}
+
+// Assign Key Vault Secrets User role to App Service managed identity
+resource keyVaultSecretsUserRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(keyVault.id, webApp.id, 'Key Vault Secrets User')
+  scope: keyVault
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4633458b-17de-408a-b874-0445c86b69e6') // Key Vault Secrets User
+    principalId: webApp.identity.principalId
+    principalType: 'ServicePrincipal'
+  }
+}
+
+// Assign Storage Table Data Contributor role to App Service managed identity
+resource storageTableDataContributorRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(storageAccount.id, webApp.id, 'Storage Table Data Contributor')
+  scope: storageAccount
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '0a9a7e1f-b9d0-4cc4-a60d-0319b160aaa3') // Storage Table Data Contributor
+    principalId: webApp.identity.principalId
+    principalType: 'ServicePrincipal'
+  }
+}
+
+// Assign Key Vault Secrets User role to the deployment principal (for local dev access)
+resource keyVaultSecretsUserRoleForUser 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(keyVault.id, principalId, 'Key Vault Secrets User')
+  scope: keyVault
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4633458b-17de-408a-b874-0445c86b69e6') // Key Vault Secrets User
+    principalId: principalId
+    principalType: principalType
+  }
+}
+
+// Store Storage Account connection string in Key Vault
+resource storageConnectionStringSecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
+  parent: keyVault
+  name: 'AzureTableStorage--ConnectionString'
+  properties: {
+    value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};EndpointSuffix=core.windows.net'
+  }
+}
+
+// Store Application Insights connection string in Key Vault
+resource appInsightsConnectionStringSecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' = {
+  parent: keyVault
+  name: 'ApplicationInsights--ConnectionString'
+  properties: {
+    value: appInsights.properties.ConnectionString
   }
 }
 

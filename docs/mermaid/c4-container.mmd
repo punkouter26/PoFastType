@@ -1,0 +1,37 @@
+graph TB
+    subgraph "PoFastType Container Architecture"
+        User["👤 User<br/>(Person)"]
+        
+        subgraph "PoFastType System"
+            WebApp["Blazor WebAssembly Client<br/>(Container: .NET 10/C#)<br/>Provides UI for typing tests,<br/>stats visualization, leaderboard"]
+            
+            API["Web API<br/>(Container: ASP.NET Core)<br/>Provides REST endpoints for<br/>game logic, scores, biometrics"]
+            
+            GameService["Game Service<br/>(Component)<br/>Business logic for<br/>WPM calculation, validation"]
+            
+            BiometricsService["Biometrics Service<br/>(Component)<br/>Analyzes keystroke patterns,<br/>error detection"]
+        end
+        
+        AzureTable["Azure Table Storage<br/>(Database)<br/>GameResults, UserIdentities,<br/>BiometricData, Keystrokes"]
+        
+        AzureKV["Azure Key Vault<br/>(Security)<br/>Connection strings,<br/>configuration secrets"]
+        
+        AppInsights["Application Insights<br/>(Monitoring)<br/>Logs, metrics, traces"]
+    end
+    
+    User -->|"Uses<br/>[HTTPS/WASM]"| WebApp
+    WebApp -->|"Makes API calls<br/>[JSON/HTTPS]"| API
+    API -->|"Uses"| GameService
+    API -->|"Uses"| BiometricsService
+    API -->|"Reads/writes data<br/>[Azure SDK]"| AzureTable
+    API -->|"Retrieves secrets<br/>[Azure SDK]"| AzureKV
+    API -->|"Sends telemetry<br/>[HTTPS]"| AppInsights
+    
+    style User fill:#08427b,stroke:#073B6F,color:#fff
+    style WebApp fill:#1168bd,stroke:#0b4884,color:#fff
+    style API fill:#1168bd,stroke:#0b4884,color:#fff
+    style GameService fill:#438dd5,stroke:#2e6295,color:#fff
+    style BiometricsService fill:#438dd5,stroke:#2e6295,color:#fff
+    style AzureTable fill:#666,stroke:#444,color:#fff
+    style AzureKV fill:#666,stroke:#444,color:#fff
+    style AppInsights fill:#666,stroke:#444,color:#fff

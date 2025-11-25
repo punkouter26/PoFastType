@@ -86,8 +86,10 @@ public class GameService : IGameService
             {
                 Rank = index + 1,
                 Username = result.Username,
+                GrossWPM = result.GrossWPM,
+                Accuracy = result.Accuracy,
                 NetWPM = result.NetWPM,
-                CompositeScore = result.CompositeScore, // Add composite score to leaderboard
+                CompositeScore = result.CompositeScore,
                 Timestamp = result.GameTimestamp
             });
         }

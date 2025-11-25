@@ -15,26 +15,11 @@
                 <li class="nav-item">
                     <a class="nav-link retro-nav-link" href="/stats">Stats</a>
                 </li>
-            </ul>
-            
-            <ul class="navbar-nav">
                 <li class="nav-item">
-                    <span class="navbar-text me-3">
-                        <div class="text-end">
-                            <span class="fw-bold text-muted">Playing as ANON</span>
-                            <small class="d-block text-muted">Anonymous Session</small>
-                        </div>
-                    </span>
+                    <a class="nav-link retro-nav-link" href="/heatmap">🔥 Heatmap</a>
                 </li>
             </ul>
+            
         </div>
     </div>
 </nav>
-
-@code {
-    protected override Task OnInitializedAsync()
-    {
-        // No authentication needed - just static ANON user
-        return Task.CompletedTask;
-    }
-}

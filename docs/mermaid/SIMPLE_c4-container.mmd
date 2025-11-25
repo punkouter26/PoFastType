@@ -1,0 +1,18 @@
+graph TB
+    User["👤 User"]
+    
+    subgraph "PoFastType"
+        UI["Blazor UI<br/>(Frontend)"]
+        API["ASP.NET API<br/>(Backend)"]
+    end
+    
+    DB["Azure Table Storage"]
+    
+    User --> UI
+    UI --> API
+    API --> DB
+    
+    style User fill:#08427b,stroke:#073B6F,color:#fff
+    style UI fill:#1168bd,stroke:#0b4884,color:#fff
+    style API fill:#1168bd,stroke:#0b4884,color:#fff
+    style DB fill:#666,stroke:#444,color:#fff

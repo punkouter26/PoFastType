@@ -1,0 +1,21 @@
+graph TB
+    UI["Blazor Client"]
+    
+    subgraph "API"
+        Controllers["Controllers<br/>Game, Scores, Biometrics"]
+        Services["Services<br/>Business Logic"]
+        Repositories["Repositories<br/>Data Access"]
+    end
+    
+    DB["Azure Tables"]
+    
+    UI --> Controllers
+    Controllers --> Services
+    Services --> Repositories
+    Repositories --> DB
+    
+    style UI fill:#08427b,stroke:#073B6F,color:#fff
+    style Controllers fill:#1168bd,stroke:#0b4884,color:#fff
+    style Services fill:#438dd5,stroke:#2e6295,color:#fff
+    style Repositories fill:#85bbf0,stroke:#5d9fd8,color:#000
+    style DB fill:#666,stroke:#444,color:#fff

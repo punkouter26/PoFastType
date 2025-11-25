@@ -25,7 +25,7 @@
                     else
                     {
                         <div class="text-display">
-                            @sourceText
+                            @RenderSourceTextWithHighlight()
                         </div>
                     }
                 </div>
@@ -103,54 +103,32 @@
                     <div class="card-header retro-card-header">
                         <h6 class="mb-0" style="font-size: 0.9rem;">Results</h6>
                     </div>                    <div class="card-body results-stats">
-                        <!-- Main stats in 7 columns - adjusted for mobile and desktop -->
+                        <!-- Main stats in 5 columns - adjusted for mobile and desktop -->
                         <div class="row g-1">
-                            <div class="col-6 col-md-2">
+                            <div class="col-6 col-md">
                                 <div class="stat-card">
                                     <div class="stat-label">Score</div>
                                     <div class="stat-value">@compositeScore.ToString("F0")</div>
                                 </div>
                             </div>
-                            <div class="col-6 col-md-2">
-                                <div class="stat-card">
-                                    <div class="stat-label">Net WPM</div>
-                                    <div class="stat-value">@netWPM.ToString("F1")</div>
-                                </div>
-                            </div>
-                            <div class="col-4 col-md-2">
+                            <div class="col-4 col-md">
                                 <div class="stat-card">
                                     <div class="stat-label">Accuracy</div>
                                     <div class="stat-value">@accuracy.ToString("F1")%</div>
                                 </div>
                             </div>
-                            <div class="col-4 col-md-2">
+                            <div class="col-4 col-md">
                                 <div class="stat-card">
                                     <div class="stat-label">Gross WPM</div>
                                     <div class="stat-value">@grossWPM.ToString("F1")</div>
                                 </div>
                             </div>
-                            <div class="col-4 col-md-2">
+                            <div class="col-4 col-md">
                                 <div class="stat-card">
                                     <div class="stat-label">Characters</div>
                                     <div class="stat-value">@correctCharacters/@totalCharacters</div>
                                 </div>
                             </div>
-                            <div class="col-6 col-md-1">
-                                <div class="stat-card">
-                                    <div class="stat-label">Burst Speed</div>
-                                    <div class="stat-value">@burstSpeed.ToString("F1")</div>
-                                </div>
-                            </div>
-                            <div class="col-6 col-md-1">
-                                <div class="stat-card">
-                                    <div class="stat-label">Streak</div>
-                                    <div class="stat-value">@longestStreak</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="text-center mt-1">
-                            <button class="btn btn-primary btn-sm glow-hover" @onclick="ResetGame">Try Again</button>
                         </div>
                     </div>
                 </div>
@@ -168,6 +146,10 @@
     
     // Game tracking
     private DateTime gameStartTime;
+    private string currentGameId = string.Empty;
+    private int keystrokeSequence = 0;
+    private DateTime lastKeystrokeTime;
+    private List<KeystrokeData> gameKeystrokes = new();
     private List<DateTime> keystrokeTimes = new();
     private List<bool> keystrokeAccuracy = new();
     private List<KeystrokeError> keystrokeErrors = new();
@@ -232,6 +214,10 @@
         gameState = GameState.InProgress;
         remainingSeconds = 5; // 5-second typing test
         gameStartTime = DateTime.UtcNow;
+        currentGameId = Guid.NewGuid().ToString();
+        keystrokeSequence = 0;
+        lastKeystrokeTime = gameStartTime;
+        gameKeystrokes.Clear();
         
         StateHasChanged(); // Force re-render to ensure textarea is in DOM
         
@@ -301,6 +287,9 @@
         gameState = GameState.PostGame;
         CalculateResults();
         
+        // Submit keystroke data to biometrics API
+        await SubmitKeystrokeData();
+        
         // Submit results to API if user is authenticated
         await SubmitResults();
     }    private async Task SubmitResults()
@@ -347,7 +336,31 @@
     {
         if (gameState != GameState.InProgress) return;
         
-        keystrokeTimes.Add(DateTime.UtcNow);
+        var now = DateTime.UtcNow;
+        keystrokeTimes.Add(now);
+        
+        // Create keystroke data entry
+        var currentPosition = userInput.Length;
+        var expectedChar = currentPosition < sourceText.Length ? sourceText[currentPosition].ToString() : "";
+        var isBackspace = e.Key == "Backspace";
+        
+        var keystroke = new KeystrokeData
+        {
+            PartitionKey = "TEMP", // Will be set properly in SubmitKeystrokeData
+            GameId = currentGameId,
+            SequenceNumber = keystrokeSequence++,
+            Key = e.Key,
+            ExpectedChar = expectedChar,
+            IsBackspace = isBackspace,
+            ElapsedMs = (long)(now - gameStartTime).TotalMilliseconds,
+            IntervalMs = (long)(now - lastKeystrokeTime).TotalMilliseconds,
+            TextPosition = currentPosition,
+            CurrentWPM = CalculateCurrentWPM(now),
+            CurrentAccuracy = CalculateCurrentAccuracy(),
+            RecordedAt = now
+        };
+        
+        lastKeystrokeTime = now;
         
         // Track problem keys
         var key = e.Key.ToLower();
@@ -355,6 +368,9 @@
         {
             problemKeys[key] = new Dictionary<string, int>();
         }
+        
+        // Will set IsCorrect in OnKeyUp after character is typed
+        gameKeystrokes.Add(keystroke);
     }
 
     private void OnKeyUp(KeyboardEventArgs e)
@@ -368,6 +384,13 @@
             var expectedChar = sourceText[currentIndex];
             var actualChar = userInput[currentIndex];
             var isCorrect = expectedChar == actualChar;
+            
+            // Update the last keystroke entry with correctness
+            if (gameKeystrokes.Any())
+            {
+                var lastKeystroke = gameKeystrokes.Last();
+                lastKeystroke.IsCorrect = isCorrect;
+            }
             
             keystrokeAccuracy.Add(isCorrect);
             
@@ -407,6 +430,72 @@
             }
         }
     }
+    
+    private double CalculateCurrentWPM(DateTime now)
+    {
+        var elapsed = (now - gameStartTime).TotalMinutes;
+        if (elapsed <= 0) return 0;
+        
+        var wordsTyped = userInput.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length;
+        return wordsTyped / elapsed;
+    }
+    
+    private double CalculateCurrentAccuracy()
+    {
+        if (userInput.Length == 0) return 100;
+        
+        var correct = 0;
+        var minLength = Math.Min(sourceText.Length, userInput.Length);
+        
+        for (int i = 0; i < minLength; i++)
+        {
+            if (sourceText[i] == userInput[i])
+                correct++;
+        }
+        
+        return (double)correct / userInput.Length * 100;
+    }
+    
+    private async Task SubmitKeystrokeData()
+    {
+        try
+        {
+            // Get actual user ID
+            var userId = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "userId");
+            if (string.IsNullOrEmpty(userId))
+            {
+                userId = Guid.NewGuid().ToString();
+                await JSRuntime.InvokeVoidAsync("localStorage.setItem", "userId", userId);
+            }
+            
+            // Update all keystroke entries with correct user ID
+            foreach (var keystroke in gameKeystrokes)
+            {
+                keystroke.PartitionKey = userId;
+            }
+            
+            // Submit in batch for efficiency
+            if (gameKeystrokes.Any())
+            {
+                var response = await Http.PostAsJsonAsync("/api/biometrics/keystrokes/batch", gameKeystrokes);
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    Logger.LogInformation("Successfully submitted {Count} keystrokes for game {GameId}", 
+                        gameKeystrokes.Count, currentGameId);
+                }
+                else
+                {
+                    Logger.LogWarning("Failed to submit keystroke data: {StatusCode}", response.StatusCode);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error submitting keystroke data");
+            // Don't fail the game submission if biometrics submission fails
+        }
+    }
 
     private void CalculateResults()
     {
@@ -414,14 +503,14 @@
         var gameDuration = gameEndTime - gameStartTime;
         var timeInMinutes = gameDuration.TotalMinutes;
         
-        totalCharacters = sourceText.Length;
+        totalCharacters = userInput.Length; // Total characters typed by user
         correctCharacters = CalculateCorrectCharacters(sourceText, userInput);
         
         // Calculate WPM (words are typically 5 characters)
         var wordsTyped = userInput.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length;
         grossWPM = wordsTyped / timeInMinutes;
         
-        // Calculate accuracy
+        // Calculate accuracy based on characters actually typed
         accuracy = totalCharacters > 0 ? (double)correctCharacters / totalCharacters * 100 : 0;
         netWPM = grossWPM * (accuracy / 100);
         
@@ -582,6 +671,53 @@
             .ToList();
     }
 
+    private RenderFragment RenderSourceTextWithHighlight()
+    {
+        return builder =>
+        {
+            if (gameState != GameState.InProgress || string.IsNullOrEmpty(userInput))
+            {
+                builder.AddContent(0, sourceText);
+                return;
+            }
+
+            var minLength = Math.Min(sourceText.Length, userInput.Length);
+            
+            // Render characters that have been typed
+            for (int i = 0; i < minLength; i++)
+            {
+                bool isCorrect = sourceText[i] == userInput[i];
+                
+                builder.OpenElement(i * 2, "span");
+                if (isCorrect)
+                {
+                    builder.AddAttribute(i * 2 + 1, "style", "color: #00ff41; text-shadow: 0 0 5px #00ff41;");
+                }
+                else
+                {
+                    builder.AddAttribute(i * 2 + 1, "style", "color: #ff3333; text-decoration: underline; text-decoration-color: #ff3333; background-color: rgba(255, 51, 51, 0.2);");
+                }
+                builder.AddContent(i * 2 + 2, sourceText[i]);
+                builder.CloseElement();
+            }
+            
+            // Render current character to type (with cursor effect)
+            if (minLength < sourceText.Length)
+            {
+                builder.OpenElement(minLength * 2, "span");
+                builder.AddAttribute(minLength * 2 + 1, "style", "background-color: rgba(255, 140, 0, 0.4); color: #ff8c00; font-weight: bold; animation: pulse 1s infinite;");
+                builder.AddContent(minLength * 2 + 2, sourceText[minLength]);
+                builder.CloseElement();
+                
+                // Render remaining characters
+                if (minLength + 1 < sourceText.Length)
+                {
+                    builder.AddContent((minLength + 1) * 2, sourceText.Substring(minLength + 1));
+                }
+            }
+        };
+    }
+
     private RenderFragment RenderHighlightedText()
     {
         return builder =>
@@ -627,6 +763,8 @@
         keystrokeTimes.Clear();
         keystrokeAccuracy.Clear();
         keystrokeErrors.Clear();
+        gameKeystrokes.Clear();
+        keystrokeSequence = 0;
         currentStreak = 0;
         longestStreak = 0;
         problemKeys.Clear();
@@ -647,24 +785,5 @@
         Countdown,
         InProgress,
         PostGame
-    }
-
-    public class TextResponse
-    {
-        public string text { get; set; } = string.Empty;
-    }
-
-    public class KeystrokeError
-    {
-        public string IntendedKey { get; set; } = string.Empty;
-        public string ActualKey { get; set; } = string.Empty;
-        public int Position { get; set; }
-    }
-
-    public class ProblemKey
-    {
-        public string IntendedKey { get; set; } = string.Empty;
-        public string ActualKey { get; set; } = string.Empty;
-        public int Frequency { get; set; }
     }
 }

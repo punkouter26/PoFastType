@@ -14,14 +14,14 @@ public class ResponsiveDesignE2ETests : IAsyncLifetime
 {
     private IPlaywright? _playwright;
     private IBrowser? _browser;
-    private const string AppUrl = "http://localhost:5208";
+    private const string AppUrl = TestConstants.BaseUrl;
     private const int PageLoadTimeout = 10000;
 
     private readonly string[] _testPages = new[]
     {
         "/",
         "/leaderboard",
-        "/user-stats",
+        "/stats",
         "/diag"
     };
 
@@ -44,7 +44,7 @@ public class ResponsiveDesignE2ETests : IAsyncLifetime
     [Theory]
     [InlineData("/")]
     [InlineData("/leaderboard")]
-    [InlineData("/user-stats")]
+    [InlineData("/stats")]
     [InlineData("/diag")]
     public async Task AllPages_ShouldLoad_OnDesktop(string pagePath)
     {
@@ -73,7 +73,7 @@ public class ResponsiveDesignE2ETests : IAsyncLifetime
     [Theory]
     [InlineData("/")]
     [InlineData("/leaderboard")]
-    [InlineData("/user-stats")]
+    [InlineData("/stats")]
     [InlineData("/diag")]
     public async Task AllPages_ShouldLoad_OnMobile(string pagePath)
     {
@@ -102,7 +102,7 @@ public class ResponsiveDesignE2ETests : IAsyncLifetime
     [Theory]
     [InlineData("/")]
     [InlineData("/leaderboard")]
-    [InlineData("/user-stats")]
+    [InlineData("/stats")]
     public async Task AllPages_ShouldNotHaveHorizontalScroll_OnMobile(string pagePath)
     {
         // Arrange
@@ -239,7 +239,7 @@ public class ResponsiveDesignE2ETests : IAsyncLifetime
     [Theory]
     [InlineData("/")]
     [InlineData("/leaderboard")]
-    [InlineData("/user-stats")]
+    [InlineData("/stats")]
     public async Task Pages_ShouldLoad_WithoutConsoleErrors_Desktop(string pagePath)
     {
         // Arrange

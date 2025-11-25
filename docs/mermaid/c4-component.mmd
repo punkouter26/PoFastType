@@ -1,0 +1,69 @@
+graph TB
+    subgraph "PoFastType API Components"
+        WebApp["Blazor WASM Client"]
+        
+        subgraph "Controllers Layer"
+            GameCtrl["GameController<br/>GetText, SubmitResult"]
+            ScoresCtrl["ScoresController<br/>GetLeaderboard"]
+            BiometricsCtrl["BiometricsController<br/>SubmitKeystroke,<br/>GetHeatmap, GetStats"]
+            UserCtrl["UserController<br/>CreateIdentity,<br/>GetIdentity"]
+        end
+        
+        subgraph "Services Layer"
+            GameSvc["GameService<br/>CalculateWPM,<br/>CalculateAccuracy,<br/>ValidateResult"]
+            
+            BiometricsSvc["BiometricsService<br/>CalculateUserBiometrics,<br/>DetectErrorPatterns,<br/>GetKeyboardHeatmap"]
+            
+            TextGenSvc["TextGenerationService<br/>GenerateTextAsync,<br/>ITextGenerationStrategy"]
+        end
+        
+        subgraph "Repository Layer"
+            GameRepo["IGameResultRepository<br/>AzureTableGameResultRepository<br/>AddAsync, GetTopResultsAsync,<br/>GetUserResultsAsync"]
+            
+            UserRepo["IUserIdentityRepository<br/>AzureTableUserIdentityRepository<br/>AddOrUpdateAsync, GetByIdAsync"]
+            
+            BiometricsRepo["IBiometricsRepository<br/>AzureTableBiometricsRepository<br/>AddKeystrokeAsync,<br/>GetUserKeystrokesAsync"]
+        end
+        
+        subgraph "Middleware"
+            ExceptionMW["GlobalExceptionMiddleware<br/>RFC 7807 Problem Details"]
+        end
+        
+        AzureTable["Azure Table Storage<br/>PoFastTypeGameResults<br/>PoFastTypeUserIdentities<br/>PoFastTypeKeystrokes<br/>PoFastTypeBiometricData"]
+    end
+    
+    WebApp -->|"HTTP GET/POST"| GameCtrl
+    WebApp -->|"HTTP GET"| ScoresCtrl
+    WebApp -->|"HTTP POST/GET"| BiometricsCtrl
+    WebApp -->|"HTTP POST/GET"| UserCtrl
+    
+    GameCtrl -->|"Uses"| GameSvc
+    GameCtrl -->|"Uses"| TextGenSvc
+    ScoresCtrl -->|"Uses"| GameSvc
+    BiometricsCtrl -->|"Uses"| BiometricsSvc
+    
+    GameSvc -->|"Calls"| GameRepo
+    BiometricsSvc -->|"Calls"| BiometricsRepo
+    UserCtrl -->|"Calls"| UserRepo
+    
+    GameRepo -->|"Azure SDK"| AzureTable
+    UserRepo -->|"Azure SDK"| AzureTable
+    BiometricsRepo -->|"Azure SDK"| AzureTable
+    
+    ExceptionMW -.->|"Wraps all requests"| GameCtrl
+    ExceptionMW -.->|"Wraps all requests"| ScoresCtrl
+    ExceptionMW -.->|"Wraps all requests"| BiometricsCtrl
+    
+    style WebApp fill:#08427b,stroke:#073B6F,color:#fff
+    style GameCtrl fill:#1168bd,stroke:#0b4884,color:#fff
+    style ScoresCtrl fill:#1168bd,stroke:#0b4884,color:#fff
+    style BiometricsCtrl fill:#1168bd,stroke:#0b4884,color:#fff
+    style UserCtrl fill:#1168bd,stroke:#0b4884,color:#fff
+    style GameSvc fill:#438dd5,stroke:#2e6295,color:#fff
+    style BiometricsSvc fill:#438dd5,stroke:#2e6295,color:#fff
+    style TextGenSvc fill:#438dd5,stroke:#2e6295,color:#fff
+    style GameRepo fill:#85bbf0,stroke:#5d9fd8,color:#000
+    style UserRepo fill:#85bbf0,stroke:#5d9fd8,color:#000
+    style BiometricsRepo fill:#85bbf0,stroke:#5d9fd8,color:#000
+    style ExceptionMW fill:#999,stroke:#666,color:#fff
+    style AzureTable fill:#666,stroke:#444,color:#fff

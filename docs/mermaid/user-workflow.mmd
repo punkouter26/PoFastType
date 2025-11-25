@@ -1,0 +1,61 @@
+flowchart TD
+    Start([User Visits PoFastType]) --> LoadApp[Blazor WASM App Loads]
+    LoadApp --> CheckUser{First Time<br/>Visitor?}
+    
+    CheckUser -->|Yes| CreateID[Create User Identity<br/>POST api user identity]
+    CheckUser -->|No| LoadID[Load Existing Identity<br/>GET api user identity]
+    
+    CreateID --> Home[Navigate to Home Page]
+    LoadID --> Home
+    
+    Home --> GetText[Request Typing Text<br/>GET api game text]
+    GetText --> DisplayText[Display Text to User]
+    
+    DisplayText --> UserTypes[User Types Text<br/>Keystroke Events Captured]
+    UserTypes --> TrackBiometrics[Track Biometrics<br/>Timing, Errors, Patterns]
+    
+    TrackBiometrics --> Finish{User Completes<br/>or Timeout?}
+    Finish -->|Incomplete| UserTypes
+    
+    Finish -->|Complete| CalcStats[Calculate Stats<br/>WPM, Accuracy, Duration]
+    CalcStats --> SubmitResult[Submit Game Result<br/>POST api game results]
+    
+    SubmitResult --> SubmitBiometrics[Submit Keystroke Data<br/>POST api biometrics keystrokes]
+    SubmitBiometrics --> ShowResults[Display Results<br/>WPM, Accuracy, Rank]
+    
+    ShowResults --> ViewOptions{User Choice?}
+    
+    ViewOptions -->|Play Again| Home
+    ViewOptions -->|View Stats| UserStats[Navigate to User Stats Page]
+    ViewOptions -->|View Leaderboard| Leaderboard[Navigate to Leaderboard Page]
+    
+    UserStats --> FetchUserStats[Fetch User Results<br/>GET api scores user]
+    FetchUserStats --> FetchBiometrics[Fetch Biometrics<br/>GET api biometrics user]
+    FetchBiometrics --> ShowCharts[Display Performance Charts<br/>WPM Trend, Error Patterns]
+    
+    Leaderboard --> FetchLeader[Fetch Top Scores<br/>GET api scores leaderboard]
+    FetchLeader --> ShowLeader[Display Top 50 Players<br/>Rank, Username, WPM]
+    
+    ShowCharts --> ViewOptions2{User Choice?}
+    ShowLeader --> ViewOptions2
+    
+    ViewOptions2 -->|Play Again| Home
+    ViewOptions2 -->|View Heatmap| Heatmap
+    ViewOptions2 -->|Exit| End([User Leaves])
+    
+    Heatmap[Navigate to Heatmap Page] --> FetchHeatmap[Fetch Keyboard Heatmap<br/>GET api biometrics heatmap]
+    FetchHeatmap --> ShowHeatmap[Display Keyboard Visualization<br/>Problem Keys, Error Patterns]
+    ShowHeatmap --> ViewOptions2
+    
+    style Start fill:#90EE90,stroke:#228B22,color:#000
+    style End fill:#FFB6C1,stroke:#DC143C,color:#000
+    style Home fill:#87CEEB,stroke:#4682B4,color:#000
+    style UserStats fill:#87CEEB,stroke:#4682B4,color:#000
+    style Leaderboard fill:#87CEEB,stroke:#4682B4,color:#000
+    style Heatmap fill:#87CEEB,stroke:#4682B4,color:#000
+    style GetText fill:#FFE4B5,stroke:#FFA500,color:#000
+    style SubmitResult fill:#FFE4B5,stroke:#FFA500,color:#000
+    style SubmitBiometrics fill:#FFE4B5,stroke:#FFA500,color:#000
+    style FetchUserStats fill:#FFE4B5,stroke:#FFA500,color:#000
+    style FetchLeader fill:#FFE4B5,stroke:#FFA500,color:#000
+    style FetchHeatmap fill:#FFE4B5,stroke:#FFA500,color:#000

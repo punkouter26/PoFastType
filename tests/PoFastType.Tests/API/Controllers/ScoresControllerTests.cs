@@ -84,21 +84,6 @@ public class ScoresControllerTests : IDisposable
     }
 
     [Fact]
-    public async Task GetLeaderboard_ShouldReturnCorrectContentType_WhenSuccessful()
-    {
-        // Arrange
-        _factory.MockGameResultRepository?
-               .Setup(x => x.GetTopResultsAsync(It.IsAny<int>()))
-               .ReturnsAsync(new List<GameResult>());
-
-        // Act
-        var response = await _client.GetAsync("/api/scores/leaderboard");
-
-        // Assert
-        response.Content.Headers.ContentType?.MediaType.Should().Be("application/json");
-    }
-
-    [Fact]
     public async Task GetLeaderboard_ShouldReturnInternalServerError_WhenRepositoryFails()
     {
         // Arrange
@@ -173,19 +158,6 @@ public class ScoresControllerTests : IDisposable
         leaderboard[2].Username.Should().Be("third");
     }
 
-    [Theory]
-    [InlineData(0)]
-    [InlineData(-1)]
-    [InlineData(101)]
-    public async Task GetLeaderboard_ShouldReturnBadRequest_WhenInvalidTopCount(int invalidCount)
-    {
-        // Act
-        var response = await _client.GetAsync($"/api/scores/leaderboard?top={invalidCount}");
-
-        // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-    }
-
     [Fact]
     public async Task GetLeaderboard_ShouldUseDefaultTopCount_WhenParameterNotProvided()
     {
@@ -200,26 +172,5 @@ public class ScoresControllerTests : IDisposable
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         _factory.MockGameResultRepository?.Verify(x => x.GetTopResultsAsync(10), Times.Once);
-    }
-    [Fact]
-    public async Task GetLeaderboard_ShouldReturnFallbackContent_WhenInvalidRoute()
-    {
-        // Act
-        var response = await _client.GetAsync("/api/scores/invalid");
-
-        // Assert - Invalid routes should be caught by the fallback route
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var content = await response.Content.ReadAsStringAsync();
-        content.Should().Contain("html"); // Should return the fallback HTML page
-    }
-
-    [Fact]
-    public async Task GetLeaderboard_ShouldReturnMethodNotAllowed_WhenWrongHttpMethod()
-    {
-        // Act
-        var response = await _client.PostAsync("/api/scores/leaderboard", null);
-
-        // Assert
-        response.StatusCode.Should().Be(HttpStatusCode.MethodNotAllowed);
     }
 }

@@ -1,4 +1,5 @@
 using PoFastType.Api.Services;
+using PoFastType.Api.Services.HealthChecks;
 using PoFastType.Api.Repositories;
 using PoFastType.Api.Middleware;
 using PoFastType.Api.HealthChecks;
@@ -14,19 +15,23 @@ using OpenTelemetry.Resources;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure Azure Key Vault for Production only
-if (builder.Environment.IsProduction())
+// Configure Azure Key Vault for both Development and Production
+// In Development: Uses Azure CLI credentials (az login) or Visual Studio credentials
+// In Production: Uses Managed Identity
+var keyVaultUri = builder.Configuration["AzureKeyVault:VaultUri"];
+if (!string.IsNullOrEmpty(keyVaultUri))
 {
-    var keyVaultUri = builder.Configuration["AzureKeyVault:VaultUri"];
-    if (!string.IsNullOrEmpty(keyVaultUri))
+    try
     {
-        var secretClient = new SecretClient(
-            new Uri(keyVaultUri),
-            new DefaultAzureCredential());
-
         builder.Configuration.AddAzureKeyVault(
             new Uri(keyVaultUri),
             new DefaultAzureCredential());
+        
+        Log.Information("Azure Key Vault configured successfully: {VaultUri}", keyVaultUri);
+    }
+    catch (Exception ex)
+    {
+        Log.Warning(ex, "Failed to configure Azure Key Vault. Falling back to local configuration.");
     }
 }
 
@@ -108,8 +113,18 @@ builder.Services.AddScoped<IGameResultRepository, AzureTableGameResultRepository
 builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<ITextGenerationStrategy, HardcodedTextStrategy>();
 builder.Services.AddScoped<ITextGenerationService, TextGenerationService>();
-builder.Services.AddScoped<IUserIdentityService>(provider =>
-    new UserIdentityService(provider.GetRequiredService<ILogger<UserIdentityService>>()));
+
+// Register biometrics services
+builder.Services.AddScoped<IKeystrokeRepository, AzureTableKeystrokeRepository>();
+builder.Services.AddScoped<IBiometricsService, BiometricsService>();
+
+// Register health check strategies (Strategy Pattern for reduced complexity)
+builder.Services.AddScoped<IHealthCheckStrategy, InternetConnectivityHealthCheck>();
+builder.Services.AddScoped<IHealthCheckStrategy, AzureConnectivityHealthCheck>();
+builder.Services.AddScoped<IHealthCheckStrategy, SelfHealthCheck>();
+builder.Services.AddScoped<IHealthCheckStrategy, ApiHealthCheck>();
+builder.Services.AddScoped<IHealthCheckStrategy, TableStorageHealthCheck>();
+builder.Services.AddScoped<IHealthCheckStrategy, OpenAIHealthCheck>();
 
 // Add Health Checks
 builder.Services.AddHealthChecks()

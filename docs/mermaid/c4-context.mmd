@@ -1,0 +1,23 @@
+graph TB
+    subgraph "PoFastType System Context"
+        User["👤 User<br/>(Person)<br/>Types to improve speed<br/>and accuracy"]
+        
+        System["PoFastType<br/>(Software System)<br/>Web-based typing speed<br/>test application"]
+        
+        AzureStorage["Azure Table Storage<br/>(External System)<br/>Stores game results,<br/>user data, biometrics"]
+        
+        AzureKeyVault["Azure Key Vault<br/>(External System)<br/>Stores connection strings<br/>and secrets"]
+        
+        AppInsights["Application Insights<br/>(External System)<br/>Telemetry and monitoring"]
+    end
+    
+    User -->|"Takes typing tests,<br/>views leaderboard"| System
+    System -->|"Reads/writes game data<br/>[HTTPS/Azure SDK]"| AzureStorage
+    System -->|"Retrieves secrets<br/>[HTTPS/Azure SDK]"| AzureKeyVault
+    System -->|"Sends telemetry data<br/>[HTTPS]"| AppInsights
+    
+    style User fill:#08427b,stroke:#073B6F,color:#fff
+    style System fill:#1168bd,stroke:#0b4884,color:#fff
+    style AzureStorage fill:#666,stroke:#444,color:#fff
+    style AzureKeyVault fill:#666,stroke:#444,color:#fff
+    style AppInsights fill:#666,stroke:#444,color:#fff

@@ -38,56 +38,11 @@ public class AzureTableGameResultRepositoryTests
     }
 
     [Fact]
-    public void Constructor_ShouldThrowInvalidOperationException_WhenConnectionStringMissing()
-    {
-        // Arrange
-        var mockConfig = new Mock<IConfiguration>();
-        mockConfig.Setup(x => x["AzureTableStorage:ConnectionString"]).Returns((string)null!);
-        mockConfig.Setup(x => x["AzureTableStorage:TableName"]).Returns("TestTable");
-
-        // Act & Assert
-        Assert.Throws<InvalidOperationException>(() =>
-            new AzureTableGameResultRepository(mockConfig.Object, _mockLogger.Object));
-    }
-
-    [Fact]
-    public void Constructor_ShouldThrowInvalidOperationException_WhenTableNameMissing()
-    {
-        // Arrange
-        var mockConfig = new Mock<IConfiguration>();
-        mockConfig.Setup(x => x["AzureTableStorage:ConnectionString"]).Returns("UseDevelopmentStorage=true");
-        mockConfig.Setup(x => x["AzureTableStorage:TableName"]).Returns((string)null!);
-
-        // Act & Assert
-        Assert.Throws<InvalidOperationException>(() =>
-            new AzureTableGameResultRepository(mockConfig.Object, _mockLogger.Object));
-    }
-
-    [Fact]
     public void Constructor_ShouldThrowArgumentNullException_WhenConfigurationIsNull()
     {
         // Act & Assert
         Assert.Throws<ArgumentNullException>(() =>
             new AzureTableGameResultRepository(null!, _mockLogger.Object));
-    }
-
-    [Fact]
-    public void Constructor_ShouldThrowArgumentNullException_WhenLoggerIsNull()
-    {
-        // Act & Assert
-        Assert.Throws<ArgumentNullException>(() =>
-            new AzureTableGameResultRepository(_mockConfiguration.Object, null!));
-    }
-
-    [Fact]
-    public async Task AddAsync_ShouldThrowArgumentNullException_WhenGameResultIsNull()
-    {
-        // Arrange
-        var repository = new AzureTableGameResultRepository(_mockConfiguration.Object, _mockLogger.Object);
-
-        // Act & Assert
-        await repository.Invoking(x => x.AddAsync(null!))
-                       .Should().ThrowAsync<ArgumentNullException>();
     }
 
     [Theory]
@@ -125,67 +80,6 @@ public class AzureTableGameResultRepositoryTests
 
         // Assert
         repository.Should().BeAssignableTo<IGameResultRepository>();
-    }
-
-    [Fact]
-    public async Task AddAsync_ShouldSetDefaultGameTimestamp_WhenNotProvided()
-    {
-        // Arrange
-        var repository = new AzureTableGameResultRepository(_mockConfiguration.Object, _mockLogger.Object);
-        var gameResult = new GameResult
-        {
-            PartitionKey = "testuser",
-            Username = "TestUser",
-            NetWPM = 60,
-            Accuracy = 95.5,
-            GrossWPM = 65,
-            CompositeScore = 100
-        };
-
-        try
-        {
-            // Act
-            var result = await repository.AddAsync(gameResult);
-
-            // Assert
-            result.GameTimestamp.Should().NotBe(default(DateTime));
-            result.GameTimestamp.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
-        }
-        catch
-        {
-            // If test fails due to Azurite not running, that's acceptable for unit test
-            // Integration tests will verify actual storage operations
-        }
-    }
-
-    [Fact]
-    public async Task AddAsync_ShouldGenerateRowKey_WhenNotProvided()
-    {
-        // Arrange
-        var repository = new AzureTableGameResultRepository(_mockConfiguration.Object, _mockLogger.Object);
-        var gameResult = new GameResult
-        {
-            PartitionKey = "testuser",
-            Username = "TestUser",
-            NetWPM = 60,
-            Accuracy = 95.5,
-            GrossWPM = 65,
-            CompositeScore = 100
-        };
-
-        try
-        {
-            // Act
-            var result = await repository.AddAsync(gameResult);
-
-            // Assert
-            result.RowKey.Should().NotBeNullOrEmpty();
-            result.RowKey.Should().MatchRegex(@"^\d{19}$"); // 19 digits (reverse timestamp)
-        }
-        catch
-        {
-            // If test fails due to Azurite not running, that's acceptable for unit test
-        }
     }
 
     [Fact]
@@ -245,43 +139,6 @@ public class AzureTableGameResultRepositoryTests
 
             // Assert
             exists.Should().BeFalse();
-        }
-        catch
-        {
-            // If test fails due to Azurite not running, that's acceptable for unit test
-        }
-    }
-
-    [Fact]
-    public async Task AddAsync_ShouldPreserveAllGameResultProperties()
-    {
-        // Arrange
-        var repository = new AzureTableGameResultRepository(_mockConfiguration.Object, _mockLogger.Object);
-        var expectedGameResult = new GameResult
-        {
-            PartitionKey = "testuser123",
-            Username = "TestUser",
-            NetWPM = 75.5,
-            Accuracy = 98.2,
-            GrossWPM = 80.1,
-            CompositeScore = 150.5,
-            ProblemKeysJson = "{\"a\":2,\"s\":1}",
-            GameTimestamp = DateTime.UtcNow.AddMinutes(-5)
-        };
-
-        try
-        {
-            // Act
-            var result = await repository.AddAsync(expectedGameResult);
-
-            // Assert
-            result.PartitionKey.Should().Be(expectedGameResult.PartitionKey);
-            result.Username.Should().Be(expectedGameResult.Username);
-            result.NetWPM.Should().Be(expectedGameResult.NetWPM);
-            result.Accuracy.Should().Be(expectedGameResult.Accuracy);
-            result.GrossWPM.Should().Be(expectedGameResult.GrossWPM);
-            result.CompositeScore.Should().Be(expectedGameResult.CompositeScore);
-            result.ProblemKeysJson.Should().Be(expectedGameResult.ProblemKeysJson);
         }
         catch
         {

@@ -13,7 +13,7 @@ public class LeaderboardPageE2ETests : IAsyncLifetime
 {
     private IPlaywright? _playwright;
     private IBrowser? _browser;
-    private const string LeaderboardUrl = "http://localhost:5208/leaderboard";
+    private const string LeaderboardUrl = $"{TestConstants.BaseUrl}/leaderboard";
     private const int PageLoadTimeout = 10000;
 
     public async Task InitializeAsync()

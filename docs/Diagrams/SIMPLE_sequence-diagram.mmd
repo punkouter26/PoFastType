@@ -1,7 +1,0 @@
-sequenceDiagram
-    User->>UI: Submit game
-    UI->>API: POST /api/game/results
-    API->>Database: Save result
-    Database-->>API: Success
-    API-->>UI: 201 Created
-    UI-->>User: Show score

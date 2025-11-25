@@ -10,15 +10,15 @@ namespace PoFastType.Tests.E2E;
 /// 
 /// Prerequisites:
 /// - Application must be running (dotnet watch or dotnet run)
-/// - Default URL: http://localhost:5208
+/// - Default URL: See TestConstants.BaseUrl
 /// </summary>
 [Collection("Sequential")] // Run E2E tests sequentially to avoid port conflicts
 public class HomePageE2ETests : IAsyncLifetime
 {
     private IPlaywright? _playwright;
     private IBrowser? _browser;
-    private const string AppUrl = "http://localhost:5208";
-    private const int PageLoadTimeout = 10000; // 10 seconds
+    private const string AppUrl = TestConstants.BaseUrl;
+    private const int PageLoadTimeout = 30000; // 30 seconds for Blazor WASM
 
     public async Task InitializeAsync()
     {
@@ -55,6 +55,8 @@ public class HomePageE2ETests : IAsyncLifetime
             var title = await page.TitleAsync();
             title.Should().Contain("PoFastType", "home page title should include app name");
 
+            // Wait for Blazor to load and check for main heading
+            await page.WaitForSelectorAsync("h1", new PageWaitForSelectorOptions { Timeout = 30000 });
             var heading = await page.Locator("h1").First.TextContentAsync();
             heading.Should().NotBeNullOrEmpty("home page should have main heading");
         }
@@ -109,9 +111,11 @@ public class HomePageE2ETests : IAsyncLifetime
             await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
             // Assert - Look for typing game elements
-            // Note: Adjust selectors based on actual Home.razor component structure
+            // Note: Home page uses contenteditable div for typing area
             var hasTextarea = await page.Locator("textarea").CountAsync() > 0 || 
-                             await page.Locator("input[type='text']").CountAsync() > 0;
+                             await page.Locator("input[type='text']").CountAsync() > 0 ||
+                             await page.Locator("[contenteditable]").CountAsync() > 0 ||
+                             await page.Locator(".typing-area").CountAsync() > 0;
             
             hasTextarea.Should().BeTrue("typing game should have input area");
         }

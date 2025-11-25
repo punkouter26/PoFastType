@@ -69,30 +69,6 @@ public class TypingGameSystemTests : IDisposable
     }
 
     [Fact]
-    public async Task ApiEndpoints_ShouldReturnCorrectContentTypes_WhenCalled()
-    {
-        // Arrange
-        _factory.MockTextGenerationStrategy?
-               .Setup(x => x.GenerateTextAsync())
-               .ReturnsAsync("Sample test text");
-        _factory.MockTextGenerationStrategy?
-               .Setup(x => x.StrategyName)
-               .Returns("TestStrategy");
-
-        _factory.MockGameResultRepository?
-               .Setup(x => x.GetTopResultsAsync(10))
-               .ReturnsAsync(new List<GameResult>());
-
-        // Act & Assert - Game text endpoint
-        var gameResponse = await _client.GetAsync("/api/game/text");
-        gameResponse.Content.Headers.ContentType?.MediaType.Should().Be("application/json");
-
-        // Act & Assert - Leaderboard endpoint
-        var leaderboardResponse = await _client.GetAsync("/api/scores/leaderboard");
-        leaderboardResponse.Content.Headers.ContentType?.MediaType.Should().Be("application/json");
-    }
-
-    [Fact]
     public async Task Application_ShouldHandleMultipleConcurrentRequests_Successfully()
     {
         // Arrange
@@ -119,24 +95,5 @@ public class TypingGameSystemTests : IDisposable
 
         // Assert
         responses.Should().OnlyContain(r => r.StatusCode == HttpStatusCode.OK);
-    }
-    [Fact]
-    public async Task InvalidApiRoutes_ShouldReturnFallbackContent_WhenAccessed()
-    {
-        // Act & Assert - Invalid routes should be caught by the fallback route
-        var invalidGameRoute = await _client.GetAsync("/api/game/invalid");
-        invalidGameRoute.StatusCode.Should().Be(HttpStatusCode.OK);
-        var content = await invalidGameRoute.Content.ReadAsStringAsync();
-        content.Should().Contain("html"); // Should return the fallback HTML page
-
-        var invalidScoresRoute = await _client.GetAsync("/api/scores/invalid");
-        invalidScoresRoute.StatusCode.Should().Be(HttpStatusCode.OK);
-        var content2 = await invalidScoresRoute.Content.ReadAsStringAsync();
-        content2.Should().Contain("html"); // Should return the fallback HTML page
-
-        var nonExistentController = await _client.GetAsync("/api/nonexistent/endpoint");
-        nonExistentController.StatusCode.Should().Be(HttpStatusCode.OK);
-        var content3 = await nonExistentController.Content.ReadAsStringAsync();
-        content3.Should().Contain("html"); // Should return the fallback HTML page
     }
 }

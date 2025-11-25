@@ -13,7 +13,7 @@ public class UserStatsPageE2ETests : IAsyncLifetime
 {
     private IPlaywright? _playwright;
     private IBrowser? _browser;
-    private const string UserStatsUrl = "http://localhost:5208/user-stats";
+    private const string UserStatsUrl = $"{TestConstants.BaseUrl}/stats";
     private const int PageLoadTimeout = 10000;
 
     public async Task InitializeAsync()
