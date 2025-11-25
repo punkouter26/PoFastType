@@ -279,15 +279,24 @@ The project uses a **simplified CD workflow** that runs on every push to `main`:
 3. **Deploy** - Deploy to Azure App Service using `azd up`
 4. **Health Check** - Validate deployment with `/api/health` endpoint
 
-**Required GitHub Secrets:**
-- `AZURE_CREDENTIALS` - Service principal credentials for Azure authentication
-- `AZURE_SUBSCRIPTION_ID` - Your Azure subscription ID
-- `AZURE_LOCATION` - Deployment region (e.g., `eastus`, `westus2`)
+## CI/CD Pipeline
 
-**Deployment Configuration:**
-- Infrastructure: Defined in `infra/resources.bicep`
-- Deployment settings: Configured in `azure.yaml`
-- CD workflow: `.github/workflows/cd.yml`
+### GitHub Actions Workflow
+
+The project uses **Federated Credentials (OIDC)** for secure, secret-less Azure deployment.
+
+**Required GitHub Variables:**
+- `AZURE_CLIENT_ID` - Service principal application ID
+- `AZURE_TENANT_ID` - Azure tenant ID  
+- `AZURE_SUBSCRIPTION_ID` - Azure subscription ID
+- `AZURE_ENV_NAME` - Environment name (`PoFastType`)
+- `AZURE_LOCATION` - Azure region (`canadacentral`)
+
+**Workflow Triggers:**
+- Push to `master` branch
+- Manual workflow dispatch
+
+**For detailed setup instructions, see [CI/CD Setup Guide](docs/CICD_SETUP.md)**
 
 ### Manual Deployment
 
@@ -295,10 +304,10 @@ The project uses a **simplified CD workflow** that runs on every push to `main`:
 # Build the solution
 dotnet build
 
-# Run tests
+# Run tests (excluding E2E)
 dotnet test --filter "FullyQualifiedName!~E2E"
 
-# Deploy to Azure
+# Deploy to Azure using azd
 azd up
 ```
 
@@ -313,21 +322,9 @@ After deployment, verify the application is working:
 
 For detailed deployment instructions and troubleshooting, see the [Azure Best Practices documentation](https://learn.microsoft.com/azure/app-service/).
 
-### CI/CD Pipeline
+---
 
-The project includes automated GitHub Actions workflows:
-
-- **CI (Continuous Integration)** - Runs on every push and PR
-  - Builds the solution
-  - Runs all tests (excluding E2E)
-  - Validates code formatting
-  - Scans for security vulnerabilities
-
-- **CD (Continuous Deployment)** - Deploys to Azure on push to `main`
-  - Provisions Azure infrastructure
-  - Deploys the application
-  - Validates with health checks
-  - Runs smoke tests
+## 📊 Monitoring & Diagnostics
   - Auto-creates issue on failure
 
 - **PR Validation** - Runs on every pull request
