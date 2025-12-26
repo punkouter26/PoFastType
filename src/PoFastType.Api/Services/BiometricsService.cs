@@ -363,9 +363,16 @@ public class BiometricsService : IBiometricsService
                 var fatigue = await CalculateFatigueIndexAsync(userId, gameId);
                 fatigueIndices.Add(fatigue);
             }
-            catch
+            catch (ArgumentException ex)
             {
-                // Skip games with insufficient data
+                // Skip games with invalid arguments (e.g., null/empty IDs)
+                _logger.LogDebug(ex, "Skipping game {GameId} due to invalid arguments", gameId);
+                continue;
+            }
+            catch (Exception ex)
+            {
+                // Log unexpected errors but continue processing other games
+                _logger.LogWarning(ex, "Failed to calculate fatigue for game {GameId}, skipping", gameId);
                 continue;
             }
         }
